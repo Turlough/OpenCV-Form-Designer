@@ -1,9 +1,7 @@
 import os
-from glob import glob
 from highlighter import Highlighter
 import jsonpickle
-
-from models.tickbox import Box, TickBox, TickBoxGroup
+from models.tickbox import TickBox, TickBoxGroup
 
 
 class FormPage:
