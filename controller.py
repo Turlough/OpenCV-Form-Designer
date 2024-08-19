@@ -14,6 +14,8 @@ class Controller:
         self.scale = scale
         self.highlighter = Highlighter(path)
         self.page.from_json()
+        for group in self.page.box_groups:
+            self.highlighter.add_tickbox_group(group)
 
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
         x1 /= self.scale
