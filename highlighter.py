@@ -3,7 +3,7 @@ from glob import glob
 import cv2
 import jsonpickle
 
-from models.tickbox import Box, TickBox
+from models.tickbox import Box, TickBox, TickBoxGroup
 
 
 class Highlighter:
@@ -11,12 +11,14 @@ class Highlighter:
     image_path: str
     json_path: str
     tick_boxes: list[TickBox]
+    box_groups: list[TickBoxGroup]
 
     def __init__(self, path: str):
         self.image_path = path
         self.json_path = path.replace('.tif', '.json')
         self.image = cv2.imread(path)
         self.tick_boxes = list()
+        self.box_groups = list()
 
     def detect_boxes(self):
 
@@ -46,19 +48,6 @@ class Highlighter:
             cv2.rectangle(img, p1, p2, (0, 0, 255), 2)
         return cv2.resize(img, None, fx=scale, fy=scale)
 
-    def to_json(self):
-        j = jsonpickle.encode(self.tick_boxes, indent=4)
-        with open(self.json_path, 'w') as file:
-            file.write(j)
-
-    def from_json(self):
-        if not os.path.exists(self.json_path):
-            self.detect_boxes()
-            self.to_json()
-        with open(self.json_path, 'r') as file:
-            content = file.read()
-            self.tick_boxes = jsonpickle.decode(content)
-
 
 def show_with_cv2(image):
     cv2.imshow('image', image)
@@ -72,9 +61,7 @@ if __name__ == '__main__':
     for f in files:
         h = Highlighter(f)
         h.detect_boxes()
-        h.from_json()
         scaled = h.get_image_with_boxes(0.3)
-        # for tb in h.tick_boxes:
-        #     print(tb.name, tb.box.rectangle())
-        # h.to_json()
+        for tb in h.tick_boxes:
+            print(tb.name, tb.box.rectangle())
         show_with_cv2(scaled)
