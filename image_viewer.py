@@ -1,7 +1,8 @@
 import logging
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLineEdit, QMainWindow, QMessageBox, QPushButton, QWidget, \
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QInputDialog, QLineEdit, QMainWindow, QMessageBox, QPushButton, \
+    QWidget, \
     QLabel, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
@@ -9,18 +10,21 @@ from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 import highlighter
+from controller import Controller
 from image_label import ImageLabel
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
 
 class ImageViewer(QWidget):
+    controller: Controller
     edit: QTextEdit
     scroll_area: QScrollArea
     picture: ImageLabel
     scale: float
 
-    def __init__(self):
+    def __init__(self, controller: Controller):
+        self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
         self.picture = ImageLabel(on_release=self.on_rectangle_drawn)
@@ -45,10 +49,10 @@ class ImageViewer(QWidget):
         right_layout.addWidget(self.edit)
         self.setLayout(main_layout)
 
-        image = highlighter.load(path, scale)
+        image = self.controller.get_image()
         self.display(image)
 
-        self.set_text("tested")
+        self.set_text(self.controller.get_text())
 
     def set_text(self, text):
         self.edit.setText(text)
@@ -76,10 +80,14 @@ class ImageViewer(QWidget):
         return pixmap
 
     def on_rectangle_drawn(self, rect: QRect):
+        name, ok = QInputDialog.getText(self, 'Name', 'Type a name for this group')
+
+        if not ok or not name:
+            return
 
         x1, y1 = rect.topLeft().x(), rect.topLeft().y()
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
-        text = f"{x1}, {y1}, {x2}, {y2}"
-        self.set_text(text)
+        self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
+        self.set_text(self.controller.get_text())
 

@@ -13,7 +13,7 @@ class TickBox:
 class TickBoxGroup:
     name: str
     rectangle: Box
-    contents: list[Box]
+    contents: list[TickBox]
 
     def __init__(self, name, rectangle):
         self.name = name

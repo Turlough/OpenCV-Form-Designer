@@ -1,7 +1,7 @@
 from glob import glob
 import cv2
 
-from models.tickbox import Box, TickBox
+from models.tickbox import Box, TickBox, TickBoxGroup
 
 
 class Highlighter:
@@ -9,12 +9,14 @@ class Highlighter:
     image_path: str
     json_path: str
     tick_boxes: list[TickBox]
+    tick_box_groups: list[TickBoxGroup]
 
     def __init__(self, path: str):
         self.image_path = path
         self.json_path = path.replace('.tif', '.json')
         self.image = cv2.imread(path)
         self.tick_boxes = list()
+        self.tick_box_groups = list()
 
     def detect_boxes(self):
 
@@ -37,12 +39,19 @@ class Highlighter:
                 name = f'Box_{index:0>3d}'
                 self.tick_boxes.append(TickBox(name, box))
 
-    def get_image_with_boxes(self, scale: float = 1.0):
+    def scaled_and_highlighted(self, scale: float = 1.0):
         img = self.image.copy()
+        for tbg in self.tick_box_groups:
+            p1, p2 = tbg.rectangle.rectangle()
+            cv2.rectangle(img, p1, p2, (0, 255, 0), 2)
+
         for tb in self.tick_boxes:
             p1, p2 = tb.box.rectangle()
             cv2.rectangle(img, p1, p2, (0, 0, 255), 2)
         return cv2.resize(img, None, fx=scale, fy=scale)
+
+    def add_tickbox_group(self, group: TickBoxGroup):
+        self.tick_box_groups.append(group)
 
 
 def show_with_cv2(image):
@@ -57,7 +66,7 @@ if __name__ == '__main__':
     for f in files:
         h = Highlighter(f)
         h.detect_boxes()
-        scaled = h.get_image_with_boxes(0.3)
+        scaled = h.scaled_and_highlighted(0.3)
         for tb in h.tick_boxes:
             print(tb.name, tb.box.rectangle())
         show_with_cv2(scaled)
