@@ -1,9 +1,7 @@
-import os
 from glob import glob
 import cv2
-import jsonpickle
 
-from models.tickbox import Box, TickBox, TickBoxGroup
+from models.tickbox import Box, TickBox
 
 
 class Highlighter:
@@ -11,14 +9,12 @@ class Highlighter:
     image_path: str
     json_path: str
     tick_boxes: list[TickBox]
-    box_groups: list[TickBoxGroup]
 
     def __init__(self, path: str):
         self.image_path = path
         self.json_path = path.replace('.tif', '.json')
         self.image = cv2.imread(path)
         self.tick_boxes = list()
-        self.box_groups = list()
 
     def detect_boxes(self):
 
