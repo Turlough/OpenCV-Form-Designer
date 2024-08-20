@@ -29,6 +29,7 @@ class FormPage:
         if not os.path.exists(self.json_path):
             self.from_image()
         self.box_groups = jsonpickle.decode(self.description())
+        self.default_group = self.box_groups[0]
 
     def from_image(self):
         highlighter = Highlighter(self.image_path)
@@ -40,7 +41,7 @@ class FormPage:
         with open(self.json_path, 'r') as file:
             return file.read()
 
-    def describe_groups(self):
+    def describe_selected_groups(self):
         content: list = jsonpickle.decode(self.description())
         content.pop(0)
         return jsonpickle.encode(content, indent=4)

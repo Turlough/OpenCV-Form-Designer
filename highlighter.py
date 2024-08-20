@@ -39,6 +39,10 @@ class Highlighter:
                 name = f'Box_{index:0>3d}'
                 self.tick_boxes.append(TickBox(name, box))
 
+        self.tick_boxes.sort(key=lambda tb: tb.box.y1)
+        for index, box in enumerate(self.tick_boxes):
+            box.name = f'Box_{index:0>3d}'
+
     def scaled_and_highlighted(self, scale: float = 1.0):
         img = self.image.copy()
         for tbg in self.tick_box_groups:

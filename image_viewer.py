@@ -1,17 +1,16 @@
 import logging
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QApplication, QHBoxLayout, QInputDialog, QLineEdit, QMainWindow, QMessageBox, QPushButton, \
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
     QWidget, \
-    QLabel, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtGui import QFont
 
-import highlighter
-from controller import Controller
-from image_label import ImageLabel
+from controller import Controller, EditMode
+from views.box_editor import BoxEditor
+from views.image_label import ImageLabel
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
@@ -37,30 +36,48 @@ class ImageViewer(QWidget):
         self.scale = scale
         window = QMainWindow()
         right_layout = QVBoxLayout()
-        main_layout = QHBoxLayout()
+        left_layout = QVBoxLayout()
 
-        self.add_scroll_area_for_image(main_layout)
+        main_layout = QHBoxLayout()
+        image_button_layout = QHBoxLayout()
 
         # Main layout
         widget = QWidget()
         widget.setLayout(main_layout)
         window.setCentralWidget(widget)
+        # Left and right panels
+        main_layout.addLayout(left_layout)
         main_layout.addLayout(right_layout)
+        # Image buttons top left
+        left_layout.addLayout(image_button_layout)
+        box_group_button = QPushButton()
+        box_group_button.setText("Box Groups")
+        box_group_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_GROUP))
+
+        image_button_layout.addWidget(box_group_button)
+        relabel_button = QPushButton()
+        relabel_button.setText('Rename box areas')
+        image_button_layout.addWidget(relabel_button)
+        relabel_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_EDIT))
+        # Image area bottom left
+        self.add_scroll_area_for_image(left_layout)
+        # right hand side
         right_layout.addWidget(self.edit)
+
         self.setLayout(main_layout)
 
         image = self.controller.get_image()
         self.display(image)
 
-        self.set_text(self.controller.get_text())
+        self.refresh_json()
 
-    def set_text(self, text):
-        self.edit.setText(text)
+    def refresh_json(self):
+        self.edit.setText(self.controller.get_page_json())
 
     def add_editor(self):
         # Create a text edit
         font = QFont()
-        font.setPointSize(16)
+        font.setPointSize(20)
         self.edit.setFont(font)
 
     def add_scroll_area_for_image(self, layout):
@@ -80,8 +97,14 @@ class ImageViewer(QWidget):
         return pixmap
 
     def on_rectangle_drawn(self, rect: QRect):
-        name, ok = QInputDialog.getText(self, 'Name', 'Type a name for this group')
+        match self.controller.edit_mode:
+            case EditMode.BOX_GROUP:
+                self.new_group_box(rect)
+            case EditMode.BOX_EDIT:
+                self.edit_box(rect)
 
+    def new_group_box(self, rect: QRect):
+        name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
         if not ok or not name:
             return
 
@@ -89,5 +112,18 @@ class ImageViewer(QWidget):
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
         self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
-        self.set_text(self.controller.get_text())
+        self.refresh_json()
+
+    def edit_box(self, rect: QRect):
+        x, y = rect.topLeft().x(), rect.topLeft().y()
+        box = self.controller.locate_surrounding_box(x, y)
+        if not box:
+            return
+
+        dialog = BoxEditor(box)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            box.name = dialog.get_name()
+            box.type = dialog.get_type().name
+        self.controller.write_to_json()
+        self.refresh_json()
 
