@@ -64,22 +64,19 @@ class ImageViewer(QWidget):
         self.add_scroll_area_for_image(left_layout)
         # right hand side
         right_layout.addWidget(self.edit)
+        font = QFont()
+        font.setPointSize(20)
+        self.edit.setFont(font)
 
         self.setLayout(main_layout)
 
         image = self.controller.get_image()
         self.display(image)
 
-        self.refresh_json()
+        self.load_json()
 
-    def refresh_json(self):
+    def load_json(self):
         self.edit.setText(self.controller.get_page_json())
-
-    def add_editor(self):
-        # Create a text edit
-        font = QFont()
-        font.setPointSize(20)
-        self.edit.setFont(font)
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)
@@ -113,7 +110,7 @@ class ImageViewer(QWidget):
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
         self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
-        self.refresh_json()
+        self.load_json()
 
     def edit_box(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
@@ -121,4 +118,8 @@ class ImageViewer(QWidget):
         if not box:
             return
 
-        ModelEditor(box).exec()
+        ModelEditor(box, callback=self.save_and_reload()).exec()
+
+    def save_and_reload(self):
+        self.controller.save_json()
+        self.load_json()

@@ -59,6 +59,7 @@ class Controller:
     def get_page_json(self):
         return self.page.description()
 
-    def write_to_json(self):
+    def save_json(self):
         self.page.to_json()
+
 

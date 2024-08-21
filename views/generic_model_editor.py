@@ -3,9 +3,10 @@ from PyQt6.QtCore import pyqtSlot
 
 
 class ModelEditor(QDialog):
-    def __init__(self, obj, parent=None):
+    def __init__(self, obj, callback=None, parent=None):
 
         super().__init__(parent)
+        self.callback = callback
         self.setWindowTitle("Edit Object")
 
         self.obj = obj
@@ -47,6 +48,8 @@ class ModelEditor(QDialog):
                 if value.isdigit():
                     value = int(value)
                 setattr(self.obj, attr_name, value)
+        if self.callback:
+            self.callback()
         super().accept()
 
     def edit_sub_object(self, attr_name, sub_obj):
