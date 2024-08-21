@@ -1,4 +1,7 @@
-from PyQt6.QtWidgets import QDialog, QFormLayout, QLabel, QLineEdit, QVBoxLayout, QPushButton, QDialogButtonBox
+from enum import Enum
+
+from PyQt6.QtWidgets import QComboBox, QDialog, QFormLayout, QLabel, QLineEdit, QVBoxLayout, QPushButton, \
+    QDialogButtonBox
 from PyQt6.QtCore import pyqtSlot
 
 
@@ -25,6 +28,14 @@ class ModelEditor(QDialog):
                 line_edit.setText(str(attr_value))
                 self.fields[attr_name] = line_edit
                 form_layout.addRow(attr_name, line_edit)
+            elif isinstance(attr_value, Enum):
+                # Handle enum types with QComboBox
+                combo_box = QComboBox(self)
+                for enum_item in type(attr_value):
+                    combo_box.addItem(enum_item.value, enum_item)
+                combo_box.setCurrentText(attr_value.value)
+                self.fields[attr_name] = combo_box
+                form_layout.addRow(attr_name, combo_box)
             elif isinstance(attr_value, object):
                 # Handle nested objects with a button to open a new dialog
                 edit_button = QPushButton(f"Edit {attr_name}", self)
