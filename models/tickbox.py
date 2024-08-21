@@ -14,7 +14,7 @@ class BoxType(Enum):
 class TickBox:
     name: str
     box: Box
-    type: str = BoxType.TICK.name
+    type: BoxType = BoxType.TICK
 
 
 @dataclass

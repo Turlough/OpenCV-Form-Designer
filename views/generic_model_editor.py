@@ -32,8 +32,8 @@ class ModelEditor(QDialog):
                 # Handle enum types with QComboBox
                 combo_box = QComboBox(self)
                 for enum_item in type(attr_value):
-                    combo_box.addItem(enum_item.value, enum_item)
-                combo_box.setCurrentText(attr_value.value)
+                    combo_box.addItem(enum_item.name)
+                combo_box.setCurrentText(attr_value.name)
                 self.fields[attr_name] = combo_box
                 form_layout.addRow(attr_name, combo_box)
             elif isinstance(attr_value, object):
