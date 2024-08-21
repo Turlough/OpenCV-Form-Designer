@@ -10,6 +10,7 @@ from PyQt6.QtGui import QFont
 
 from controller import Controller, EditMode
 from views.box_editor import BoxEditor
+from views.generic_model_editor import ModelEditor
 from views.image_label import ImageLabel
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
@@ -120,10 +121,4 @@ class ImageViewer(QWidget):
         if not box:
             return
 
-        dialog = BoxEditor(box)
-        if dialog.exec() == QDialog.DialogCode.Accepted:
-            box.name = dialog.get_name()
-            box.type = dialog.get_type().name
-        self.controller.write_to_json()
-        self.refresh_json()
-
+        ModelEditor(box).exec()
