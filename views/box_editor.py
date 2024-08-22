@@ -2,21 +2,21 @@ from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QLineEdit, QComboBox, QDialogButtonBox, QLabel
 )
 
-from models.tickbox import BoxType, TickBox
+from models.answer_box import BoxType, AnswerBox
 
 
 class BoxEditor(QDialog):
-    def __init__(self, box: TickBox, parent=None):
+    def __init__(self, box: AnswerBox, parent=None):
         super(BoxEditor, self).__init__(parent)
 
         # Set up layout
         self.layout = QVBoxLayout(self)
 
-        # Add a label and text box
-        self.label = QLabel(f'Enter new name for box "{box.name}"')
+        # Add a label and text coordinates
+        self.label = QLabel(f'Enter new name for coordinates "{box.name}"')
         self.layout.addWidget(self.label)
-        self.textBox = QLineEdit(self)
-        self.layout.addWidget(self.textBox)
+        self.large_text_area = QLineEdit(self)
+        self.layout.addWidget(self.large_text_area)
 
         # Add a label and dropdown (combobox)
         self.enumLabel = QLabel("Select Box Type?")
@@ -37,7 +37,7 @@ class BoxEditor(QDialog):
         self.buttonBox.rejected.connect(self.reject)
 
     def get_name(self):
-        return self.textBox.text()
+        return self.large_text_area.text()
 
     def get_type(self):
         return BoxType[self.comboBox.currentText()]

@@ -1,9 +1,9 @@
 from enum import Enum, auto
 
 from highlighter import Highlighter
-from models.box import Box
+from models.rectangle import Rectangle
 from models.form_page import FormPage
-from models.tickbox import TickBoxGroup
+from models.answer_box import GroupOfAnswers
 
 
 class EditMode(Enum):
@@ -22,7 +22,7 @@ class Controller:
         self.scale = scale
         self.highlighter = Highlighter(path)
         self.page.from_json()
-        for group in self.page.box_groups:
+        for group in self.page.groups:
             self.highlighter.add_tickbox_group(group)
 
     def set_mode(self, mode: EditMode):
@@ -30,10 +30,10 @@ class Controller:
 
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
-        box = Box().from_corners(x1, y1, x2, y2)
-        group = TickBoxGroup(name, box)
-        group.contents = [tb for tb in self.page.default_group.contents if tb.box.is_in(group.rectangle)]
-        self.page.box_groups.append(group)
+        rectangle = Rectangle().from_corners(x1, y1, x2, y2)
+        group = GroupOfAnswers(name, rectangle)
+        group.contents = [tb for tb in self.page.default_group.contents if tb.rectangle.is_in(group.rectangle)]
+        self.page.groups.append(group)
         self.highlighter.add_tickbox_group(group)
         self.page.to_json()
 
@@ -46,10 +46,10 @@ class Controller:
 
     def locate_surrounding_box(self, x, y):
         x, y, _, _ = self.unscale(x, y)
-        for tickbox in self.page.default_group.contents:
-            box = tickbox.box
-            if box.x1 < x < box.x2 and box.y1 < y < box.y2:
-                return tickbox
+        for box in self.page.default_group.contents:
+            r = box.rectangle
+            if r.x1 < x < r.x2 and r.y1 < y < r.y2:
+                return box
         return None
 
     def get_image(self):

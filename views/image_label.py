@@ -31,7 +31,7 @@ class ImageLabel(QLabel):
             self.update()
             self.text = f"Rectangle coordinates: {self.rect.topLeft()} to {self.rect.bottomRight()}"
             self.on_release(self.rect)
-            # Reset for the next rectangle
+            # Reset for the next coordinates
             self.start_point = None
             self.end_point = None
 

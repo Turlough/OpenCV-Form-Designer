@@ -57,7 +57,7 @@ class ImageViewer(QWidget):
 
         image_button_layout.addWidget(box_group_button)
         relabel_button = QPushButton()
-        relabel_button.setText('Rename box areas')
+        relabel_button.setText('Rename coordinates areas')
         image_button_layout.addWidget(relabel_button)
         relabel_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_EDIT))
         # Image area bottom left

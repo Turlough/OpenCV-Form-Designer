@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from models.box import Box
+from models.rectangle import Rectangle
 
 
 class BoxType(Enum):
@@ -11,17 +11,17 @@ class BoxType(Enum):
 
 
 @dataclass
-class TickBox:
+class AnswerBox:
     name: str
-    box: Box
+    rectangle: Rectangle
     type: BoxType = BoxType.TICK
 
 
 @dataclass
-class TickBoxGroup:
+class GroupOfAnswers:
     name: str
-    rectangle: Box
-    contents: list[TickBox]
+    rectangle: Rectangle
+    contents: list[AnswerBox]
 
     def __init__(self, name, rectangle):
         self.name = name

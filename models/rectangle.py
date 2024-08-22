@@ -1,4 +1,4 @@
-class Box:
+class Rectangle:
     x1: int = 0
     y1: int = 0
     x2: int = 0
@@ -15,19 +15,19 @@ class Box:
         self.from_corners(x, y, x+w, y+h)
         return self
 
-    def rectangle(self, scale: float = 1.0):
+    def coordinates(self, scale: float = 1.0):
         return (int(self.x1 * scale), int(self.y1 * scale)), (int(self.x2 * scale), int(self.y2 * scale))
 
-    def is_in(self, box) -> bool:
-        if self.x1 < box.x1:
+    def is_in(self, other) -> bool:
+        if self.x1 < other.x1:
             return False
-        if self.x2 > box.x2:
+        if self.x2 > other.x2:
             return False
-        if self.y1 < box.y1:
+        if self.y1 < other.y1:
             return False
-        if self.y2 > box.y2:
+        if self.y2 > other.y2:
             return False
         return True
 
-    def contains(self, box):
-        return box.is_in(self)
+    def contains(self, other):
+        return other.is_in(self)

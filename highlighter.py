@@ -1,21 +1,22 @@
 from glob import glob
 import cv2
 
-from models.tickbox import Box, TickBox, TickBoxGroup
+from models.rectangle import Rectangle
+from models.answer_box import GroupOfAnswers, AnswerBox
 
 
 class Highlighter:
     image = None
     image_path: str
     json_path: str
-    tick_boxes: list[TickBox]
-    tick_box_groups: list[TickBoxGroup]
+    boxes: list[AnswerBox]
+    tick_box_groups: list[GroupOfAnswers]
 
     def __init__(self, path: str):
         self.image_path = path
         self.json_path = path.replace('.tif', '.json')
         self.image = cv2.imread(path)
-        self.tick_boxes = list()
+        self.boxes = list()
         self.tick_box_groups = list()
 
     def detect_boxes(self):
@@ -32,29 +33,29 @@ class Highlighter:
             epsilon = 0.02 * cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, epsilon, True)
 
-            # Check if the contour has 4 vertices (rectangle)
+            # Check if the contour has 4 vertices (coordinates)
             if len(approx) == 4:
                 x, y, w, h = cv2.boundingRect(contour)
-                box = Box().from_xywh(x, y, w, h)
+                rect = Rectangle().from_xywh(x, y, w, h)
                 name = f'Box_{index:0>3d}'
-                self.tick_boxes.append(TickBox(name, box))
+                self.boxes.append(AnswerBox(name, rect))
 
-        self.tick_boxes.sort(key=lambda tb: tb.box.y1)
-        for index, box in enumerate(self.tick_boxes):
+        self.boxes.sort(key=lambda tb: tb.rectangle.y1)
+        for index, box in enumerate(self.boxes):
             box.name = f'Box_{index:0>3d}'
 
     def scaled_and_highlighted(self, scale: float = 1.0):
         img = self.image.copy()
         for tbg in self.tick_box_groups:
-            p1, p2 = tbg.rectangle.rectangle()
+            p1, p2 = tbg.rectangle.coordinates()
             cv2.rectangle(img, p1, p2, (0, 255, 0), 2)
 
-        for tb in self.tick_boxes:
-            p1, p2 = tb.box.rectangle()
+        for tb in self.boxes:
+            p1, p2 = tb.rectangle.coordinates()
             cv2.rectangle(img, p1, p2, (0, 0, 255), 2)
         return cv2.resize(img, None, fx=scale, fy=scale)
 
-    def add_tickbox_group(self, group: TickBoxGroup):
+    def add_tickbox_group(self, group: GroupOfAnswers):
         self.tick_box_groups.append(group)
 
 
@@ -71,6 +72,6 @@ if __name__ == '__main__':
         h = Highlighter(f)
         h.detect_boxes()
         scaled = h.scaled_and_highlighted(0.3)
-        for tb in h.tick_boxes:
-            print(tb.name, tb.box.rectangle())
+        for tb in h.boxes:
+            print(tb.name, tb.rectangle.coordinates())
         show_with_cv2(scaled)
