@@ -11,16 +11,18 @@ class BoxType(Enum):
 
 
 @dataclass
-class AnswerBox:
+class AnswerBase:
     name: str
     rectangle: Rectangle
+
+
+@dataclass
+class AnswerBox(AnswerBase):
     type: BoxType = BoxType.TICK
 
 
 @dataclass
-class GroupOfAnswers:
-    name: str
-    rectangle: Rectangle
+class GroupOfAnswers(AnswerBase):
     contents: list[AnswerBox]
 
     def __init__(self, name, rectangle):
