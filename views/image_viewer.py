@@ -21,20 +21,18 @@ class ImageViewer(QWidget):
     edit: QTextEdit
     scroll_area: QScrollArea
     picture: ImageLabel
-    scale: float
 
     def __init__(self, controller: Controller):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = ImageLabel(on_release=self.on_rectangle_drawn)
+        self.picture = ImageLabel(on_release=self.on_rectangle_drawn, scale=controller.scale)
         super().__init__()
 
-    def init_ui(self, path: str, scale: float):
+    def init_ui(self, path: str):
         """
         Layout UI elements
         """
-        self.scale = scale
         window = QMainWindow()
         right_layout = QVBoxLayout()
         left_layout = QVBoxLayout()
@@ -89,10 +87,11 @@ class ImageViewer(QWidget):
         bytes_per_line = ch * w
         qt_image = QImage(image.data, w, h, bytes_per_line, QImage.Format.Format_BGR888)
         pixmap = QPixmap(qt_image)
+        self.picture.answers = self.controller.answers
         self.picture.setPixmap(pixmap)
+
         self.scroll_area.resize(pixmap.width(), pixmap.height())
         self.scroll_area.setWidget(self.picture)
-        return pixmap
 
     def on_rectangle_drawn(self, rect: QRect):
         match self.controller.edit_mode:

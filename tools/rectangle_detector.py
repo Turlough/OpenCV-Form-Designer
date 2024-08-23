@@ -13,7 +13,7 @@ def launch(image_path):
     app = QApplication(sys.argv)
     controller = Controller(path, scale)
     viewer = ImageViewer(controller)
-    viewer.init_ui(image_path, scale)
+    viewer.init_ui(image_path)
     viewer.showMaximized()
 
     app.exec()

@@ -2,15 +2,22 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
+from models.answer_box import AnswerBox
+
 
 class ImageLabel(QLabel):
-    def __init__(self, on_release=None, parent=None):
+    answers: list[AnswerBox]
+    scale: float = 1.0
+
+    def __init__(self, scale=1.0, on_release=None, parent=None):
         super().__init__(parent)
         self.on_release = on_release
         self.start_point = None
         self.end_point = None
         self.rect = QRect()
         self.text = ''
+        self.scale = scale
+        self.answers = list()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -42,5 +49,13 @@ class ImageLabel(QLabel):
             pen = QPen(Qt.GlobalColor.red, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
+        self.draw_answers()
 
-
+    def draw_answers(self):
+        painter = QPainter(self)
+        pen = QPen(Qt.GlobalColor.blue, 2)
+        painter.setPen(pen)
+        for a in self.answers:
+            ((x1, y1), (x2, y2)) = a.rectangle.coordinates(scale=self.scale)
+            rect = QRect(x1, y1, x2 - x1, y2 - y1)
+            painter.drawRect(rect)
