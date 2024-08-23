@@ -3,7 +3,7 @@ from enum import Enum, auto
 from highlighter import Highlighter
 from models.rectangle import Rectangle
 from models.form_page import FormPage
-from models.answer_box import GroupOfAnswers
+from models.answer_box import AnswerBox, GroupOfAnswers
 
 
 class EditMode(Enum):
@@ -16,6 +16,7 @@ class Controller:
     highlighter: Highlighter
     scale: float
     edit_mode: EditMode = EditMode.BOX_GROUP
+    answers: list[AnswerBox]
 
     def __init__(self, path, scale):
         self.page = FormPage(path)
@@ -24,6 +25,7 @@ class Controller:
         self.page.from_json()
         for group in self.page.groups:
             self.highlighter.add_tickbox_group(group)
+        self.answers = self.page.groups[0].contents
 
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
@@ -32,7 +34,7 @@ class Controller:
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = GroupOfAnswers(name, rectangle)
-        group.contents = [tb for tb in self.page.default_group.contents if tb.rectangle.is_in(group.rectangle)]
+        group.contents = [answer for answer in self.answers if answer.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
         self.highlighter.add_tickbox_group(group)
         self.page.to_json()
@@ -46,10 +48,10 @@ class Controller:
 
     def locate_surrounding_box(self, x, y):
         x, y, _, _ = self.unscale(x, y)
-        for box in self.page.default_group.contents:
-            r = box.rectangle
+        for answer in self.answers:
+            r = answer.rectangle
             if r.x1 < x < r.x2 and r.y1 < y < r.y2:
-                return box
+                return answer
         return None
 
     def get_image(self):
@@ -57,7 +59,7 @@ class Controller:
         return self.highlighter.scaled_and_highlighted(scale=self.scale)
 
     def get_page_json(self):
-        return self.page.description()
+        return self.page.read_file()
 
     def save_json(self):
         self.page.to_json()
