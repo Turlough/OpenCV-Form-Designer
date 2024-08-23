@@ -1,5 +1,5 @@
 import os
-from highlighter import Highlighter
+from tools.highlighter import Highlighter
 import jsonpickle
 
 from models.rectangle import Rectangle

@@ -3,7 +3,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 
 from controller import Controller
-from image_viewer import ImageViewer
+from views.image_viewer import ImageViewer
 
 path = r"C:\_PV\forms\SKM_C250i2408161348004.tif"
 scale = 0.29

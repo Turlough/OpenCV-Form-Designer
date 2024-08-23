@@ -1,6 +1,6 @@
 from enum import Enum, auto
 
-from highlighter import Highlighter
+from tools.highlighter import Highlighter
 from models.rectangle import Rectangle
 from models.form_page import FormPage
 from models.answer_box import AnswerBox, GroupOfAnswers
