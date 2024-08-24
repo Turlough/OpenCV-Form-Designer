@@ -24,8 +24,9 @@ def draw(answer: AnswerBox, painter, scale):
     painter.drawRect(rect)
     painter.setFont(QFont("Arial", 6))
     # Calculate the height of the text
-    font_metrics = painter.fontMetrics()
-    text_height = font_metrics.height()
-    text_start_y = rect.top() + (rect.height() - text_height) // 2 + text_height
+    m = painter.fontMetrics()
+    text_height = m.height()
+    text_y = rect.top() + (rect.height() - text_height) // 2 + text_height
     # Draw the text inside the rectangle
-    painter.drawText(x2 + 5, text_start_y, answer.name)
+    text = f'{answer.name}: {answer.type.name}'
+    painter.drawText(x2 + 5, text_y, text)
