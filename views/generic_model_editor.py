@@ -59,6 +59,15 @@ class ModelEditor(QDialog):
                 if value.isdigit():
                     value = int(value)
                 setattr(self.obj, attr_name, value)
+            elif isinstance(widget, QComboBox):
+                value = widget.currentText()
+                enum_type = type(getattr(self.obj, attr_name))
+                # Correctly map the selected string back to the enum
+                for enum_member in enum_type:
+                    if enum_member.name == value:
+                        setattr(self.obj, attr_name, enum_member)
+                        break
+
         if self.callback:
             self.callback()
         super().accept()
