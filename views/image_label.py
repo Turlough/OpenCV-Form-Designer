@@ -2,7 +2,8 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
-from models.answer_box import AnswerBox
+from models.answer_box import AnswerBox, BoxType
+from views.answer_box_painter import draw
 
 
 class ImageLabel(QLabel):
@@ -53,9 +54,5 @@ class ImageLabel(QLabel):
 
     def draw_answers(self):
         painter = QPainter(self)
-        pen = QPen(Qt.GlobalColor.blue, 2)
-        painter.setPen(pen)
         for a in self.answers:
-            ((x1, y1), (x2, y2)) = a.rectangle.coordinates(scale=self.scale)
-            rect = QRect(x1, y1, x2 - x1, y2 - y1)
-            painter.drawRect(rect)
+            draw(a, painter, self.scale)

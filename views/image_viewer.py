@@ -98,7 +98,7 @@ class ImageViewer(QWidget):
             case EditMode.BOX_GROUP:
                 self.new_group_box(rect)
             case EditMode.BOX_EDIT:
-                self.edit_box(rect)
+                self.edit_answer(rect)
 
     def new_group_box(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
@@ -111,7 +111,7 @@ class ImageViewer(QWidget):
         self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
         self.load_json()
 
-    def edit_box(self, rect: QRect):
+    def edit_answer(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
         box = self.controller.locate_surrounding_box(x, y)
         if not box:
