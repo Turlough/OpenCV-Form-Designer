@@ -1,11 +1,11 @@
 import logging
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
-from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from controller import Controller, EditMode
@@ -116,8 +116,10 @@ class ImageViewer(QWidget):
         box = self.controller.locate_surrounding_box(x, y)
         if not box:
             return
-
-        ModelEditor(box, callback=self.save_and_reload()).exec()
+        mouse_pos = QCursor.pos()
+        editor = ModelEditor(box, callback=self.save_and_reload())
+        editor.move(mouse_pos)
+        editor.exec()
 
     def save_and_reload(self):
         self.controller.save_json()
