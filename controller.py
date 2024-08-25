@@ -1,3 +1,4 @@
+import os.path
 from enum import Enum, auto
 
 from tools.highlighter import Highlighter
@@ -19,13 +20,22 @@ class Controller:
     answers: list[AnswerBox]
 
     def __init__(self, path, scale):
-        self.page = FormPage(path)
+        json_file = path.replace('.tif', '.json')
+        if os.path.exists(json_file):
+            with open(json_file, 'r') as f:
+                content = f.read()
+                self.page = FormPage.from_json(content)
+        else:
+            self.page = FormPage(path)
         self.scale = scale
         self.highlighter = Highlighter(path)
-        self.page.from_json()
+
         for group in self.page.groups:
             self.highlighter.add_tickbox_group(group)
-        self.answers = self.page.groups[0].contents
+        if self.page.groups:
+            self.answers = self.page.groups[0].contents
+        else:
+            self.answers = list()
 
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode

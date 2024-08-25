@@ -16,7 +16,7 @@ from views.image_label import ImageLabel
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
 
-class ImageViewer(QWidget):
+class PageView(QWidget):
     controller: Controller
     edit: QTextEdit
     scroll_area: QScrollArea
@@ -74,7 +74,8 @@ class ImageViewer(QWidget):
         self.load_json()
 
     def load_json(self):
-        self.edit.setText(self.controller.get_page_json())
+        # self.edit.setText(self.controller.get_page_json())
+        pass
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)

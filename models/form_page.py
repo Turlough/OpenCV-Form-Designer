@@ -1,6 +1,6 @@
+import json
 import os
 from tools.highlighter import Highlighter
-import jsonpickle
 
 from models.rectangle import Rectangle
 from models.answer_box import AnswerBase, GroupOfAnswers
@@ -20,14 +20,31 @@ class FormPage(AnswerBase):
         self.groups = list()
 
     def to_json(self):
-        j = jsonpickle.encode(self.groups, indent=4)
+        serialized_list = [group.to_json() for group in self.groups]
+
+        data = {
+            'class_name': self.__class__.__name__,
+            'attributes': {
+                'rectangle': self.rectangle,
+                'class_list': serialized_list
+            }
+        }
+        j = json.dumps(data, indent=4)
+
         with open(self.json_path, 'w') as file:
             file.write(j)
 
-    def from_json(self):
-        if not os.path.exists(self.json_path):
-            self.from_image()
-        self.groups = jsonpickle.decode(self.read_file())
+    @classmethod
+    def from_json(cls, json_str):
+
+        data = json.loads(json_str)
+        class_name = data['class_name']
+        attributes = data['attributes']
+        # Deserialize the class_list
+        groups = [AnswerBase.from_json(item) for item in attributes.pop('groups')]
+        instance = globals()[class_name](**attributes)
+        instance.class_list = groups
+        return instance
 
     def from_image(self):
         highlighter = Highlighter(self.image_path)
