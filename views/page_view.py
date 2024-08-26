@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QM
 from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
-from controller import Controller, EditMode
+from page_design_controller import PageController, EditMode
 from views.box_editor import BoxEditor
 from views.generic_model_editor import ModelEditor
 from views.image_label import ImageLabel
@@ -17,12 +17,12 @@ logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
 
 class PageView(QWidget):
-    controller: Controller
+    controller: PageController
     edit: QTextEdit
     scroll_area: QScrollArea
     picture: ImageLabel
 
-    def __init__(self, controller: Controller):
+    def __init__(self, controller: PageController):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()

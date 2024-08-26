@@ -13,7 +13,7 @@ class EditMode(Enum):
     BOX_EDIT = auto()
 
 
-class Controller:
+class PageController:
     page: FormPage
     scale: float
     edit_mode: EditMode = EditMode.BOX_GROUP

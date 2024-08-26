@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
-from controller import EditMode
+from page_design_controller import EditMode
 from models.answer_box import AnswerBox, BoxType
 from views.answer_box_painter import draw
 
