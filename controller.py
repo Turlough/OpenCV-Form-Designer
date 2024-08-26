@@ -26,17 +26,12 @@ class Controller:
         self.highlighter = Highlighter(path)
         self.json_path = path.replace('.tif', '.json')
         self.scale = scale
+        self.answers = list()
 
         if os.path.exists(self.json_path):
-            content = self.get_page_json()
-            self.page = FormPage.from_json(content)
+            self.load_from_json()
         else:
             self.page = FormPage(path)
-
-        if self.page.groups:
-            self.answers = self.page.groups[0].contents
-        else:
-            self.answers = list()
 
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
@@ -45,10 +40,10 @@ class Controller:
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = GroupOfAnswers(name, rectangle)
-        group.contents = [answer for answer in self.answers if answer.rectangle.is_in(group.rectangle)]
+        group.contents = [answer for answer in self.page.answers if
+                          answer.rectangle.is_in(group.rectangle) and
+                          answer is not GroupOfAnswers]
         self.page.groups.append(group)
-        self.highlighter.add_tickbox_group(group)
-        self.page.to_json()
 
     def unscale(self, x1, y1, x2=0, y2=0):
         x1 /= self.scale
@@ -68,12 +63,10 @@ class Controller:
     def get_image(self):
         return self.highlighter.scaled_and_highlighted(scale=self.scale)
 
-    def get_page_json(self):
+    def load_from_json(self):
         with open(self.json_path, 'r') as file:
-            return file.read()
-
-    def save_json(self):
-        self.page.to_json()
+            content = file.read()
+            self.page = FormPage.from_json(content)
 
     def detect_rectangles(self):
         self.answers.clear()
@@ -82,3 +75,4 @@ class Controller:
             name = f'Ans {i:<3d}'
             a = AnswerBox(name, r)
             self.answers.append(a)
+            self.page.answers.append(a)

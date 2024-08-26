@@ -10,6 +10,7 @@ class FormPage(AnswerBase):
     image = None
     image_path: str
     json_path: str
+    answers: list[AnswerBase]
     groups: list[GroupOfAnswers]
 
     def __init__(self, path: str):
@@ -18,21 +19,21 @@ class FormPage(AnswerBase):
         self.image_path = path
         self.json_path = path.replace('.tif', '.json')
         self.groups = list()
+        self.answers = list()
 
     def to_json(self):
-        serialized_list = [group.to_json() for group in self.groups]
+        json_groups = [group.to_json() for group in self.groups]
+        json_answers = [answer.to_dict() for answer in self.answers]
 
         data = {
             'class_name': self.__class__.__name__,
             'attributes': {
-                'rectangle': self.rectangle,
-                'class_list': serialized_list
+                'rectangle': self.rectangle.to_dict(),
+                'groups': json_groups,
+                'answers': json_answers
             }
         }
-        j = json.dumps(data, indent=4)
-
-        with open(self.json_path, 'w') as file:
-            file.write(j)
+        return json.dumps(data, indent=4)
 
     @classmethod
     def from_json(cls, json_str):
@@ -42,7 +43,9 @@ class FormPage(AnswerBase):
         attributes = data['attributes']
         # Deserialize the class_list
         groups = [AnswerBase.from_json(item) for item in attributes.pop('groups')]
+        answers = [AnswerBase.from_json(item) for item in attributes.pop('answers')]
         instance = globals()[class_name](**attributes)
-        instance.class_list = groups
+        instance.groups = groups
+        instance.answers = answers
         return instance
 

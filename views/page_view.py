@@ -97,7 +97,7 @@ class PageView(QWidget):
         bytes_per_line = ch * w
         qt_image = QImage(image.data, w, h, bytes_per_line, QImage.Format.Format_BGR888)
         pixmap = QPixmap(qt_image)
-        self.picture.answers = self.controller.answers
+        self.picture.answers = self.controller.page.answers
         self.picture.setPixmap(pixmap)
 
         self.scroll_area.resize(pixmap.width(), pixmap.height())
@@ -139,3 +139,4 @@ class PageView(QWidget):
         self.controller.detect_rectangles()
         self.picture.answers = self.controller.answers
         self.picture.draw_answers()
+        self.edit.setText(self.controller.page.to_json())

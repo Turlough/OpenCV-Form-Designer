@@ -15,10 +15,22 @@ class AnswerBase:
     name: str
     rectangle: Rectangle
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'rectangle': self.rectangle.to_dict()  # Serialize the Rectangle object
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        rectangle = Rectangle.from_dict(data['rectangle'])
+        return cls(data['name'], rectangle)
+
     def to_json(self):
         # Convert the object to a dictionary
         data = {
             'class_name': self.__class__.__name__,
+            'rectangle': self.rectangle.to_dict(),
             'attributes': self.__dict__
         }
         return json.dumps(data, indent=4)

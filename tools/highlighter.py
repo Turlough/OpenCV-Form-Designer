@@ -51,9 +51,6 @@ class Highlighter:
         #     cv2.rectangle(img, p1, p2, (0, 0, 255), 2)
         return cv2.resize(img, None, fx=scale, fy=scale)
 
-    def add_tickbox_group(self, group: GroupOfAnswers):
-        self.tick_box_groups.append(group)
-
 
 def show_with_cv2(image):
     cv2.imshow('image', image)
