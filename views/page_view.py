@@ -73,6 +73,13 @@ class PageView(QWidget):
 
         # Image area bottom left
         self.add_scroll_area_for_image(left_layout)
+
+        bottom_layout = QHBoxLayout()
+        next_button = QPushButton()
+        next_button.setText('Next')
+        next_button.clicked.connect(self.next_page)
+        bottom_layout.addWidget(next_button)
+        left_layout.addLayout(bottom_layout)
         # right hand side
         right_layout.addWidget(self.edit)
         font = QFont()
@@ -151,3 +158,6 @@ class PageView(QWidget):
     def set_mode(self, mode: EditMode):
         self.controller.set_mode(mode)
         self.picture.mode = mode
+
+    def next_page(self):
+        self.controller.next()

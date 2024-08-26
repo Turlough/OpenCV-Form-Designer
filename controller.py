@@ -81,3 +81,6 @@ class Controller:
             a = AnswerBox(name, r)
             self.answers.append(a)
             self.page.answers.append(a)
+
+    def next(self):
+        pass
