@@ -56,3 +56,4 @@ class ImageLabel(QLabel):
         painter = QPainter(self)
         for a in self.answers:
             draw(a, painter, self.scale)
+        self.update()

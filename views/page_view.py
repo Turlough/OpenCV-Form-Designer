@@ -49,15 +49,24 @@ class PageView(QWidget):
         main_layout.addLayout(right_layout)
         # Image buttons top left
         left_layout.addLayout(image_button_layout)
+
+        detect_button = QPushButton()
+        detect_button.setText("Locate Rectangles")
+        detect_button.clicked.connect(self.detect_rectangles)
+
         box_group_button = QPushButton()
         box_group_button.setText("Box Groups")
         box_group_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_GROUP))
 
-        image_button_layout.addWidget(box_group_button)
         relabel_button = QPushButton()
         relabel_button.setText('Rename coordinates areas')
-        image_button_layout.addWidget(relabel_button)
         relabel_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_EDIT))
+
+        image_button_layout.addWidget(detect_button)
+        image_button_layout.addWidget(box_group_button)
+        image_button_layout.addWidget(relabel_button)
+
+
         # Image area bottom left
         self.add_scroll_area_for_image(left_layout)
         # right hand side
@@ -125,3 +134,8 @@ class PageView(QWidget):
     def save_and_reload(self):
         self.controller.save_json()
         self.load_json()
+
+    def detect_rectangles(self):
+        self.controller.detect_rectangles()
+        self.picture.answers = self.controller.answers
+        self.picture.draw_answers()

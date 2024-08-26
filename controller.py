@@ -14,24 +14,25 @@ class EditMode(Enum):
 
 class Controller:
     page: FormPage
-    highlighter: Highlighter
     scale: float
     edit_mode: EditMode = EditMode.BOX_GROUP
     answers: list[AnswerBox]
+    image_path: str
+    json_path: str
+    highlighter: Highlighter
 
     def __init__(self, path, scale):
-        json_file = path.replace('.tif', '.json')
-        if os.path.exists(json_file):
-            with open(json_file, 'r') as f:
-                content = f.read()
-                self.page = FormPage.from_json(content)
+        self.image_path = path
+        self.highlighter = Highlighter(path)
+        self.json_path = path.replace('.tif', '.json')
+        self.scale = scale
+
+        if os.path.exists(self.json_path):
+            content = self.get_page_json()
+            self.page = FormPage.from_json(content)
         else:
             self.page = FormPage(path)
-        self.scale = scale
-        self.highlighter = Highlighter(path)
 
-        for group in self.page.groups:
-            self.highlighter.add_tickbox_group(group)
         if self.page.groups:
             self.answers = self.page.groups[0].contents
         else:
@@ -65,13 +66,19 @@ class Controller:
         return None
 
     def get_image(self):
-        self.highlighter.detect_boxes()
         return self.highlighter.scaled_and_highlighted(scale=self.scale)
 
     def get_page_json(self):
-        return self.page.read_file()
+        with open(self.json_path, 'r') as file:
+            return file.read()
 
     def save_json(self):
         self.page.to_json()
 
-
+    def detect_rectangles(self):
+        self.answers.clear()
+        rectangles = self.highlighter.detect_boxes()
+        for i, r in enumerate(rectangles):
+            name = f'Ans {i:<3d}'
+            a = AnswerBox(name, r)
+            self.answers.append(a)

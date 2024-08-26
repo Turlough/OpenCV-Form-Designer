@@ -46,11 +46,3 @@ class FormPage(AnswerBase):
         instance.class_list = groups
         return instance
 
-    def from_image(self):
-        highlighter = Highlighter(self.image_path)
-        highlighter.detect_boxes()
-        self.to_json()
-
-    def read_file(self):
-        with open(self.json_path, 'r') as file:
-            return file.read()

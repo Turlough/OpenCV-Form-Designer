@@ -9,8 +9,6 @@ class Highlighter:
     image = None
     image_path: str
     json_path: str
-    boxes: list[AnswerBox]
-    tick_box_groups: list[GroupOfAnswers]
 
     def __init__(self, path: str):
         self.image_path = path
@@ -28,6 +26,7 @@ class Highlighter:
 
         # Remove very small boxes. These are just noise.
         contours = [c for c in contours if cv2.contourArea(c) > 900]
+        rectangles: list[Rectangle] = list()
         for index, contour in enumerate(contours):
             # Approximate the contour to a polygon
             epsilon = 0.02 * cv2.arcLength(contour, True)
@@ -37,12 +36,9 @@ class Highlighter:
             if len(approx) == 4:
                 x, y, w, h = cv2.boundingRect(contour)
                 rect = Rectangle().from_xywh(x, y, w, h)
-                name = f'Box_{index:0>3d}'
-                self.boxes.append(AnswerBox(name, rect))
-
-        self.boxes.sort(key=lambda tb: tb.rectangle.y1)
-        for index, box in enumerate(self.boxes):
-            box.name = f'Box_{index:0>3d}'
+                rectangles.append(rect)
+        rectangles.sort(key=lambda r: r.y1)
+        return rectangles
 
     def scaled_and_highlighted(self, scale: float = 1.0):
         img = self.image.copy()
