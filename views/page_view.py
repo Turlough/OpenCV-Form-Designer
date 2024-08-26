@@ -62,9 +62,14 @@ class PageView(QWidget):
         relabel_button.setText('Rename coordinates areas')
         relabel_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_EDIT))
 
+        save_button = QPushButton()
+        save_button.setText('Save and Reload')
+        save_button.clicked.connect(self.save_and_reload)
+
         image_button_layout.addWidget(detect_button)
         image_button_layout.addWidget(box_group_button)
         image_button_layout.addWidget(relabel_button)
+        image_button_layout.addWidget(save_button)
 
 
         # Image area bottom left
@@ -80,11 +85,10 @@ class PageView(QWidget):
         image = self.controller.get_image()
         self.display(image)
 
-        self.load_json()
+        self.show_json()
 
-    def load_json(self):
-        # self.edit.setText(self.controller.get_page_json())
-        pass
+    def show_json(self):
+        self.edit.setText(self.controller.page.to_json())
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)
@@ -119,7 +123,7 @@ class PageView(QWidget):
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
         self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
-        self.load_json()
+        self.show_json()
 
     def edit_answer(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
@@ -132,8 +136,9 @@ class PageView(QWidget):
         editor.exec()
 
     def save_and_reload(self):
-        self.controller.save_json()
-        self.load_json()
+        self.controller.save_to_json()
+        self.controller.load_from_json()
+        self.show_json()
 
     def detect_rectangles(self):
         self.controller.detect_rectangles()

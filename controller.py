@@ -68,6 +68,10 @@ class Controller:
             content = file.read()
             self.page = FormPage.from_json(content)
 
+    def save_to_json(self):
+        with open(self.json_path, 'w') as file:
+            file.write(self.page.to_json())
+
     def detect_rectangles(self):
         self.answers.clear()
         rectangles = self.highlighter.detect_boxes()

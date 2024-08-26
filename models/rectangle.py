@@ -34,29 +34,3 @@ class Rectangle:
 
     def contains(self, other):
         return other.is_in(self)
-
-    def to_dict(self):
-        return {
-            'x1': self.x1,
-            'y1': self.y1,
-            'x2': self.x2,
-            'y2': self.y2,
-        }
-
-    @classmethod
-    def from_dict(cls, d):
-        c = cls()
-        return c.from_corners(d['x1'], d['y1'], d['x2'], d['y2'])
-
-    @classmethod
-    def from_json(cls, json_str):
-        # Load data from JSON string
-        data = json.loads(json_str)
-        # Get the class by name (assume it's in the same module)
-        class_name = data['class_name']
-        attributes = data['attributes']
-        # Dynamically create an instance of the class
-        instance = globals()[class_name](**attributes)
-        return instance
-
-
