@@ -8,6 +8,8 @@ from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QM
 from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
+from models.answer_box import AnswerBox
+from models.rectangle import Rectangle
 from page_design_controller import PageController, EditMode
 from views.box_editor import BoxEditor
 from views.generic_model_editor import ModelEditor
@@ -58,6 +60,10 @@ class PageView(QWidget):
         box_group_button.setText("Create Groups")
         box_group_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_GROUP))
 
+        new_box_button = QPushButton()
+        new_box_button.setText("Create Answer Boxes")
+        new_box_button.clicked.connect(lambda: self.set_mode(EditMode.CREATE_BOX))
+
         relabel_button = QPushButton()
         relabel_button.setText('Edit Answer boxes')
         relabel_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_EDIT))
@@ -67,6 +73,7 @@ class PageView(QWidget):
         save_button.clicked.connect(self.save_and_reload)
 
         image_button_layout.addWidget(detect_button)
+        image_button_layout.addWidget(new_box_button)
         image_button_layout.addWidget(box_group_button)
         image_button_layout.addWidget(relabel_button)
         image_button_layout.addWidget(save_button)
@@ -119,6 +126,8 @@ class PageView(QWidget):
                 self.new_group_box(rect)
             case EditMode.BOX_EDIT:
                 self.edit_answer(rect)
+            case EditMode.CREATE_BOX:
+                self.create_answer(rect)
 
     def new_group_box(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
@@ -133,13 +142,18 @@ class PageView(QWidget):
 
     def edit_answer(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
-        box = self.controller.locate_surrounding_box(x, y)
+        box = self.controller.locate_surrounding_box(x + 1, y + 1)
         if not box:
             return
         mouse_pos = QCursor.pos()
         editor = ModelEditor(box, callback=self.save_and_reload)
         editor.move(mouse_pos)
         editor.exec()
+
+    def create_answer(self, rect):
+        self.controller.create_answer(rect)
+        self.save_and_reload()
+        self.edit_answer(rect)
 
     def save_and_reload(self):
         self.controller.save_to_json()
@@ -163,3 +177,4 @@ class PageView(QWidget):
         self.controller.next()
         image = self.controller.get_image()
         self.display(image)
+

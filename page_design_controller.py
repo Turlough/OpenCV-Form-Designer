@@ -9,9 +9,10 @@ from models.answer_box import AnswerBox, GroupOfAnswers
 
 
 class EditMode(Enum):
-    NONE = auto()
+    CREATE_BOX = auto()
     BOX_GROUP = auto()
     BOX_EDIT = auto()
+    NONE = auto()
 
 
 class PageController:
@@ -46,6 +47,13 @@ class PageController:
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
 
+    def create_answer(self, rect):
+        x1, y1, x2, y2 = rect.topLeft().x(), rect.topLeft().y(), rect.bottomRight().x(), rect.bottomRight().y()
+        x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
+        rect = Rectangle().from_corners(x1, y1, x2, y2)
+        answer = AnswerBox('New answer', rect)
+        self.page.answers.append(answer)
+
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
@@ -66,7 +74,7 @@ class PageController:
         x, y, _, _ = self.unscale(x, y)
         for answer in self.page.answers:
             r = answer.rectangle
-            if r.x1 < x < r.x2 and r.y1 < y < r.y2:
+            if r.x1 <= x <= r.x2 and r.y1 <= y <= r.y2:
                 return answer
         return None
 
