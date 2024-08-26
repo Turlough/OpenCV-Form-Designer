@@ -77,7 +77,7 @@ class Controller:
         self.answers.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
-            name = f'Ans {i:<3d}'
+            name = f'Ans {i:0>3d}'
             a = AnswerBox(name, r)
             self.answers.append(a)
             self.page.answers.append(a)
