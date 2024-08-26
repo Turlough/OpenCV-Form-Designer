@@ -56,11 +56,11 @@ class PageView(QWidget):
 
         box_group_button = QPushButton()
         box_group_button.setText("Box Groups")
-        box_group_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_GROUP))
+        box_group_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_GROUP))
 
         relabel_button = QPushButton()
         relabel_button.setText('Rename coordinates areas')
-        relabel_button.clicked.connect(lambda: self.controller.set_mode(EditMode.BOX_EDIT))
+        relabel_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_EDIT))
 
         save_button = QPushButton()
         save_button.setText('Save and Reload')
@@ -70,7 +70,6 @@ class PageView(QWidget):
         image_button_layout.addWidget(box_group_button)
         image_button_layout.addWidget(relabel_button)
         image_button_layout.addWidget(save_button)
-
 
         # Image area bottom left
         self.add_scroll_area_for_image(left_layout)
@@ -136,12 +135,18 @@ class PageView(QWidget):
         editor.exec()
 
     def save_and_reload(self):
+        self.set_mode(EditMode.NONE)
         self.controller.save_to_json()
         self.controller.load_from_json()
         self.show_json()
 
     def detect_rectangles(self):
+        self.set_mode(EditMode.NONE)
         self.controller.detect_rectangles()
         self.picture.answers = self.controller.answers
         self.picture.draw_answers()
         self.edit.setText(self.controller.page.to_json())
+
+    def set_mode(self, mode: EditMode):
+        self.controller.set_mode(mode)
+        self.picture.mode = mode

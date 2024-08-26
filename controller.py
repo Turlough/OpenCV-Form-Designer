@@ -8,6 +8,7 @@ from models.answer_box import AnswerBox, GroupOfAnswers
 
 
 class EditMode(Enum):
+    NONE = auto()
     BOX_GROUP = auto()
     BOX_EDIT = auto()
 
@@ -16,7 +17,7 @@ class Controller:
     page: FormPage
     scale: float
     edit_mode: EditMode = EditMode.BOX_GROUP
-    answers: list[AnswerBox]
+    # answers: list[AnswerBox]
     image_path: str
     json_path: str
     highlighter: Highlighter
@@ -54,7 +55,7 @@ class Controller:
 
     def locate_surrounding_box(self, x, y):
         x, y, _, _ = self.unscale(x, y)
-        for answer in self.answers:
+        for answer in self.page.answers:
             r = answer.rectangle
             if r.x1 < x < r.x2 and r.y1 < y < r.y2:
                 return answer
