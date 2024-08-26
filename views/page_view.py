@@ -55,11 +55,11 @@ class PageView(QWidget):
         detect_button.clicked.connect(self.detect_rectangles)
 
         box_group_button = QPushButton()
-        box_group_button.setText("Box Groups")
+        box_group_button.setText("Create Groups")
         box_group_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_GROUP))
 
         relabel_button = QPushButton()
-        relabel_button.setText('Rename coordinates areas')
+        relabel_button.setText('Edit Answer boxes')
         relabel_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_EDIT))
 
         save_button = QPushButton()
@@ -130,15 +130,16 @@ class PageView(QWidget):
         if not box:
             return
         mouse_pos = QCursor.pos()
-        editor = ModelEditor(box, callback=self.save_and_reload())
+        editor = ModelEditor(box, callback=self.save_and_reload)
         editor.move(mouse_pos)
         editor.exec()
 
     def save_and_reload(self):
-        self.set_mode(EditMode.NONE)
         self.controller.save_to_json()
         self.controller.load_from_json()
         self.show_json()
+        self.picture.answers = self.controller.page.answers
+        self.picture.draw_answers()
 
     def detect_rectangles(self):
         self.set_mode(EditMode.NONE)

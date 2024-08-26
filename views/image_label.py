@@ -46,7 +46,6 @@ class ImageLabel(QLabel):
             self.end_point = None
             self.on_release(self.rect)
 
-
     def paintEvent(self, event):
         super().paintEvent(event)
         if self.mode == EditMode.BOX_GROUP and not self.rect.isNull():
