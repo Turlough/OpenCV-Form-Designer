@@ -78,8 +78,8 @@ class PageView(QWidget):
         next_button = QPushButton()
         next_button.setText('Next')
         next_button.clicked.connect(self.next_page)
-        bottom_layout.addWidget(next_button)
-        left_layout.addLayout(bottom_layout)
+        image_button_layout.addWidget(next_button)
+        # left_layout.addLayout(bottom_layout)
         # right hand side
         right_layout.addWidget(self.edit)
         font = QFont()

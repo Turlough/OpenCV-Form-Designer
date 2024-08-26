@@ -31,6 +31,8 @@ class PageController:
         self.next()
 
     def next(self):
+        if not self.paths:
+            return
         path = self.paths.popleft()
         self.image_path = path
         self.highlighter = Highlighter(path)
