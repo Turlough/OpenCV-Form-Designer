@@ -1,4 +1,5 @@
 import os.path
+from collections import deque
 from enum import Enum, auto
 
 from tools.highlighter import Highlighter
@@ -17,17 +18,23 @@ class PageController:
     page: FormPage
     scale: float
     edit_mode: EditMode = EditMode.BOX_GROUP
-    # answers: list[AnswerBox]
+    paths: deque[str]
     image_path: str
     json_path: str
     highlighter: Highlighter
 
-    def __init__(self, path, scale):
+    def __init__(self, paths, scale):
+        self.scale = scale
+        self.paths = deque()
+        for p in paths:
+            self.paths.append(p)
+        self.next()
+
+    def next(self):
+        path = self.paths.popleft()
         self.image_path = path
         self.highlighter = Highlighter(path)
         self.json_path = path.replace('.tif', '.json')
-        self.scale = scale
-        self.answers = list()
 
         if os.path.exists(self.json_path):
             self.load_from_json()
@@ -74,13 +81,10 @@ class PageController:
             file.write(self.page.to_json())
 
     def detect_rectangles(self):
-        self.answers.clear()
+        self.page.answers.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
-            name = f'Ans {i:0>3d}'
+            name = f'Answer{i:0>3d}'
             a = AnswerBox(name, r)
-            self.answers.append(a)
             self.page.answers.append(a)
 
-    def next(self):
-        pass

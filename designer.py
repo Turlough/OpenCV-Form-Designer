@@ -1,19 +1,23 @@
 import sys
+from glob import glob
 
 from PyQt6.QtWidgets import QApplication
 
-from controller import Controller
+from page_design_controller import PageController
 from views.page_view import PageView
 
-path = r"C:\_PV\forms\SKM_C250i2408161348004.tif"
+
+path = r"C:\_PV\forms"
 scale = 0.29
 
 
-def launch(image_path):
+def launch(folder):
+    files = glob(f'{folder}\\*.tif')
+
     app = QApplication(sys.argv)
-    controller = Controller(path, scale)
+    controller = PageController(files, scale)
     viewer = PageView(controller)
-    viewer.init_ui(image_path)
+    viewer.init_ui()
     viewer.showMaximized()
 
     app.exec()

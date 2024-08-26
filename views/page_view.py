@@ -29,7 +29,7 @@ class PageView(QWidget):
         self.picture = ImageLabel(on_release=self.on_rectangle_drawn, scale=controller.scale)
         super().__init__()
 
-    def init_ui(self, path: str):
+    def init_ui(self):
         """
         Layout UI elements
         """
@@ -151,7 +151,7 @@ class PageView(QWidget):
     def detect_rectangles(self):
         self.set_mode(EditMode.NONE)
         self.controller.detect_rectangles()
-        self.picture.answers = self.controller.answers
+        self.picture.answers = self.controller.page.answers
         self.picture.draw_answers()
         self.edit.setText(self.controller.page.to_json())
 
@@ -161,3 +161,5 @@ class PageView(QWidget):
 
     def next_page(self):
         self.controller.next()
+        image = self.controller.get_image()
+        self.display(image)
