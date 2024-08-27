@@ -92,7 +92,7 @@ class DesignController:
         self.page.answers.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
-            name = f'Answer{i:0>3d}'
+            name = f'A{i:0>3d}'
             a = AnswerBox(name, r)
             self.page.answers.append(a)
 
