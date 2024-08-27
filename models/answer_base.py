@@ -16,7 +16,7 @@ class AnswerBase:
     rectangle: Rectangle
 
     def to_json(self):
-        return jsonpickle.encode(self)
+        return jsonpickle.encode(self, indent=4)
 
     @classmethod
     def from_json(cls, json_str):
