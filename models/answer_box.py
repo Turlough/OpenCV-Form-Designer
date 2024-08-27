@@ -14,5 +14,5 @@ class GroupOfAnswers(AnswerBase):
     contents: list[AnswerBox]
 
     def __init__(self, name, rectangle):
-        super.__init__(name, rectangle)
+        super().__init__(name, rectangle)
         self.contents = list()

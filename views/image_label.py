@@ -53,12 +53,13 @@ class ImageLabel(QLabel):
             pen = QPen(Qt.GlobalColor.red, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
+            self.update()
         if self.mode == EditMode.CREATE_BOX and not self.rect.isNull():
             painter = QPainter(self)
             pen = QPen(Qt.GlobalColor.blue, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-        self.mode = EditMode.NONE
+            self.update()
         self.draw_answers()
 
     def draw_answers(self):

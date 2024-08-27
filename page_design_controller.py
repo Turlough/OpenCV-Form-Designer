@@ -58,9 +58,7 @@ class PageController:
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = GroupOfAnswers(name, rectangle)
-        group.contents = [answer for answer in self.page.answers if
-                          answer.rectangle.is_in(group.rectangle) and
-                          answer is not GroupOfAnswers]
+        group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
 
     def unscale(self, x1, y1, x2=0, y2=0):
