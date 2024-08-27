@@ -9,7 +9,7 @@ def color_for_answer(answer: AnswerBox):
         case BoxType.TICK:
             return Qt.GlobalColor.blue
         case BoxType.NUMBER:
-            return Qt.GlobalColor.red
+            return Qt.GlobalColor.darkGreen
         case BoxType.TEXT:
             return Qt.GlobalColor.red
 
@@ -22,11 +22,11 @@ def draw(answer: AnswerBox, painter, scale):
     ((x1, y1), (x2, y2)) = answer.rectangle.coordinates(scale=scale)
     rect = QRect(x1, y1, x2 - x1, y2 - y1)
     painter.drawRect(rect)
-    painter.setFont(QFont("Arial", 10))
+    painter.setFont(QFont("Arial", 8))
     # Calculate the height of the text
     m = painter.fontMetrics()
     text_height = m.height()
     text_y = rect.top() + (rect.height() - text_height) // 2 + text_height
     # Draw the text inside the rectangle
-    text = f'{answer.name}: {answer.type.name}'
+    text = f'{answer.name}'
     painter.drawText(x2 + 5, text_y, text)
