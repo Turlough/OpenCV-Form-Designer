@@ -42,13 +42,6 @@ class Highlighter:
 
     def scaled_and_highlighted(self, scale: float = 1.0):
         img = self.image.copy()
-        # for tbg in self.tick_box_groups:
-        #     p1, p2 = tbg.rectangle.coordinates()
-        #     cv2.rectangle(img, p1, p2, (0, 255, 0), 2)
-        #
-        # for tb in self.boxes:
-        #     p1, p2 = tb.rectangle.coordinates()
-        #     cv2.rectangle(img, p1, p2, (0, 0, 255), 2)
         return cv2.resize(img, None, fx=scale, fy=scale)
 
 
