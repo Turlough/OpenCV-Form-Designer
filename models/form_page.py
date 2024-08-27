@@ -1,12 +1,12 @@
 from models.rectangle import Rectangle
-from models.answer_box import AnswerBase, GroupOfAnswers
+from models.answer_box import AnswerBase, AnswerBox, GroupOfAnswers
 
 
 class FormPage(AnswerBase):
     image = None
     image_path: str
     json_path: str
-    answers: list[AnswerBase]
+    answers: list[AnswerBox]
     groups: list[GroupOfAnswers]
 
     def __init__(self, path: str):

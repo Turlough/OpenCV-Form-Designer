@@ -18,7 +18,7 @@ class EditMode(Enum):
 class PageController:
     page: FormPage
     scale: float
-    edit_mode: EditMode = EditMode.BOX_GROUP
+    edit_mode: EditMode = EditMode.NONE
     paths: deque[str]
     image_path: str
     json_path: str

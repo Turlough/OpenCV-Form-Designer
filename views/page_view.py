@@ -8,10 +8,8 @@ from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QM
 from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
-from models.answer_box import AnswerBox
-from models.rectangle import Rectangle
 from page_design_controller import PageController, EditMode
-from views.box_editor import BoxEditor
+
 from views.generic_model_editor import ModelEditor
 from views.image_label import ImageLabel
 
@@ -30,6 +28,7 @@ class PageView(QWidget):
         self.edit = QTextEdit()
         self.picture = ImageLabel(on_release=self.on_rectangle_drawn, scale=controller.scale)
         super().__init__()
+        self.picture.page = controller.page
 
     def init_ui(self):
         """
@@ -97,7 +96,6 @@ class PageView(QWidget):
 
         image = self.controller.get_image()
         self.display(image)
-
         self.show_json()
 
     def show_json(self):
@@ -114,7 +112,6 @@ class PageView(QWidget):
         bytes_per_line = ch * w
         qt_image = QImage(image.data, w, h, bytes_per_line, QImage.Format.Format_BGR888)
         pixmap = QPixmap(qt_image)
-        self.picture.answers = self.controller.page.answers
         self.picture.setPixmap(pixmap)
 
         self.scroll_area.resize(pixmap.width(), pixmap.height())
@@ -158,16 +155,17 @@ class PageView(QWidget):
     def save_and_reload(self):
         self.controller.save_to_json()
         self.controller.load_from_json()
-        self.show_json()
-        self.picture.answers = self.controller.page.answers
-        self.picture.draw_answers()
+        self.reload()
 
     def detect_rectangles(self):
         self.set_mode(EditMode.NONE)
         self.controller.detect_rectangles()
-        self.picture.answers = self.controller.page.answers
+        self.reload()
+
+    def reload(self):
+        self.show_json()
         self.picture.draw_answers()
-        self.edit.setText(self.controller.page.to_json())
+        # self.picture.draw_groups()
 
     def set_mode(self, mode: EditMode):
         self.controller.set_mode(mode)
@@ -176,5 +174,6 @@ class PageView(QWidget):
     def next_page(self):
         self.controller.next()
         image = self.controller.get_image()
+        self.picture.page = self.controller.page
         self.display(image)
 

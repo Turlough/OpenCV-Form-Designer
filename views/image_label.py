@@ -2,13 +2,14 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
+from models.form_page import FormPage
 from page_design_controller import EditMode
-from models.answer_box import AnswerBox, BoxType
-from views.answer_box_painter import draw
+from models.answer_box import AnswerBox, BoxType, GroupOfAnswers
+from views.answer_box_painter import draw_answer, draw_group
 
 
 class ImageLabel(QLabel):
-    answers: list[AnswerBox]
+    page: FormPage
     scale: float = 1.0
     mode: EditMode = EditMode.NONE
 
@@ -20,7 +21,6 @@ class ImageLabel(QLabel):
         self.rect = QRect()
         self.text = ''
         self.scale = scale
-        self.answers = list()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -61,9 +61,16 @@ class ImageLabel(QLabel):
             painter.drawRect(self.rect)
             self.update()
         self.draw_answers()
+        self.draw_groups()
 
     def draw_answers(self):
         painter = QPainter(self)
-        for a in self.answers:
-            draw(a, painter, self.scale)
+        for a in self.page.answers:
+            draw_answer(a, painter, self.scale)
+        self.update()
+
+    def draw_groups(self):
+        painter = QPainter(self)
+        for g in self.page.groups:
+            draw_group(g, painter, self.scale)
         self.update()
