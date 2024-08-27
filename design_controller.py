@@ -15,7 +15,7 @@ class EditMode(Enum):
     NONE = auto()
 
 
-class PageController:
+class DesignController:
     page: FormPage
     scale: float
     edit_mode: EditMode = EditMode.NONE
