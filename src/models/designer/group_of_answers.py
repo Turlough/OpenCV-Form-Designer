@@ -8,6 +8,6 @@ from src.models.designer.answer_box import AnswerBox
 class GroupOfAnswers(AnswerBase):
     contents: list[AnswerBox]
 
-    def __init__(self, name, rectangle):
-        super().__init__(name, rectangle)
+    def __init__(self, in_sequence, out_sequence, name, rectangle):
+        super().__init__(in_sequence, out_sequence, name, rectangle)
         self.contents = list()

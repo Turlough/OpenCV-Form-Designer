@@ -12,6 +12,8 @@ class BoxType(Enum):
 
 @dataclass
 class AnswerBase:
+    in_seq: int
+    out_seq: int
     name: str
     rectangle: Rectangle
 

@@ -52,13 +52,16 @@ class DesignController:
         x1, y1, x2, y2 = rect.topLeft().x(), rect.topLeft().y(), rect.bottomRight().x(), rect.bottomRight().y()
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rect = Rectangle().from_corners(x1, y1, x2, y2)
-        answer = AnswerBox('New answer', rect)
+        sequence = len(self.page.answers) + 1
+        answer = AnswerBox(sequence, sequence, f'A{sequence:0>2}', rect)
         self.page.answers.append(answer)
 
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
+        sequence = len(self.page.groups) + 1
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
-        group = GroupOfAnswers(name, rectangle)
+        group = GroupOfAnswers(sequence, sequence, name, rectangle)
+
         group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
 
@@ -93,7 +96,7 @@ class DesignController:
         self.page.answers.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
-            name = f'A{i:0>3d}'
-            a = AnswerBox(name, r)
+            name = f'A{i + 1:0>2d}'
+            a = AnswerBox(i + 1, i + 1, name, r)
             self.page.answers.append(a)
 
