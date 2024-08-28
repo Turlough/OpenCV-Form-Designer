@@ -8,13 +8,6 @@ from models.form_page import FormPage
 from models.answer_box import AnswerBox, GroupOfAnswers
 
 
-class EditMode(Enum):
-    CREATE_BOX = auto()
-    BOX_GROUP = auto()
-    BOX_EDIT = auto()
-    NONE = auto()
-
-
 class IndexController:
     page: FormPage
     scale: float
@@ -41,23 +34,6 @@ class IndexController:
             self.load_from_json()
         else:
             self.page = FormPage(path)
-
-    def set_mode(self, mode: EditMode):
-        self.edit_mode = mode
-
-    def create_answer(self, rect):
-        x1, y1, x2, y2 = rect.topLeft().x(), rect.topLeft().y(), rect.bottomRight().x(), rect.bottomRight().y()
-        x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
-        rect = Rectangle().from_corners(x1, y1, x2, y2)
-        answer = AnswerBox('New answer', rect)
-        self.page.answers.append(answer)
-
-    def on_group_box_drawn(self, name, x1, y1, x2, y2):
-        x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
-        rectangle = Rectangle().from_corners(x1, y1, x2, y2)
-        group = GroupOfAnswers(name, rectangle)
-        group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
-        self.page.groups.append(group)
 
     def unscale(self, x1, y1, x2=0, y2=0):
         x1 /= self.scale
@@ -93,3 +69,6 @@ class IndexController:
             name = f'Answer{i:0>3d}'
             a = AnswerBox(name, r)
             self.page.answers.append(a)
+
+    def index(self, answer, text):
+        pass

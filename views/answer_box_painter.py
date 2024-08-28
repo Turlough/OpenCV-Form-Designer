@@ -4,6 +4,10 @@ from PyQt6.QtGui import QFont, QPen
 from models.answer_box import AnswerBox, BoxType, GroupOfAnswers
 
 
+def center_right(rect, text_height):
+    return rect.right() + 5, rect.top() + (rect.height() - text_height) // 2 + text_height
+
+
 def color_for_answer(answer: AnswerBox):
     match answer.type:
         case BoxType.TICK:
@@ -26,10 +30,10 @@ def draw_answer(answer: AnswerBox, painter, scale):
     # Calculate the height of the text
     m = painter.fontMetrics()
     text_height = m.height()
-    text_y = rect.top() + (rect.height() - text_height) // 2 + text_height
+    text_x, text_y = center_right(rect, text_height)
     # Draw the text inside the rectangle
     text = f'{answer.name}'
-    painter.drawText(x2 + 5, text_y, text)
+    painter.drawText(text_x, text_y, text)
 
 
 def draw_group(group: GroupOfAnswers, painter, scale):
@@ -47,5 +51,3 @@ def draw_group(group: GroupOfAnswers, painter, scale):
     # Draw the text inside the rectangle
     text = f'{group.name}'
     painter.drawText(text_x, text_y, text)
-
-

@@ -8,10 +8,12 @@ from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QM
 from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
-from index_controller import IndexController, EditMode
+from index_controller import IndexController
+from models.answer_box import AnswerBox
 
 from views.generic_model_editor import ModelEditor
 from views.image_label import ImageLabel
+from views.indexer.index_label import IndexLabel
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
@@ -20,13 +22,13 @@ class IndexView(QWidget):
     controller: IndexController
     edit: QTextEdit
     scroll_area: QScrollArea
-    picture: ImageLabel
+    picture: IndexLabel
 
     def __init__(self, controller: IndexController):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = ImageLabel(on_release=self.on_rectangle_drawn, scale=controller.scale)
+        self.picture = IndexLabel(controller=controller)
         super().__init__()
         self.picture.page = controller.page
 
@@ -117,14 +119,8 @@ class IndexView(QWidget):
         self.scroll_area.resize(pixmap.width(), pixmap.height())
         self.scroll_area.setWidget(self.picture)
 
-    def on_rectangle_drawn(self, rect: QRect):
-        match self.controller.edit_mode:
-            case EditMode.BOX_GROUP:
-                self.new_group_box(rect)
-            case EditMode.BOX_EDIT:
-                self.edit_answer(rect)
-            case EditMode.CREATE_BOX:
-                self.create_answer(rect)
+    def on_click(self, rect: QRect):
+        ...
 
     def new_group_box(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
@@ -167,13 +163,12 @@ class IndexView(QWidget):
         self.picture.draw_answers()
         # self.picture.draw_groups()
 
-    def set_mode(self, mode: EditMode):
-        self.controller.set_mode(mode)
-        self.picture.mode = mode
-
     def next_page(self):
         self.controller.next()
         image = self.controller.get_image()
         self.picture.page = self.controller.page
         self.display(image)
+
+    def on_index_submitted(self, answer: AnswerBox, value: str):
+        pass
 
