@@ -23,6 +23,7 @@ class DesignController:
     paths: deque[str]
     image_path: str
     json_path: str
+    sequence_path: str
     highlighter: Highlighter
 
     def __init__(self, paths, scale):
@@ -39,6 +40,7 @@ class DesignController:
         self.image_path = path
         self.highlighter = Highlighter(path)
         self.json_path = path.replace('.tif', '.json')
+        self.sequence_path = path.replace('.tif', '.csv')
 
         if os.path.exists(self.json_path):
             self.load_from_json()
@@ -87,10 +89,19 @@ class DesignController:
         with open(self.json_path, 'r') as file:
             content = file.read()
             self.page = FormPage.from_json(content)
+        self.page.answers.sort(key=lambda a: a.in_seq)
+        self.page.groups.sort(key=lambda g: g.in_seq)
 
     def save_to_json(self):
+        self.page.answers.sort(key=lambda a: a.in_seq)
+        self.page.groups.sort(key=lambda g: g.in_seq)
         with open(self.json_path, 'w') as file:
             file.write(self.page.to_json())
+        with open(self.sequence_path, 'w') as file:
+            for g in self.page.groups:
+                for a in g.contents:
+                    row = f'{g.name},{a.name},{a.in_seq},{a.out_seq}'
+                    file.write(row + '\n')
 
     def detect_rectangles(self):
         self.page.answers.clear()
