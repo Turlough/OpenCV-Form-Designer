@@ -1,5 +1,6 @@
+from models.group_of_answers import GroupOfAnswers
 from models.rectangle import Rectangle
-from models.answer_box import AnswerBase, AnswerBox, GroupOfAnswers
+from models.answer_box import AnswerBase, AnswerBox
 
 
 class FormPage(AnswerBase):

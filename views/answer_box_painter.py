@@ -1,7 +1,8 @@
 from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QFont, QPen
 
-from models.answer_box import AnswerBox, BoxType, GroupOfAnswers
+from models.answer_box import AnswerBox, BoxType
+from models.group_of_answers import GroupOfAnswers
 
 
 def center_right(rect, text_height):

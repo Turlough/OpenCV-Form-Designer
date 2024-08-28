@@ -4,7 +4,6 @@ from PyQt6.QtCore import Qt, QRect
 
 from models.form_page import FormPage
 from design_controller import EditMode
-from models.answer_box import AnswerBox, BoxType, GroupOfAnswers
 from views.answer_box_painter import draw_answer, draw_group
 
 

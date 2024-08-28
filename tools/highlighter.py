@@ -2,7 +2,6 @@ from glob import glob
 import cv2
 
 from models.rectangle import Rectangle
-from models.answer_box import GroupOfAnswers, AnswerBox
 
 
 class Highlighter:
