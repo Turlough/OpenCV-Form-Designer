@@ -3,8 +3,8 @@ from glob import glob
 
 from PyQt6.QtWidgets import QApplication
 
-from index_controller import IndexController
-from views.indexer.group_index_view import IndexView
+from design_controller import DesignController
+from src.views.designer.page_view import PageView
 
 
 path = r"C:\_PV\forms"
@@ -15,8 +15,8 @@ def launch(folder):
     files = glob(f'{folder}\\*.tif')
 
     app = QApplication(sys.argv)
-    controller = IndexController(files, scale)
-    viewer = IndexView(controller)
+    controller = DesignController(files, scale)
+    viewer = PageView(controller)
     viewer.init_ui()
     viewer.showMaximized()
 

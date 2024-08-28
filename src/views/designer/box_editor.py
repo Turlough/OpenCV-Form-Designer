@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QLineEdit, QComboBox, QDialogButtonBox, QLabel
 )
 
-from models.answer_box import BoxType, AnswerBox
+from src.models.designer.answer_box import BoxType, AnswerBox
 
 
 class BoxEditor(QDialog):

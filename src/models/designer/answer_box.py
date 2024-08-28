@@ -1,7 +1,6 @@
-import json
 from dataclasses import dataclass
 
-from models.answer_base import AnswerBase, BoxType
+from src.models.designer.answer_base import AnswerBase, BoxType
 
 
 @dataclass

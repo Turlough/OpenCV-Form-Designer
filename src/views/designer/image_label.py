@@ -2,9 +2,9 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
-from models.form_page import FormPage
-from design_controller import EditMode
-from views.answer_box_painter import draw_answer, draw_group
+from src.models.designer.form_page import FormPage
+from src.design_controller import EditMode
+from src.views.designer.answer_box_painter import draw_answer, draw_group
 
 
 class ImageLabel(QLabel):

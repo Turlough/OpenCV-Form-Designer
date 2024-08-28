@@ -2,11 +2,11 @@ import os.path
 from collections import deque
 from enum import Enum, auto
 
-from models.group_of_answers import GroupOfAnswers
-from tools.highlighter import Highlighter
-from models.rectangle import Rectangle
-from models.form_page import FormPage
-from models.answer_box import AnswerBox
+from src.models.designer.group_of_answers import GroupOfAnswers
+from src.tools.highlighter import Highlighter
+from src.models.rectangle import Rectangle
+from src.models.designer.form_page import FormPage
+from src.models.designer.answer_box import AnswerBox
 
 
 class EditMode(Enum):

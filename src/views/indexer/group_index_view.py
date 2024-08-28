@@ -1,19 +1,18 @@
 import logging
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QApplication, QDialog, QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
 from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
-from index_controller import IndexController
-from models.answer_box import AnswerBox
+from src.index_controller import IndexController
+from src.models.designer.answer_box import AnswerBox
 
-from views.generic_model_editor import ModelEditor
-from views.image_label import ImageLabel
-from views.indexer.index_label import IndexLabel
+from src.views.designer.generic_model_editor import ModelEditor
+from src.views.indexer.index_label import IndexLabel
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 

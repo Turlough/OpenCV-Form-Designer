@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from models.answer_base import AnswerBase
-from models.answer_box import AnswerBox
+from src.models.designer.answer_base import AnswerBase
+from src.models.designer.answer_box import AnswerBox
 
 
 @dataclass

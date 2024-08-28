@@ -1,7 +1,7 @@
 from glob import glob
 import cv2
 
-from models.rectangle import Rectangle
+from src.models.rectangle import Rectangle
 
 
 class Highlighter:

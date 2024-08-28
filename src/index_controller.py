@@ -1,11 +1,9 @@
 import os.path
 from collections import deque
-from enum import Enum, auto
 
-from tools.highlighter import Highlighter
-from models.rectangle import Rectangle
-from models.form_page import FormPage
-from models.answer_box import AnswerBox, GroupOfAnswers
+from src.tools.highlighter import Highlighter
+from src.models.designer.form_page import FormPage
+from src.models.designer.answer_box import AnswerBox
 
 
 class IndexController:

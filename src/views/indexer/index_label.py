@@ -1,13 +1,11 @@
 from PyQt6.QtWidgets import QDialog, QLabel
-from PyQt6.QtGui import QPainter, QPen
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtGui import QPainter
+from PyQt6.QtCore import Qt
 
-from index_controller import IndexController
-from models.form_page import FormPage
-from design_controller import EditMode
-from models.answer_box import AnswerBox, BoxType, GroupOfAnswers
-from views.answer_box_painter import draw_answer, draw_group
-from views.indexer.index_value_dialog import IndexDialog
+from src.index_controller import IndexController
+from src.models.designer.form_page import FormPage
+from src.views.designer.answer_box_painter import draw_answer, draw_group
+from src.views.indexer.index_value_dialog import IndexDialog
 
 
 class IndexLabel(QLabel):

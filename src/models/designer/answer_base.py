@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 import jsonpickle
-from models.rectangle import Rectangle
+from src.models.rectangle import Rectangle
 
 
 class BoxType(Enum):
