@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QDialog, QLineEdit, QPushButton, QVBoxLayout
 
 
 class IndexDialog(QDialog):
-    def __init__(self, parent=None, callback=None):
+    def __init__(self, text: str, parent=None, callback=None):
         super().__init__(parent)
         self.callback = callback
         # Remove the title bar
@@ -12,6 +12,7 @@ class IndexDialog(QDialog):
         # Layout and widgets
         self.setLayout(QVBoxLayout())
         self.lineEdit = QLineEdit(self)
+        self.lineEdit.setText(text)
         self.layout().addWidget(self.lineEdit)
 
         # Connect the Enter key press to accept the dialog

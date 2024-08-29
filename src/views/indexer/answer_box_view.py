@@ -10,7 +10,6 @@ from src.views.indexer.response_base_view import ResponseBaseView
 
 class IndexTextView(ResponseBaseView):
     model: TextIndexResponse
-    text: str
     pen = QPen(Qt.GlobalColor.darkGreen, 2)
 
     def __init__(self, model, scale):
@@ -18,7 +17,7 @@ class IndexTextView(ResponseBaseView):
 
     def on_click(self, painter):
 
-        dialog = IndexDialog()
+        dialog = IndexDialog(self.model.text)
         x, y = self.rectangle.right() + 100, self.rectangle.bottom() + 30
         dialog.move(x, y)
         if dialog.exec() == QDialog.DialogCode.Accepted:
