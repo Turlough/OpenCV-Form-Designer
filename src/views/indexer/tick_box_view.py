@@ -15,13 +15,11 @@ class TickBoxView(ResponseBaseView):
         super().__init__(model, scale)
 
     def draw_text(self, painter):
-        painter.setFont(QFont("Marlett.ttf", 16))
+        painter.setFont(QFont("Arial", 8))
         m = painter.fontMetrics()
-
         text_height = m.height()
         text_x, text_y = center_right(self.rectangle, text_height)
-        # Draw the text inside the rectangle
-        text = 'A' if self.model.ticked else ''
+        text = '\u2714' if self.model.ticked else ''
         painter.drawText(text_x, text_y, text)
 
     def on_click(self, painter):
