@@ -40,8 +40,8 @@ class Highlighter:
         return rectangles
 
     def scaled_and_highlighted(self, scale: float = 1.0):
-        img = self.image.copy()
-        return cv2.resize(img, None, fx=scale, fy=scale)
+        blurred = cv2.GaussianBlur(self.image, (3, 3), 0)
+        return cv2.resize(blurred, None, fx=scale, fy=scale)
 
 
 def show_with_cv2(image):
