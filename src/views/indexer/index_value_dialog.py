@@ -19,5 +19,5 @@ class IndexDialog(QDialog):
 
     def on_click(self):
         if self.callback:
-            self.callback()
+            self.callback(self.lineEdit.text())
         self.accept()
