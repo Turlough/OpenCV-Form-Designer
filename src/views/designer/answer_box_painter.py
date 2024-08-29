@@ -32,7 +32,6 @@ def draw_answer(answer: AnswerBox, painter, scale):
     m = painter.fontMetrics()
     text_height = m.height()
     text_x, text_y = center_right(rect, text_height)
-    # Draw the text inside the rectangle
     text = f'{answer.name}'
     painter.drawText(text_x, text_y, text)
 

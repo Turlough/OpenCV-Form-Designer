@@ -117,6 +117,8 @@ class PageView(QWidget):
         self.scroll_area.resize(pixmap.width(), pixmap.height())
         self.scroll_area.setWidget(self.picture)
 
+        self.reload()
+
     def on_rectangle_drawn(self, rect: QRect):
         match self.controller.edit_mode:
             case EditMode.BOX_GROUP:
@@ -164,6 +166,7 @@ class PageView(QWidget):
 
     def reload(self):
         self.show_json()
+        self.picture.page = self.controller.page
         self.picture.draw_answers()
         # self.picture.draw_groups()
 
