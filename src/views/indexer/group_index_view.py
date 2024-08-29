@@ -59,8 +59,8 @@ class IndexView(QWidget):
         # left_layout.addLayout(bottom_layout)
         # right hand side
         right_layout.addWidget(self.edit)
-        font = QFont()
-        font.setPointSize(11)
+        font = QFont('Courier', 10)
+        # font.setPointSize(11)
         self.edit.setFont(font)
 
         self.setLayout(main_layout)

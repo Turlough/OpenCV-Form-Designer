@@ -1,4 +1,4 @@
-import os.path
+from tabulate import tabulate
 from collections import deque
 
 from src.models.designer.answer_base import BoxType
@@ -68,9 +68,10 @@ class IndexController:
             self.responses.append(rv)
 
     def list_index_values(self):
-        response = ''
+        response = list()
+        headers = 'Name', 'Value'
         for r in self.responses:
             name = r.model.question.name
             text = r.model.text
-            response += f'{name:<12}{text}\n'
-        return response
+            response.append((name, text))
+        return tabulate(response, headers=headers, tablefmt="psql")
