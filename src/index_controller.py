@@ -67,9 +67,10 @@ class IndexController:
                     rv = IndexTextView(r, self.scale)
             self.responses.append(rv)
 
-    def save_to_json(self):
-        with open(self.json_path, 'w') as file:
-            file.write(self.page.to_json())
-
-    def index(self, answer, text):
-        pass
+    def list_index_values(self):
+        response = ''
+        for r in self.responses:
+            name = r.model.question.name
+            text = r.model.text
+            response += f'{name:<12}{text}\n'
+        return response

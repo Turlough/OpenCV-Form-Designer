@@ -9,7 +9,6 @@ from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
-from src.models.designer.answer_box import AnswerBox
 from src.views.indexer.index_label import ImageView
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
@@ -25,7 +24,7 @@ class IndexView(QWidget):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = ImageView(controller=controller)
+        self.picture = ImageView(controller=controller, callback=self.on_index_submitted)
         super().__init__()
         self.picture.page = controller.page
 
@@ -61,17 +60,18 @@ class IndexView(QWidget):
         # right hand side
         right_layout.addWidget(self.edit)
         font = QFont()
-        font.setPointSize(20)
+        font.setPointSize(11)
         self.edit.setFont(font)
 
         self.setLayout(main_layout)
 
         image = self.controller.get_image()
         self.display(image)
-        self.show_json()
+        self.update_text_area()
 
-    def show_json(self):
-        self.edit.setText(self.controller.page.to_json())
+    def update_text_area(self):
+        indexes = self.controller.list_index_values()
+        self.edit.setText(indexes)
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)
@@ -89,13 +89,10 @@ class IndexView(QWidget):
         self.scroll_area.resize(pixmap.width(), pixmap.height())
         self.scroll_area.setWidget(self.picture)
 
-    def on_click(self, rect: QRect):
-        ...
-
     def reload(self):
-        self.show_json()
+        self.update_text_area()
         self.picture.draw_answers()
-        # self.picture.draw_groups()
+        self.picture.draw_groups()
 
     def next_page(self):
         self.controller.next()
@@ -103,5 +100,5 @@ class IndexView(QWidget):
         self.picture.page = self.controller.page
         self.display(image)
 
-    def on_index_submitted(self, answer: AnswerBox, value: str):
-        pass
+    def on_index_submitted(self):
+        self.reload()

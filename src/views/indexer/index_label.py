@@ -13,9 +13,10 @@ from src.views.indexer.response_base_view import ResponseBaseView
 class ImageView(QLabel):
     page: FormPage
 
-    def __init__(self,  controller: IndexController, parent=None):
+    def __init__(self,  controller: IndexController, parent=None, callback=None):
         super().__init__(parent)
         self.controller = controller
+        self.callback = callback
         self.text = ''
 
     def mousePressEvent(self, event):
@@ -33,6 +34,7 @@ class ImageView(QLabel):
             if not answer:
                 return
             answer.on_click(QPainter(self))
+            self.callback()
 
     def paintEvent(self, event):
         super().paintEvent(event)
