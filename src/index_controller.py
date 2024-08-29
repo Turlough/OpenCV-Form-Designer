@@ -15,6 +15,7 @@ class IndexController:
     scale: float
     image_path: str
     json_path: str
+    csv_path: str
     highlighter: Highlighter
     responses: list[ResponseBaseView]
 
@@ -57,6 +58,7 @@ class IndexController:
         with open(self.json_path, 'r') as file:
             content = file.read()
             self.page = FormPage.from_json(content)
+            self.page.sort_by_csv()
         for ans in self.page.answers:
             match ans.type:
                 case BoxType.TICK:

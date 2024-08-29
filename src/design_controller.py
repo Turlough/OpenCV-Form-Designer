@@ -13,6 +13,7 @@ class EditMode(Enum):
     CREATE_BOX = auto()
     BOX_GROUP = auto()
     BOX_EDIT = auto()
+    RADIO_GROUP = auto()
     NONE = auto()
 
 
@@ -89,6 +90,7 @@ class DesignController:
         with open(self.json_path, 'r') as file:
             content = file.read()
             self.page = FormPage.from_json(content)
+            self.page.sort_by_csv()
         self.page.answers.sort(key=lambda a: a.in_seq)
         self.page.groups.sort(key=lambda g: g.in_seq)
 
@@ -98,10 +100,9 @@ class DesignController:
         with open(self.json_path, 'w') as file:
             file.write(self.page.to_json())
         with open(self.sequence_path, 'w') as file:
-            for g in self.page.groups:
-                for a in g.contents:
-                    row = f'{g.name},{a.name},{a.in_seq},{a.out_seq}'
-                    file.write(row + '\n')
+            for a in self.page.answers:
+                row = f'{a.name},{a.in_seq},{a.out_seq}'
+                file.write(row + '\n')
 
     def detect_rectangles(self):
         self.page.answers.clear()
