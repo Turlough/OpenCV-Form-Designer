@@ -10,7 +10,7 @@ from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
 from src.models.designer.answer_box import AnswerBox
-from src.views.indexer.index_label import IndexLabel
+from src.views.indexer.index_label import ImageView
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
@@ -19,13 +19,13 @@ class IndexView(QWidget):
     controller: IndexController
     edit: QTextEdit
     scroll_area: QScrollArea
-    picture: IndexLabel
+    picture: ImageView
 
     def __init__(self, controller: IndexController):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = IndexLabel(controller=controller)
+        self.picture = ImageView(controller=controller)
         super().__init__()
         self.picture.page = controller.page
 
