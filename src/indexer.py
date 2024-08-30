@@ -4,7 +4,7 @@ from glob import glob
 from PyQt6.QtWidgets import QApplication
 
 from index_controller import IndexController
-from src.views.indexer.group_index_view import IndexView
+from src.views.indexer.page_index_view import PageIndexView
 
 
 path = r"C:\_PV\forms"
@@ -16,7 +16,7 @@ def launch(folder):
 
     app = QApplication(sys.argv)
     controller = IndexController(files, scale)
-    viewer = IndexView(controller)
+    viewer = PageIndexView(controller)
     viewer.init_ui()
     viewer.showMaximized()
 

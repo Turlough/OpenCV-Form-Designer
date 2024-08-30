@@ -1,11 +1,10 @@
 import logging
 
-from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
-from PyQt6.QtGui import QCursor, QPixmap, QImage
+from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
@@ -14,7 +13,7 @@ from src.views.indexer.index_label import ImageView
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
 
-class IndexView(QWidget):
+class PageIndexView(QWidget):
     controller: IndexController
     edit: QTextEdit
     scroll_area: QScrollArea

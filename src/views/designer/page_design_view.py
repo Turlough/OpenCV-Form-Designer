@@ -16,7 +16,7 @@ from src.views.designer.image_label import ImageLabel
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
 
-class PageView(QWidget):
+class PageDesignView(QWidget):
     controller: DesignController
     edit: QTextEdit
     scroll_area: QScrollArea
