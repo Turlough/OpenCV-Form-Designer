@@ -11,7 +11,7 @@ from PyQt6.QtGui import QFont
 from src.design_controller import DesignController, EditMode
 
 from src.views.designer.generic_model_editor import ModelEditor
-from src.views.designer.image_label import ImageLabel
+from src.views.designer.page_design_painter import PageDesignPainter
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
@@ -20,13 +20,13 @@ class PageDesignView(QWidget):
     controller: DesignController
     edit: QTextEdit
     scroll_area: QScrollArea
-    picture: ImageLabel
+    picture: PageDesignPainter
 
     def __init__(self, controller: DesignController):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = ImageLabel(on_release=self.on_rectangle_drawn, scale=controller.scale)
+        self.picture = PageDesignPainter(on_release=self.on_rectangle_drawn, scale=controller.scale)
         super().__init__()
         self.picture.page = controller.page
 

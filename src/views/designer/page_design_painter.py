@@ -7,7 +7,7 @@ from src.design_controller import EditMode
 from src.views.designer.answer_box_painter import draw_answer, draw_group
 
 
-class ImageLabel(QLabel):
+class PageDesignPainter(QLabel):
     page: FormPage
     scale: float = 1.0
     mode: EditMode = EditMode.NONE

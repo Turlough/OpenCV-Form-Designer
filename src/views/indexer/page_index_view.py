@@ -8,7 +8,7 @@ from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
-from src.views.indexer.index_label import ImageView
+from src.views.indexer.page_index_painter import PageIndexPainter
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
 
@@ -17,13 +17,13 @@ class PageIndexView(QWidget):
     controller: IndexController
     edit: QTextEdit
     scroll_area: QScrollArea
-    picture: ImageView
+    picture: PageIndexPainter
 
     def __init__(self, controller: IndexController):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = ImageView(controller=controller, callback=self.on_index_submitted)
+        self.picture = PageIndexPainter(controller=controller, callback=self.on_index_submitted)
         super().__init__()
         self.picture.page = controller.page
 

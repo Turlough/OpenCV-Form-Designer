@@ -10,7 +10,7 @@ from src.views.indexer.index_value_dialog import IndexDialog
 from src.views.indexer.response_base_view import ResponseBaseView
 
 
-class ImageView(QLabel):
+class PageIndexPainter(QLabel):
     page: FormPage
 
     def __init__(self,  controller: IndexController, parent=None, callback=None):
