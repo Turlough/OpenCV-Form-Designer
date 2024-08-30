@@ -11,11 +11,11 @@ class RadioGroupDesignView(BaseDesignView):
     pen = QPen(Qt.GlobalColor.darkYellow, 2)
     button_views: list[RadioButtonDesignView] = list()
 
-    def __init__(self, model, scale):
-        super().__init__(model, scale)
+    def __init__(self, model, scale, callback):
+        super().__init__(model, scale, callback)
 
         for b in self.model.buttons:
-            view = RadioButtonDesignView(b, self.scale)
+            view = RadioButtonDesignView(b, self.scale, callback)
             self.button_views.append(view)
 
     def draw(self, painter):

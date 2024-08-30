@@ -97,16 +97,20 @@ class DesignController:
         y2 /= self.scale
         return int(x1), int(y1), int(x2), int(y2)
 
-    def locate_surrounding_box(self, x, y):
-        x, y, _, _ = self.unscale(x, y)
-        for answer in self.page.answers:
-            r = answer.rectangle
-            if r.x1 <= x <= r.x2 and r.y1 <= y <= r.y2:
-                return answer
+    def locate_surrounding_box(self, x, y) -> BaseDesignView | None:
+        # x, y, _, _ = self.unscale(x, y)
+        for v in self.views:
+            r = v.rectangle
+            if r.left() <= x <= r.right() and r.top() <= y <= r.bottom():
+                return v
         return None
 
     def get_image(self):
         return self.highlighter.scaled_and_highlighted(scale=self.scale)
+
+    def save_and_reload(self):
+        self.save_to_json()
+        self.load_from_json()
 
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
@@ -141,7 +145,7 @@ class DesignController:
         for a in page.answers:
             # TODO: will this create the right type?
             factory = ViewFactory()
-            v = factory.create_view(a, self.scale)
+            v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
             self.views.append(v)
 
     def list_index_values(self):

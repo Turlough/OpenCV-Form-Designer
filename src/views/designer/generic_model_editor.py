@@ -2,7 +2,6 @@ from enum import Enum
 
 from PyQt6.QtWidgets import QComboBox, QDialog, QFormLayout, QLabel, QLineEdit, QVBoxLayout, QPushButton, \
     QDialogButtonBox
-from PyQt6.QtCore import pyqtSlot
 
 
 class ModelEditor(QDialog):

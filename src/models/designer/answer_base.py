@@ -23,3 +23,7 @@ class AnswerBase:
     @classmethod
     def from_json(cls, json_str):
         return jsonpickle.decode(json_str)
+
+    def cast(self, new_class):
+        """Cast the current object as another AnswerBase subclass"""
+        return new_class(self.in_seq, self.out_seq, self.name, self.rectangle)

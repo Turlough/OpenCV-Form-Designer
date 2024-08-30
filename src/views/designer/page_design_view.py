@@ -159,13 +159,11 @@ class PageDesignView(QWidget):
 
     def edit_answer(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
-        box = self.controller.locate_surrounding_box(x + 1, y + 1)
-        if not box:
+        view = self.controller.locate_surrounding_box(x + 1, y + 1)
+        if not view:
             return
-        mouse_pos = QCursor.pos()
-        editor = ModelEditor(box, callback=self.save_and_reload)
-        editor.move(mouse_pos)
-        editor.exec()
+        view.on_click()
+        self.save_and_reload()
 
     def create_answer(self, rect):
         self.controller.create_answer(rect)
