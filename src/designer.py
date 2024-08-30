@@ -4,7 +4,7 @@ from glob import glob
 from PyQt6.QtWidgets import QApplication
 
 from design_controller import DesignController
-from src.views.designer.page_view import PageView
+from src.views.designer.page_design_view import PageDesignView
 
 
 path = r"C:\_PV\forms"
@@ -16,7 +16,7 @@ def launch(folder):
 
     app = QApplication(sys.argv)
     controller = DesignController(files, scale)
-    viewer = PageView(controller)
+    viewer = PageDesignView(controller)
     viewer.init_ui()
     viewer.showMaximized()
 
