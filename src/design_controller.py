@@ -2,11 +2,14 @@ import os.path
 from collections import deque
 from enum import Enum, auto
 
+from tabulate import tabulate
+
 from src.models.designer.group_of_answers import GroupOfAnswers
 from src.tools.highlighter import Highlighter
 from src.models.rectangle import Rectangle
 from src.models.designer.form_page import FormPage
-from src.models.designer.answer_box import AnswerBox
+from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup
+from src.views.designer.design_base_view import BaseDesignView
 
 
 class EditMode(Enum):
@@ -26,10 +29,12 @@ class DesignController:
     json_path: str
     sequence_path: str
     highlighter: Highlighter
+    views: list[BaseDesignView]
 
     def __init__(self, paths, scale):
         self.scale = scale
         self.paths = deque()
+        self.views = list()
         for p in paths:
             self.paths.append(p)
         self.next()
@@ -47,6 +52,7 @@ class DesignController:
             self.load_from_json()
         else:
             self.page = FormPage(path)
+        self.build_views(self.page)
 
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
@@ -58,6 +64,20 @@ class DesignController:
         sequence = len(self.page.answers) + 1
         answer = AnswerBox(sequence, sequence, f'A{sequence:0>2}', rect)
         self.page.answers.append(answer)
+        self.build_views(self.page)
+
+    def on_radio_group_drawn(self, name, x1, y1, x2, y2):
+        sequence = len(self.page.answers) + 1
+        x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
+        rectangle = Rectangle().from_corners(x1, y1, x2, y2)
+        group = RadioGroup(sequence, sequence, name, rectangle)
+        contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
+        for c in contents:
+            b = RadioButton(c.in_seq, c.out_seq, c.name, c.rectangle, group)
+            group.buttons.append(b)
+            self.page.answers.remove(c)
+        self.page.answers.append(group)
+        self.build_views(self.page)
 
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
         sequence = len(self.page.groups) + 1
@@ -67,6 +87,7 @@ class DesignController:
 
         group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
+        self.build_views(self.page)
 
     def unscale(self, x1, y1, x2=0, y2=0):
         x1 /= self.scale
@@ -93,6 +114,7 @@ class DesignController:
             self.page.sort_by_csv()
         self.page.answers.sort(key=lambda a: a.in_seq)
         self.page.groups.sort(key=lambda g: g.in_seq)
+        self.build_views(self.page)
 
     def save_to_json(self):
         self.page.answers.sort(key=lambda a: a.in_seq)
@@ -111,4 +133,20 @@ class DesignController:
             name = f'A{i + 1:0>2d}'
             a = AnswerBox(i + 1, i + 1, name, r)
             self.page.answers.append(a)
+        self.build_views(self.page)
 
+    def build_views(self, page):
+        self.views.clear()
+        for a in page.answers:
+            # TODO: will this create the right type?
+            v = BaseDesignView(a, self.scale)
+            self.views.append(v)
+
+    def list_index_values(self):
+        response = list()
+        headers = 'Name', 'Value'
+        for r in self.views:
+            name = r.model.name
+            sequence = r.model.in_seq
+            response.append((name, sequence))
+        return tabulate(response, headers=headers, tablefmt="psql")

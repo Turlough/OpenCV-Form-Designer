@@ -55,8 +55,12 @@ class PageView(QWidget):
         detect_button.setText("Locate Rectangles")
         detect_button.clicked.connect(self.detect_rectangles)
 
+        radio_group_button = QPushButton()
+        radio_group_button.setText("Create Radio Group")
+        radio_group_button.clicked.connect(lambda: self.set_mode(EditMode.RADIO_GROUP))
+
         box_group_button = QPushButton()
-        box_group_button.setText("Create Groups")
+        box_group_button.setText("Group Questions")
         box_group_button.clicked.connect(lambda: self.set_mode(EditMode.BOX_GROUP))
 
         new_box_button = QPushButton()
@@ -73,6 +77,7 @@ class PageView(QWidget):
 
         image_button_layout.addWidget(detect_button)
         image_button_layout.addWidget(new_box_button)
+        image_button_layout.addWidget(radio_group_button)
         image_button_layout.addWidget(box_group_button)
         image_button_layout.addWidget(relabel_button)
         image_button_layout.addWidget(save_button)
@@ -127,6 +132,19 @@ class PageView(QWidget):
                 self.edit_answer(rect)
             case EditMode.CREATE_BOX:
                 self.create_answer(rect)
+            case EditMode.RADIO_GROUP:
+                self.new_radio_group(rect)
+
+    def new_radio_group(self, rect: QRect):
+        name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
+        if not ok or not name:
+            return
+
+        x1, y1 = rect.topLeft().x(), rect.topLeft().y()
+        x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
+
+        self.controller.on_radio_group_drawn(name, x1, y1, x2, y2)
+        self.show_json()
 
     def new_group_box(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')

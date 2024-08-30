@@ -22,6 +22,9 @@ class ImageLabel(QLabel):
         self.scale = scale
 
     def mousePressEvent(self, event):
+        if self.mode == EditMode.NONE:
+            self.start_point = self.end_point = None
+            return
         if event.button() == Qt.MouseButton.LeftButton:
             self.start_point = event.pos()
             self.end_point = self.start_point
@@ -34,6 +37,8 @@ class ImageLabel(QLabel):
             self.update()
 
     def mouseReleaseEvent(self, event):
+        if self.mode == EditMode.NONE:
+            return
 
         if event.button() == Qt.MouseButton.LeftButton:
             self.end_point = event.pos()
@@ -47,6 +52,12 @@ class ImageLabel(QLabel):
 
     def paintEvent(self, event):
         super().paintEvent(event)
+        if self.mode == EditMode.RADIO_GROUP and not self.rect.isNull():
+            painter = QPainter(self)
+            pen = QPen(Qt.GlobalColor.darkYellow, 2)
+            painter.setPen(pen)
+            painter.drawRect(self.rect)
+            self.update()
         if self.mode == EditMode.BOX_GROUP and not self.rect.isNull():
             painter = QPainter(self)
             pen = QPen(Qt.GlobalColor.red, 2)
