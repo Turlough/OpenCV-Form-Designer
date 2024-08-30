@@ -1,9 +1,10 @@
-from PyQt6.QtWidgets import QLabel
+from PyQt6.QtWidgets import QDialog, QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
 from src.design_controller import DesignController, EditMode
 from src.views.designer.global_functions import draw_group
+from src.views.designer.type_change_dialog import TypeChangeDialog
 
 
 class PageDesignPainter(QLabel):
@@ -36,6 +37,18 @@ class PageDesignPainter(QLabel):
             self.update()
 
     def mouseReleaseEvent(self, event):
+
+        if event.button() == Qt.MouseButton.RightButton:
+            x, y = event.pos().x(), event.pos().y()
+            view = self.controller.locate_surrounding_box(x, y)
+            if not view:
+                return
+
+            dialog = TypeChangeDialog()
+            dialog.move(x, y)
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                self.controller.change_type(view, dialog.return_value)
+
         if self.mode == EditMode.NONE:
             return
 

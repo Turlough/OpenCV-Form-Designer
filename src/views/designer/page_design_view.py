@@ -28,7 +28,6 @@ class PageDesignView(QWidget):
         self.edit = QTextEdit()
         self.picture = PageDesignPainter(on_release=self.on_rectangle_drawn, controller=controller)
         super().__init__()
-        self.picture.page = controller.page
 
     def init_ui(self):
         """

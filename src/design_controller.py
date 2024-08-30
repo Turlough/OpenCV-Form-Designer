@@ -156,3 +156,11 @@ class DesignController:
             sequence = r.model.in_seq
             response.append((name, sequence))
         return tabulate(response, headers=headers, tablefmt="psql")
+
+    def change_type(self, view: BaseDesignView, return_value):
+        model = view.model
+        new_model = model.cast(return_value)
+        new_view = ViewFactory().create_view(new_model, self.scale)
+        i = self.views.index(view)
+        self.views[i] = new_view
+

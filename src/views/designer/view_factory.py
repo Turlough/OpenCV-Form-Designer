@@ -15,7 +15,7 @@ class ViewFactory:
             RadioGroup: RadioGroupDesignView
         }
 
-    def create_view(self, model, scale, editor_callback):
+    def create_view(self, model, scale, editor_callback=None):
         model_class = model.__class__  # Get the class of the model instance
         view_class = self._mapping.get(model_class)
         if view_class is None:
