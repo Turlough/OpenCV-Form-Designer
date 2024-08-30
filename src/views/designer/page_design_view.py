@@ -26,7 +26,7 @@ class PageDesignView(QWidget):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = PageDesignPainter(on_release=self.on_rectangle_drawn, scale=controller.scale)
+        self.picture = PageDesignPainter(on_release=self.on_rectangle_drawn, controller=controller)
         super().__init__()
         self.picture.page = controller.page
 

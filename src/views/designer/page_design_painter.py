@@ -2,24 +2,23 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
-from src.models.designer.form_page import FormPage
-from src.design_controller import EditMode
-from src.views.designer.global_functions import draw_answer, draw_group
+from src.design_controller import DesignController, EditMode
+from src.views.designer.global_functions import draw_group
 
 
 class PageDesignPainter(QLabel):
-    page: FormPage
     scale: float = 1.0
     mode: EditMode = EditMode.NONE
+    controller: DesignController
 
-    def __init__(self, scale=1.0, on_release=None, parent=None):
+    def __init__(self, controller: DesignController, on_release=None, parent=None):
         super().__init__(parent)
+        self.controller = controller
         self.on_release = on_release
         self.start_point = None
         self.end_point = None
         self.rect = QRect()
-        self.text = ''
-        self.scale = scale
+        self.scale = controller.scale
 
     def mousePressEvent(self, event):
         if self.mode == EditMode.NONE:
@@ -44,8 +43,6 @@ class PageDesignPainter(QLabel):
             self.end_point = event.pos()
             self.rect = QRect(self.start_point, self.end_point)
             self.update()
-            self.text = f"Rectangle coordinates: {self.rect.topLeft()} to {self.rect.bottomRight()}"
-            # Reset for the next coordinates
             self.start_point = None
             self.end_point = None
             self.on_release(self.rect)
@@ -74,13 +71,12 @@ class PageDesignPainter(QLabel):
         self.draw_groups()
 
     def draw_answers(self):
-        painter = QPainter(self)
-        for a in self.page.answers:
-            draw_answer(a, painter, self.scale)
+        for a in self.controller.views:
+            a.draw(QPainter(self))
         self.update()
 
     def draw_groups(self):
         painter = QPainter(self)
-        for g in self.page.groups:
+        for g in self.controller.page.groups:
             draw_group(g, painter, self.scale)
         self.update()

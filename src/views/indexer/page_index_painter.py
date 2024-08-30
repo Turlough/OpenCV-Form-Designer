@@ -1,23 +1,23 @@
+from typing import Any, Callable
+
 from PyQt6.QtWidgets import QDialog, QLabel
 from PyQt6.QtGui import QPainter
 from PyQt6.QtCore import Qt
 
 from src.index_controller import IndexController
 from src.models.designer.form_page import FormPage
-from src.models.indexer.response_base import ResponseBase
-from src.views.designer.global_functions import draw_answer, draw_group
-from src.views.indexer.index_value_dialog import IndexDialog
 from src.views.indexer.base_index_view import BaseIndexView
 
 
 class PageIndexPainter(QLabel):
     page: FormPage
+    controller: IndexController
+    callback: Callable
 
-    def __init__(self,  controller: IndexController, parent=None, callback=None):
+    def __init__(self,  controller: IndexController, parent: None, callback=None):
         super().__init__(parent)
         self.controller = controller
         self.callback = callback
-        self.text = ''
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -39,14 +39,9 @@ class PageIndexPainter(QLabel):
     def paintEvent(self, event):
         super().paintEvent(event)
         self.draw_answers()
-        self.draw_groups()
 
     def draw_answers(self):
         for a in self.controller.responses:
             a.draw(QPainter(self))
         self.update()
 
-    def draw_groups(self):
-        for g in self.page.groups:
-            draw_group(g, QPainter(self), self.controller.scale)
-        self.update()

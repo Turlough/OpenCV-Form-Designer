@@ -10,6 +10,7 @@ from src.models.rectangle import Rectangle
 from src.models.designer.form_page import FormPage
 from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup
 from src.views.designer.base_design_view import BaseDesignView
+from src.views.designer.view_factory import ViewFactory
 
 
 class EditMode(Enum):
@@ -139,7 +140,8 @@ class DesignController:
         self.views.clear()
         for a in page.answers:
             # TODO: will this create the right type?
-            v = BaseDesignView(a, self.scale)
+            factory = ViewFactory()
+            v = factory.create_view(a, self.scale)
             self.views.append(v)
 
     def list_index_values(self):
