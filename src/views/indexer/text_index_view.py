@@ -3,12 +3,12 @@ from PyQt6.QtGui import QFont, QPen
 from PyQt6.QtWidgets import QDialog
 
 from src.models.indexer.response_base import TextIndexResponse
-from src.views.designer.answer_box_painter import center_right, color_for_answer
+from src.views.designer.global_functions import center_right, color_for_answer
 from src.views.indexer.index_value_dialog import IndexDialog
-from src.views.indexer.response_base_view import ResponseBaseView
+from src.views.indexer.base_index_view import BaseIndexView
 
 
-class IndexTextView(ResponseBaseView):
+class TextIndexView(BaseIndexView):
     model: TextIndexResponse
     pen = QPen(Qt.GlobalColor.darkGreen, 2)
 

@@ -2,7 +2,7 @@ from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QFont, QPen
 
 from src.models.designer.answer_base import AnswerBase
-from src.views.designer.answer_box_painter import center_right
+from src.views.designer.global_functions import center_right
 
 
 class BaseDesignView:

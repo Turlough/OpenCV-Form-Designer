@@ -2,11 +2,11 @@ from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QFont, QPen
 
 from src.models.indexer.response_base import TickBoxResponse
-from src.views.designer.answer_box_painter import center_right, color_for_answer
-from src.views.indexer.response_base_view import ResponseBaseView
+from src.views.designer.global_functions import center_right, color_for_answer
+from src.views.indexer.base_index_view import BaseIndexView
 
 
-class TickBoxView(ResponseBaseView):
+class TickBoxIndexView(BaseIndexView):
     model: TickBoxResponse
     scale: float
     pen = QPen(Qt.GlobalColor.blue, 2)

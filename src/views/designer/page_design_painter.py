@@ -4,7 +4,7 @@ from PyQt6.QtCore import Qt, QRect
 
 from src.models.designer.form_page import FormPage
 from src.design_controller import EditMode
-from src.views.designer.answer_box_painter import draw_answer, draw_group
+from src.views.designer.global_functions import draw_answer, draw_group
 
 
 class PageDesignPainter(QLabel):

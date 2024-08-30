@@ -9,7 +9,7 @@ from src.tools.highlighter import Highlighter
 from src.models.rectangle import Rectangle
 from src.models.designer.form_page import FormPage
 from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup
-from src.views.designer.design_base_view import BaseDesignView
+from src.views.designer.base_design_view import BaseDesignView
 
 
 class EditMode(Enum):

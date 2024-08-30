@@ -3,10 +3,10 @@ from PyQt6.QtGui import QFont, QPen
 
 from src.models.indexer.response_base import ResponseBase
 from src.models.rectangle import Rectangle
-from src.views.designer.answer_box_painter import center_right, color_for_answer
+from src.views.designer.global_functions import center_right, color_for_answer
 
 
-class ResponseBaseView:
+class BaseIndexView:
     model: ResponseBase
     scale: float
     pen: QPen = QPen(Qt.GlobalColor.darkGreen, 2)

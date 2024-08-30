@@ -5,9 +5,9 @@ from src.models.designer.answer_base import BoxType
 from src.models.indexer.response_base import TextIndexResponse, ResponseBase, TickBoxResponse
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
-from src.views.indexer.answer_box_view import IndexTextView
-from src.views.indexer.response_base_view import ResponseBaseView
-from src.views.indexer.tick_box_view import TickBoxView
+from src.views.indexer.text_index_view import TextIndexView
+from src.views.indexer.base_index_view import BaseIndexView
+from src.views.indexer.tick_box_index_view import TickBoxIndexView
 
 
 class IndexController:
@@ -17,7 +17,7 @@ class IndexController:
     json_path: str
     csv_path: str
     highlighter: Highlighter
-    responses: list[ResponseBaseView]
+    responses: list[BaseIndexView]
 
     def __init__(self, paths, scale):
         self.scale = scale
@@ -43,7 +43,7 @@ class IndexController:
         y2 /= self.scale
         return int(x1), int(y1), int(x2), int(y2)
 
-    def locate_surrounding_box(self, x, y) -> ResponseBaseView | None:
+    def locate_surrounding_box(self, x, y) -> BaseIndexView | None:
         x, y, _, _ = self.unscale(x, y)
         for resp in self.responses:
             r = resp.model.question.rectangle
@@ -63,10 +63,10 @@ class IndexController:
             match ans.type:
                 case BoxType.TICK:
                     r = TickBoxResponse(ans, ticked=False)
-                    rv = TickBoxView(r, self.scale)
+                    rv = TickBoxIndexView(r, self.scale)
                 case _:
                     r = TextIndexResponse(ans)
-                    rv = IndexTextView(r, self.scale)
+                    rv = TextIndexView(r, self.scale)
             self.responses.append(rv)
 
     def list_index_values(self):

@@ -5,9 +5,9 @@ from PyQt6.QtCore import Qt
 from src.index_controller import IndexController
 from src.models.designer.form_page import FormPage
 from src.models.indexer.response_base import ResponseBase
-from src.views.designer.answer_box_painter import draw_answer, draw_group
+from src.views.designer.global_functions import draw_answer, draw_group
 from src.views.indexer.index_value_dialog import IndexDialog
-from src.views.indexer.response_base_view import ResponseBaseView
+from src.views.indexer.base_index_view import BaseIndexView
 
 
 class PageIndexPainter(QLabel):
@@ -30,7 +30,7 @@ class PageIndexPainter(QLabel):
 
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.pos()
-            answer: ResponseBaseView = self.controller.locate_surrounding_box(pos.x(), pos.y())
+            answer: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
             if not answer:
                 return
             answer.on_click(QPainter(self))
