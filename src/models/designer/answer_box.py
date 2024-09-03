@@ -9,6 +9,16 @@ class AnswerBox(AnswerBase):
 
 
 @dataclass
+class TextBox(AnswerBase):
+    pass
+
+
+@dataclass
+class NumberBox(TextBox):
+    pass
+
+
+@dataclass
 class TickBox(AnswerBox):
     type: BoxType = BoxType.TICK
 

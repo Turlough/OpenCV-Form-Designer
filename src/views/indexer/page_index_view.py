@@ -91,7 +91,7 @@ class PageIndexView(QWidget):
     def reload(self):
         self.update_text_area()
         self.picture.draw_answers()
-        self.picture.draw_groups()
+        # self.picture.draw_groups()
 
     def next_page(self):
         self.controller.next()

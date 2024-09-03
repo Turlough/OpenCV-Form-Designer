@@ -143,7 +143,6 @@ class DesignController:
     def build_views(self, page):
         self.views.clear()
         for a in page.answers:
-            # TODO: will this create the right type?
             factory = ViewFactory()
             v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
             self.views.append(v)

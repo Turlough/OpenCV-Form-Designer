@@ -5,6 +5,7 @@ from src.models.designer.answer_base import BoxType
 from src.models.indexer.response_base import TextIndexResponse, ResponseBase, TickBoxResponse
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
+from src.views.indexer.index_view_factory import IndexViewFactory
 from src.views.indexer.text_index_view import TextIndexView
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.tick_box_index_view import TickBoxIndexView
@@ -17,12 +18,12 @@ class IndexController:
     json_path: str
     csv_path: str
     highlighter: Highlighter
-    responses: list[BaseIndexView]
+    views: list[BaseIndexView]
 
     def __init__(self, paths, scale):
         self.scale = scale
         self.paths = deque()
-        self.responses = list()
+        self.views = list()
         for p in paths:
             self.paths.append(p)
         self.next()
@@ -45,7 +46,7 @@ class IndexController:
 
     def locate_surrounding_box(self, x, y) -> BaseIndexView | None:
         x, y, _, _ = self.unscale(x, y)
-        for resp in self.responses:
+        for resp in self.views:
             r = resp.model.question.rectangle
             if r.x1 <= x <= r.x2 and r.y1 <= y <= r.y2:
                 return resp
@@ -67,12 +68,19 @@ class IndexController:
                 case _:
                     r = TextIndexResponse(ans)
                     rv = TextIndexView(r, self.scale)
-            self.responses.append(rv)
+            self.views.append(rv)
+
+    def build_views(self, page):
+        self.views.clear()
+        for a in page.answers:
+            factory = IndexViewFactory()
+            v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
+            self.views.append(v)
 
     def list_index_values(self):
         response = list()
         headers = 'Name', 'Value'
-        for r in self.responses:
+        for r in self.views:
             name = r.model.question.name
             text = r.model.text
             response.append((name, text))

@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QLineEdit, QPushButton, QVBoxLayout
 
 from src.models.designer.answer_base import AnswerBase
-from src.models.designer.answer_box import TickBox
+from src.models.designer.answer_box import NumberBox, RadioButton, TextBox, TickBox
 
 
 class TypeChangeDialog(QDialog):
@@ -15,19 +15,20 @@ class TypeChangeDialog(QDialog):
 
         # Layout and widgets
         self.setLayout(QVBoxLayout())
-        self.tick_box = self.add_button('TickBox', self.test_click)
-        # self.tick_box.setText(text)
-        self.layout().addWidget(self.tick_box)
+        self.add_button('TickBox', TickBox)
+        self.add_button('TextBox', TextBox)
+        self.add_button('NumberBox', NumberBox)
+        self.add_button('RadioButton', RadioButton)
 
-    def add_button(self, name, on_click):
+    def add_button(self, name, new_model):
         btn = QPushButton(self)
         btn.setText(name)
-        btn.clicked.connect(on_click)
+        btn.clicked.connect(self.clicked(new_model))
         self.layout().addWidget(btn)
         return btn
 
-    def test_click(self):
-        self.return_value = TickBox
+    def clicked(self, new_model):
+        self.return_value = new_model
         if self.callback:
-            self.callback(TickBox)
+            self.callback(new_model)
         self.accept()

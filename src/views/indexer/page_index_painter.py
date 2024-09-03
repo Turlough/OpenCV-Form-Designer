@@ -14,7 +14,7 @@ class PageIndexPainter(QLabel):
     controller: IndexController
     callback: Callable
 
-    def __init__(self,  controller: IndexController, parent: None, callback=None):
+    def __init__(self,  controller: IndexController, parent=None, callback=None):
         super().__init__(parent)
         self.controller = controller
         self.callback = callback
@@ -41,7 +41,7 @@ class PageIndexPainter(QLabel):
         self.draw_answers()
 
     def draw_answers(self):
-        for a in self.controller.responses:
+        for a in self.controller.views:
             a.draw(QPainter(self))
         self.update()
 
