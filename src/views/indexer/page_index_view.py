@@ -23,7 +23,7 @@ class PageIndexView(QWidget):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.edit = QTextEdit()
-        self.picture = PageIndexPainter(controller=controller, callback=self.on_index_submitted)
+        self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.on_index_submitted)
         super().__init__()
         self.picture.page = controller.page
 
@@ -99,5 +99,5 @@ class PageIndexView(QWidget):
         self.picture.page = self.controller.page
         self.display(image)
 
-    def on_index_submitted(self):
+    def on_index_submitted(self, model):
         self.reload()

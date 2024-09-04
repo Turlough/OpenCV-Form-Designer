@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from src.models.designer.answer_base import AnswerBase, BoxType
+from src.models.designer.answer_base import AnswerBase
 
 
 @dataclass
 class AnswerBox(AnswerBase):
-    type: BoxType = BoxType.TICK
+    pass
 
 
 @dataclass
@@ -20,12 +20,11 @@ class NumberBox(TextBox):
 
 @dataclass
 class TickBox(AnswerBox):
-    type: BoxType = BoxType.TICK
+    pass
 
 
 @dataclass
 class RadioButton(TickBox):
-    type: BoxType
 
     def __init__(self, in_seq, out_seq, name, rectangle, group):
         super().__init__(in_seq, out_seq, name, rectangle)

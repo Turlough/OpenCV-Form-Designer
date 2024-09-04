@@ -1,9 +1,9 @@
+from typing import Callable
+
 from PyQt6.QtCore import QRect, Qt
-from PyQt6.QtGui import QFont, QPen
+from PyQt6.QtGui import QPen
 
 from src.models.indexer.response_base import ResponseBase
-from src.models.rectangle import Rectangle
-from src.views.designer.global_functions import center_right, color_for_answer
 
 
 class BaseIndexView:
@@ -11,10 +11,12 @@ class BaseIndexView:
     scale: float
     pen: QPen = QPen(Qt.GlobalColor.darkGreen, 2)
     rectangle: QRect
+    on_item_indexed: Callable[['ResponseBase'], None]
 
-    def __init__(self, model, scale):
+    def __init__(self, model, scale, callback: Callable[['ResponseBase'], None]):
         self.model = model
         self.scale = scale
+        self.on_item_indexed = callback
 
         ((x1, y1), (x2, y2)) = model.question.rectangle.coordinates(scale=scale)
         self.rectangle = QRect(x1, y1, x2 - x1, y2 - y1)

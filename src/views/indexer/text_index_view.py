@@ -3,7 +3,7 @@ from PyQt6.QtGui import QFont, QPen
 from PyQt6.QtWidgets import QDialog
 
 from src.models.indexer.response_base import TextIndexResponse
-from src.views.designer.global_functions import center_right, color_for_answer
+from src.views.designer.global_functions import center_right
 from src.views.indexer.index_value_dialog import IndexDialog
 from src.views.indexer.base_index_view import BaseIndexView
 
@@ -12,9 +12,6 @@ class TextIndexView(BaseIndexView):
     model: TextIndexResponse
     pen = QPen(Qt.GlobalColor.darkGreen, 2)
 
-    def __init__(self, model, scale):
-        super().__init__(model, scale)
-
     def on_click(self, painter):
 
         dialog = IndexDialog(self.model.text)
@@ -22,6 +19,7 @@ class TextIndexView(BaseIndexView):
         dialog.move(x, y)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.model.text = dialog.lineEdit.text()
+        # self.on_item_indexed(self.model)
         self.draw(painter)
 
     def draw_text(self, painter):

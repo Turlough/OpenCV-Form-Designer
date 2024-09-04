@@ -11,21 +11,20 @@ class IndexViewFactory:
     def __init__(self):
         # Map model classes to their corresponding view classes
         self._mapping = {
-            AnswerBox: (TextIndexResponse, TextIndexView),
-            TickBox: (TickBoxResponse, TickBoxIndexView),
+            AnswerBox  : (TextIndexResponse, TextIndexView),
+            TickBox    : (TickBoxResponse, TickBoxIndexView),
             RadioButton: (RadioButtonResponse, RadioButtonIndexView),
-            RadioGroup: (RadioGroupResponse, RadioGroupIndexView)
+            RadioGroup : (RadioGroupResponse, RadioGroupIndexView)
         }
 
-    def create_view(self, model, scale, editor_callback=None):
+    def create_view(self, model, scale, on_index_completed=None):
         model_class = model.__class__  # Get the class of the model instance
         (response_class, view_class) = self._mapping.get(model_class)
 
         if view_class is None:
             raise ValueError(f"No view found for model class {model_class}")
 
-        index_value = '?' # TODO: Read this from an index row
+        index_value = '?'  # TODO: Read this from an index row
         response = response_class(model, index_value)
 
-        return view_class(response, scale, editor_callback)
-
+        return view_class(response, scale, on_index_completed)

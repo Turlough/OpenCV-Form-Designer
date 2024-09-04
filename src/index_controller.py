@@ -1,14 +1,9 @@
 from tabulate import tabulate
 from collections import deque
-
-from src.models.designer.answer_base import BoxType
-from src.models.indexer.response_base import TextIndexResponse, ResponseBase, TickBoxResponse
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
-from src.views.indexer.text_index_view import TextIndexView
 from src.views.indexer.base_index_view import BaseIndexView
-from src.views.indexer.tick_box_index_view import TickBoxIndexView
 
 
 class IndexController:
@@ -60,22 +55,17 @@ class IndexController:
             content = file.read()
             self.page = FormPage.from_json(content)
             self.page.sort_by_csv()
-        for ans in self.page.answers:
-            match ans.type:
-                case BoxType.TICK:
-                    r = TickBoxResponse(ans, ticked=False)
-                    rv = TickBoxIndexView(r, self.scale)
-                case _:
-                    r = TextIndexResponse(ans)
-                    rv = TextIndexView(r, self.scale)
-            self.views.append(rv)
+        self.build_views(self.page)
 
     def build_views(self, page):
         self.views.clear()
         for a in page.answers:
             factory = IndexViewFactory()
-            v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
+            v = factory.create_view(a, self.scale, on_index_completed=lambda: self.save_index_value(a))
             self.views.append(v)
+
+    def save_index_value(self, value):
+        pass
 
     def list_index_values(self):
         response = list()

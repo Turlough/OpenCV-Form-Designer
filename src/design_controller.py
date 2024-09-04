@@ -147,7 +147,7 @@ class DesignController:
             v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
             self.views.append(v)
 
-    def list_index_values(self):
+    def tabulate_view_models(self):
         response = list()
         headers = 'Name', 'Value'
         for r in self.views:
@@ -159,7 +159,10 @@ class DesignController:
     def change_type(self, view: BaseDesignView, return_value):
         model = view.model
         new_model = model.cast(return_value)
-        new_view = ViewFactory().create_view(new_model, self.scale)
+        i = self.page.answers.index(model)
+        self.page.answers[i] = new_model
+        new_view = ViewFactory().create_view(new_model, self.scale, editor_callback=self.save_and_reload)
         i = self.views.index(view)
         self.views[i] = new_view
+        self.save_and_reload()
 

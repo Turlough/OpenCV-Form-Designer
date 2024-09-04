@@ -12,13 +12,18 @@ class RadioGroupIndexView(BaseIndexView):
     pen = QPen(Qt.GlobalColor.blue, 2)
     buttons: list[RadioButtonIndexView]
 
-    def __init__(self, model, scale):
-        super().__init__(model, scale)
+    def __init__(self, model, scale, callback):
+        super().__init__(model, scale, callback)
+        self.buttons = list()
         for b in self.model.button_responses:
-            self.buttons.append(RadioButtonIndexView(b, scale, self))
+            self.buttons.append(RadioButtonIndexView(b, scale, self.on_button_clicked))
 
-    def on_click(self, painter):
-        pass
+    def on_button_clicked(self, button):
+        for b in self.buttons:
+            if b == button:
+                self.model.text = b.model.question.name
+                self.on_item_indexed(self.model)
+                return
 
     def draw(self, painter):
         super().draw(painter)

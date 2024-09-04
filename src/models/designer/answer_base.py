@@ -1,13 +1,6 @@
 from dataclasses import dataclass
-from enum import Enum, auto
 import jsonpickle
 from src.models.rectangle import Rectangle
-
-
-class BoxType(Enum):
-    TICK = auto()
-    TEXT = auto()
-    NUMBER = auto()
 
 
 @dataclass

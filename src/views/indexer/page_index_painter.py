@@ -12,12 +12,12 @@ from src.views.indexer.base_index_view import BaseIndexView
 class PageIndexPainter(QLabel):
     page: FormPage
     controller: IndexController
-    callback: Callable
+    on_item_indexed: Callable
 
-    def __init__(self,  controller: IndexController, parent=None, callback=None):
+    def __init__(self, controller: IndexController, parent=None, on_item_indexed=None):
         super().__init__(parent)
         self.controller = controller
-        self.callback = callback
+        self.on_item_indexed = on_item_indexed
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -34,7 +34,7 @@ class PageIndexPainter(QLabel):
             if not answer:
                 return
             answer.on_click(QPainter(self))
-            self.callback()
+            self.on_item_indexed(answer)
 
     def paintEvent(self, event):
         super().paintEvent(event)

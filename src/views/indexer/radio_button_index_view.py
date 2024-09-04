@@ -10,9 +10,6 @@ class RadioButtonIndexView(TickBoxIndexView):
     scale: float
     pen = QPen(Qt.GlobalColor.blue, 2)
 
-    def __init__(self, model, scale):
-        super().__init__(model, scale)
-
     def draw_text(self, painter):
         painter.setFont(QFont("Arial", 8))
         m = painter.fontMetrics()

@@ -23,7 +23,7 @@ class TypeChangeDialog(QDialog):
     def add_button(self, name, new_model):
         btn = QPushButton(self)
         btn.setText(name)
-        btn.clicked.connect(self.clicked(new_model))
+        btn.clicked.connect(lambda: self.clicked(new_model))
         self.layout().addWidget(btn)
         return btn
 
