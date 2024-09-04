@@ -92,8 +92,7 @@ class PageDesignView(QWidget):
         # left_layout.addLayout(bottom_layout)
         # right hand side
         right_layout.addWidget(self.edit)
-        font = QFont()
-        font.setPointSize(20)
+        font = QFont('Courier', 12)
         self.edit.setFont(font)
 
         self.setLayout(main_layout)
@@ -103,7 +102,7 @@ class PageDesignView(QWidget):
         self.show_json()
 
     def show_json(self):
-        self.edit.setText(self.controller.page.to_json())
+        self.edit.setText(self.controller.tabulate_view_models())
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)

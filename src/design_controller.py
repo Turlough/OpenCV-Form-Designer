@@ -150,12 +150,12 @@ class DesignController:
 
     def tabulate_view_models(self):
         response = list()
-        headers = 'Name', 'Value'
-        for r in self.views:
+        headers = '#', 'Name', 'Class'
+        for i, r in enumerate(self.views):
             name = r.model.name
-            sequence = r.model.in_seq
-            response.append((name, sequence))
-        return tabulate(response, headers=headers, tablefmt="psql")
+            clz = r.model.__class__.__name__
+            response.append((i + 1, name, clz))
+        return tabulate(response, headers=headers, tablefmt="fancy_grid")
 
     def change_type(self, view: BaseDesignView, return_value):
         model = view.model
