@@ -1,5 +1,7 @@
 from tabulate import tabulate
 from collections import deque
+
+from src.index_file_manager import IndexFileManager
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
@@ -14,9 +16,12 @@ class IndexController:
     csv_path: str
     highlighter: Highlighter
     views: list[BaseIndexView]
+    file_manager: IndexFileManager
 
-    def __init__(self, paths, scale):
+    def __init__(self, paths, scale, index_path):
         self.scale = scale
+        self.file_manager = IndexFileManager(index_path)
+        self.file_manager.read_all()
         self.paths = deque()
         self.views = list()
         for p in paths:
@@ -59,13 +64,15 @@ class IndexController:
 
     def build_views(self, page):
         self.views.clear()
-        for a in page.answers:
+        for i, a in enumerate(page.answers):
+            index = self.file_manager.load_index_value(i)
             factory = IndexViewFactory()
-            v = factory.create_view(a, self.scale, on_index_completed=lambda: self.save_index_value(a))
+            v: BaseIndexView = factory.create_view(a, self.scale, on_index_completed=lambda: self.save_index_value(a))
+            v.model.text = index
             self.views.append(v)
 
     def save_index_value(self, value):
-        pass
+        pass  # TODO
 
     def list_index_values(self):
         response = list()
