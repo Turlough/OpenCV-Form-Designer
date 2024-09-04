@@ -12,7 +12,7 @@ class TextIndexView(BaseIndexView):
     model: TextIndexResponse
     pen = QPen(Qt.GlobalColor.darkGreen, 2)
 
-    def on_click(self, painter):
+    def on_click(self, painter, location):
 
         dialog = IndexDialog(self.model.text)
         x, y = self.rectangle.right() + 100, self.rectangle.bottom() + 30
