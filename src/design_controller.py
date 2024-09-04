@@ -79,6 +79,7 @@ class DesignController:
             self.page.answers.remove(c)
         self.page.answers.append(group)
         self.build_views(self.page)
+        self.save_and_reload()
 
     def on_group_box_drawn(self, name, x1, y1, x2, y2):
         sequence = len(self.page.groups) + 1
