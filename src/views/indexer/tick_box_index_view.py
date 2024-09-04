@@ -20,6 +20,6 @@ class TickBoxIndexView(BaseIndexView):
 
         painter.drawText(x, y, tick_mark)
 
-    def on_click(self, painter):
+    def on_click(self, painter, location):
         self.model.tick()
         self.draw(painter)

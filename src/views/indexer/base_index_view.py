@@ -1,6 +1,6 @@
 from typing import Callable
 
-from PyQt6.QtCore import QRect, Qt
+from PyQt6.QtCore import QPoint, QRect, Qt
 from PyQt6.QtGui import QPen
 
 from src.models.indexer.response_base import ResponseBase
@@ -32,5 +32,5 @@ class BaseIndexView:
     def draw_text(self, painter):
         pass
 
-    def on_click(self, painter):
+    def on_click(self, painter, location: QPoint):
         pass

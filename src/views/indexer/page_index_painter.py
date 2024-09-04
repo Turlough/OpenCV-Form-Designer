@@ -33,7 +33,7 @@ class PageIndexPainter(QLabel):
             answer: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
             if not answer:
                 return
-            answer.on_click(QPainter(self))
+            answer.on_click(QPainter(self), pos)
             self.on_item_indexed(answer)
 
     def paintEvent(self, event):

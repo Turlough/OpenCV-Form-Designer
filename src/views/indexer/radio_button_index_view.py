@@ -19,7 +19,7 @@ class RadioButtonIndexView(TickBoxIndexView):
 
         painter.drawText(x, y, tick_mark)
 
-    def on_click(self, painter):
+    def on_click(self, painter, location):
         self.model.tick()
 
 

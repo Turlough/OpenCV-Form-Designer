@@ -29,3 +29,12 @@ class RadioGroupIndexView(BaseIndexView):
         super().draw(painter)
         for bv in self.buttons:
             bv.draw(painter)
+
+    def on_click(self, painter, location):
+        x, y = location.x(), location.y()
+        for b in self.buttons:
+            b.model.ticked = False
+            r = b.rectangle
+            if r.left() < x < r.right() and r.top() < y < r.bottom():
+                b.model.ticked = True
+                self.model.text = b.model.question.name
