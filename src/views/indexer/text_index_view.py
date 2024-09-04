@@ -19,6 +19,7 @@ class TextIndexView(BaseIndexView):
         dialog.move(x, y)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.model.text = dialog.lineEdit.text()
+            self.on_item_indexed()
         # self.on_item_indexed(self.model)
         self.draw(painter)
 

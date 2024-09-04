@@ -13,7 +13,7 @@ class BaseIndexView:
     rectangle: QRect
     on_item_indexed: Callable[['ResponseBase'], None]
 
-    def __init__(self, model, scale, callback: Callable[['ResponseBase'], None]):
+    def __init__(self, model, scale, callback: Callable):
         self.model = model
         self.scale = scale
         self.on_item_indexed = callback

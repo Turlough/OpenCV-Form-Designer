@@ -30,7 +30,8 @@ class IndexFileManager:
         start = self.page_start_indexes[self.page_number]
         for i, value in enumerate(values):
             row = self.rows[self.row_number]
-            col = start + i
+            # Add one because col 1 is an image path
+            col = 1 + start + i
             row[col] = value
         self.write_all()
 
