@@ -1,4 +1,4 @@
-from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup, TickBox
+from src.models.designer.answer_box import AnswerBox, NumberBox, RadioButton, RadioGroup, TextBox, TickBox
 from src.models.indexer.radio_group_response import RadioButtonResponse, RadioGroupResponse
 from src.models.indexer.response_base import TextIndexResponse, TickBoxResponse
 from src.views.indexer.radio_button_index_view import RadioButtonIndexView
@@ -12,6 +12,8 @@ class IndexViewFactory:
         # Map model classes to their corresponding view classes
         self._mapping = {
             AnswerBox  : (TextIndexResponse, TextIndexView),
+            TextBox    : (TextIndexResponse, TextIndexView),
+            NumberBox  : (TextIndexResponse, TextIndexView),
             TickBox    : (TickBoxResponse, TickBoxIndexView),
             RadioButton: (RadioButtonResponse, RadioButtonIndexView),
             RadioGroup : (RadioGroupResponse, RadioGroupIndexView)
