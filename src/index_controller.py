@@ -69,9 +69,9 @@ class IndexController:
 
     def list_index_values(self):
         response = list()
-        headers = 'Name', 'Value'
-        for r in self.views:
+        headers = '#', 'Field', 'Index Value'
+        for i, r in enumerate(self.views):
             name = r.model.question.name
             text = r.model.text
-            response.append((name, text))
-        return tabulate(response, headers=headers, tablefmt="psql")
+            response.append((i + 1, name, text))
+        return tabulate(response, headers=headers, tablefmt="fancy_grid")
