@@ -67,29 +67,19 @@ class PageDesignPainter(QLabel):
             pen = QPen(Qt.GlobalColor.darkYellow, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-            self.update()
         if self.mode == EditMode.BOX_GROUP and not self.rect.isNull():
             painter = QPainter(self)
             pen = QPen(Qt.GlobalColor.red, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-            self.update()
         if self.mode == EditMode.CREATE_BOX and not self.rect.isNull():
             painter = QPainter(self)
             pen = QPen(Qt.GlobalColor.blue, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-            self.update()
         self.draw_answers()
-        self.draw_groups()
 
     def draw_answers(self):
         for a in self.controller.views:
             a.draw(QPainter(self))
-        self.update()
-
-    def draw_groups(self):
-        painter = QPainter(self)
-        for g in self.controller.page.groups:
-            draw_group(g, painter, self.scale)
         self.update()
