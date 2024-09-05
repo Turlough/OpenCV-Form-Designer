@@ -32,3 +32,5 @@ class RadioGroupIndexView(BaseIndexView):
                 b.model.ticked = True
                 self.model.text = b.model.question.name
                 self.on_item_indexed()
+            b.draw(painter)
+

@@ -17,7 +17,7 @@ class TickBoxResponse(ResponseBase):
 
     def tick(self):
         self.ticked = not self.ticked
-        self.text = "True" if self.ticked else "False"
+        self.text = "Yes" if self.ticked else "No"
 
 
 @dataclass

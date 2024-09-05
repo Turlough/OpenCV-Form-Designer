@@ -4,7 +4,7 @@ from src.models.designer.answer_box import RadioButton, RadioGroup
 from src.models.indexer.response_base import ResponseBase, TickBoxResponse
 
 
-class RadioButtonResponse(ResponseBase):
+class RadioButtonResponse(TickBoxResponse):
     question: RadioButton
 
     def __init__(self, question, text, group):
@@ -30,3 +30,4 @@ class RadioGroupResponse(ResponseBase):
                 b.ticked = True
                 b.text = b.question.name
                 self.text = text
+
