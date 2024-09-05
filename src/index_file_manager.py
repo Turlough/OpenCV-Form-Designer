@@ -22,7 +22,7 @@ class IndexFileManager:
                 self.rows.append(row)
 
     def write_all(self):
-        with open(self.input_csv, 'w') as file:
+        with open(self.input_csv, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerows(self.rows)
 
