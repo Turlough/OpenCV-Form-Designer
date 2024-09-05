@@ -1,9 +1,5 @@
 import csv
 import os.path
-
-from pdf2image import convert_from_path
-import numpy as np
-
 from src.tools.pdf_to_img import get_page
 
 
@@ -58,9 +54,11 @@ class IndexFileManager:
         return self.rows[self.row_number][col]
 
     def get_page_image(self):
-        col = self.page_start_indexes[self.page_number]
         row = self.rows[self.row_number]
-        pdf = row[col]
+        pdf = row[0]
         path = os.path.join(self.export_folder, pdf)
         return get_page(path, self.page_number)
+
+    def next(self):
+        self.page_number += 1
 

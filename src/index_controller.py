@@ -26,15 +26,19 @@ class IndexController:
         self.file_manager = IndexFileManager(index_path)
         self.file_manager.read_all()
         self.views = list()
-        self.next()
+        self.load_page()
 
-    def next(self):
+    def load_page(self):
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
         self.highlighter = Highlighter.from_np_array(image)
         j, _ = self.template_manager.get_template(page_no)
         self.json_path = j
         self.load_from_json()
+
+    def next(self):
+        self.file_manager.next()
+        self.load_page()
 
     def unscale(self, x1, y1, x2=0, y2=0):
         x1 /= self.scale
