@@ -66,9 +66,8 @@ class IndexController:
         self.views.clear()
         for i, a in enumerate(page.answers):
             index = self.file_manager.load_index_value(i)
-            factory = IndexViewFactory()
-            v: BaseIndexView = factory.create_view(a, self.scale, on_index_completed=self.save_index_value)
-            v.model.text = index
+            factory = IndexViewFactory(self.scale, on_index_completed=self.save_index_value)
+            v: BaseIndexView = factory.create_view(a, index)
             self.views.append(v)
 
     def save_index_value(self):

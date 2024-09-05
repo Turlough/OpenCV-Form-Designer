@@ -9,21 +9,14 @@ from src.views.indexer.radio_button_index_view import RadioButtonIndexView
 class RadioGroupIndexView(BaseIndexView):
     model: RadioGroupResponse
     scale: float
-    pen = QPen(Qt.GlobalColor.blue, 2)
+    pen = QPen(Qt.GlobalColor.darkYellow, 2)
     buttons: list[RadioButtonIndexView]
 
-    def __init__(self, model, scale, callback):
-        super().__init__(model, scale, callback)
+    def __init__(self, model, scale, on_item_indexed):
+        super().__init__(model, scale, on_item_indexed)
         self.buttons = list()
         for b in self.model.button_responses:
-            self.buttons.append(RadioButtonIndexView(b, scale, self.on_button_clicked))
-
-    def on_button_clicked(self, button):
-        for b in self.buttons:
-            if b == button:
-                self.model.text = b.model.question.name
-                self.on_item_indexed(self.model)
-                return
+            self.buttons.append(RadioButtonIndexView(b, scale, self.on_item_indexed))
 
     def draw(self, painter):
         super().draw(painter)
@@ -38,3 +31,4 @@ class RadioGroupIndexView(BaseIndexView):
             if r.left() < x < r.right() and r.top() < y < r.bottom():
                 b.model.ticked = True
                 self.model.text = b.model.question.name
+                self.on_item_indexed()

@@ -13,10 +13,10 @@ class BaseIndexView:
     rectangle: QRect
     on_item_indexed: Callable[['ResponseBase'], None]
 
-    def __init__(self, model, scale, callback: Callable):
+    def __init__(self, model, scale, on_item_indexed: Callable):
         self.model = model
         self.scale = scale
-        self.on_item_indexed = callback
+        self.on_item_indexed = on_item_indexed
 
         ((x1, y1), (x2, y2)) = model.question.rectangle.coordinates(scale=scale)
         self.rectangle = QRect(x1, y1, x2 - x1, y2 - y1)

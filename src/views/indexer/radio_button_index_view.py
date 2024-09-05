@@ -8,18 +8,7 @@ from src.views.indexer.tick_box_index_view import TickBoxIndexView
 class RadioButtonIndexView(TickBoxIndexView):
     model: RadioButtonResponse
     scale: float
-    pen = QPen(Qt.GlobalColor.blue, 2)
-
-    def draw_text(self, painter):
-        painter.setFont(QFont("Arial", 8))
-        m = painter.fontMetrics()
-        text_height = m.height()
-        x, y = center_right(self.rectangle, text_height)
-        desc = self.model.question.name
-        desc = desc[3] if len(desc) > 3 else desc
-        tick_mark = '\u2714 ' + desc if self.model.ticked else ''
-
-        painter.drawText(x, y, tick_mark)
+    pen = QPen(Qt.GlobalColor.darkYellow, 2)
 
     def on_click(self, painter, location):
         self.model.tick()
