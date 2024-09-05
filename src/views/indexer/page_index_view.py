@@ -91,13 +91,13 @@ class PageIndexView(QWidget):
     def reload(self):
         self.update_text_area()
         self.picture.draw_answers()
-        # self.picture.draw_groups()
 
     def next_page(self):
         self.controller.next()
         image = self.controller.get_image()
         self.picture.page = self.controller.page
         self.display(image)
+        self.update_text_area()
 
     def on_index_submitted(self, model):
         self.reload()
