@@ -5,6 +5,10 @@ import numpy as np
 poppler_path = r"C:\Users\tcowman\py\rectangle_detector\poppler-24.07.0\Library\bin"
 
 
-def get_page(path, page):
-    pages = convert_from_path(path, poppler_path=poppler_path, dpi=300)
-    return np.array(pages[page + 3])
+class PdfExtractor:
+
+    def __init__(self, path):
+        self.pages = convert_from_path(path, poppler_path=poppler_path, dpi=300)
+
+    def get_page(self, page):
+        return np.array(self.pages[page + 3])

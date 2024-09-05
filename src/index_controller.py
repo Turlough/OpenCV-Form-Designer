@@ -1,8 +1,7 @@
 from tabulate import tabulate
-from collections import deque
 
-from src.index_file_manager import IndexFileManager
-from src.template_manager import TemplateManager
+from src.tools.index_file_manager import IndexFileManager
+from src.tools.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
@@ -37,7 +36,7 @@ class IndexController:
         self.load_from_json()
 
     def next(self):
-        self.file_manager.next()
+        self.file_manager.next_page()
         self.load_page()
 
     def unscale(self, x1, y1, x2=0, y2=0):

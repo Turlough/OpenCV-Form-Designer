@@ -1,6 +1,6 @@
 import csv
 import os.path
-from src.tools.pdf_to_img import get_page
+from src.tools.pdf_page_extractor import PdfExtractor
 
 
 class IndexFileManager:
@@ -10,6 +10,7 @@ class IndexFileManager:
     row_number: int = 0
     page_number: int = 0
     page_start_indexes: list[int]
+    extractor: PdfExtractor
 
     def __init__(self, input_csv):
         self.input_csv = input_csv
@@ -23,6 +24,7 @@ class IndexFileManager:
             reader = csv.reader(file)
             for row in reader:
                 self.rows.append(row)
+        self.new_pdf()
 
     def write_all(self):
         with open(self.input_csv, 'w', newline='') as file:
@@ -38,27 +40,25 @@ class IndexFileManager:
             row[col] = value
         self.write_all()
 
-    def load_page_indexes(self, num_fields):
-        start = self.page_start_indexes[self.page_number]
-        row = self.rows[self.row_number]
-        result = list()
-        for i in range(num_fields):
-            col = start + i
-            value = row[col]
-            result.append(value)
-        return result
-
     def load_index_value(self, local_col_num):
         # Add one, because first index is path
         col = 1 + local_col_num + self.page_start_indexes[self.page_number]
         return self.rows[self.row_number][col]
 
     def get_page_image(self):
+        return self.extractor.get_page(self.page_number)
+
+    def next_row(self):
+        self.row_number += 1
+        self.page_number = 0
+        self.new_pdf()
+
+    def new_pdf(self):
         row = self.rows[self.row_number]
         pdf = row[0]
         path = os.path.join(self.export_folder, pdf)
-        return get_page(path, self.page_number)
+        self.extractor = PdfExtractor(path)
 
-    def next(self):
+    def next_page(self):
         self.page_number += 1
 
