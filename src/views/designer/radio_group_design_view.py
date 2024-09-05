@@ -13,7 +13,7 @@ class RadioGroupDesignView(BaseDesignView):
 
     def __init__(self, model, scale, callback):
         super().__init__(model, scale, callback)
-
+        self.button_views = list()
         for b in self.model.buttons:
             view = RadioButtonDesignView(b, self.scale, callback)
             self.button_views.append(view)
