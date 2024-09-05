@@ -7,14 +7,18 @@ from src.models.rectangle import Rectangle
 class Highlighter:
     image = None
     image_path: str
-    json_path: str
+    boxes = list()
+    tick_box_groups = list()
 
-    def __init__(self, path: str):
-        self.image_path = path
-        self.json_path = path.replace('.tif', '.json')
-        self.image = cv2.imread(path)
-        self.boxes = list()
-        self.tick_box_groups = list()
+    @classmethod
+    def from_path(cls, path):
+        cls.image = cv2.imread(path)
+        return cls()
+
+    @classmethod
+    def from_np_array(cls, image):
+        cls.image = image
+        return cls()
 
     def detect_boxes(self):
 

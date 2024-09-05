@@ -1,16 +1,23 @@
 import csv
+import os.path
+
+from pdf2image import convert_from_path
+import numpy as np
+
+from src.tools.pdf_to_img import get_page
 
 
 class IndexFileManager:
     input_csv: str
+    export_folder: str
     rows: list
     row_number: int = 0
     page_number: int = 0
     page_start_indexes: list[int]
-    image_path: str
 
     def __init__(self, input_csv):
         self.input_csv = input_csv
+        self.export_folder = os.path.dirname(input_csv)
         self.rows = list()
         self.page_start_indexes = [0, 13]  # TODO
 
@@ -49,3 +56,11 @@ class IndexFileManager:
         # Add one, because first index is path
         col = 1 + local_col_num + self.page_start_indexes[self.page_number]
         return self.rows[self.row_number][col]
+
+    def get_page_image(self):
+        col = self.page_start_indexes[self.page_number]
+        row = self.rows[self.row_number]
+        pdf = row[col]
+        path = os.path.join(self.export_folder, pdf)
+        return get_page(path, self.page_number)
+

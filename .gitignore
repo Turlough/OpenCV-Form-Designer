@@ -1,3 +1,5 @@
 build/
 dist/
 .idea/
+poppler-24.07.0/
+

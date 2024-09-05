@@ -45,7 +45,7 @@ class DesignController:
             return
         path = self.paths.popleft()
         self.image_path = path
-        self.highlighter = Highlighter(path)
+        self.highlighter = Highlighter.from_path(path)
         self.json_path = path.replace('.tif', '.json')
         self.sequence_path = path.replace('.tif', '.csv')
 

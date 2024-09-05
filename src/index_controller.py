@@ -2,6 +2,7 @@ from tabulate import tabulate
 from collections import deque
 
 from src.index_file_manager import IndexFileManager
+from src.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
@@ -17,24 +18,22 @@ class IndexController:
     highlighter: Highlighter
     views: list[BaseIndexView]
     file_manager: IndexFileManager
+    template_manager: TemplateManager
 
-    def __init__(self, paths, scale, index_path):
+    def __init__(self, template_folder, scale, index_path):
         self.scale = scale
+        self.template_manager = TemplateManager(template_folder)
         self.file_manager = IndexFileManager(index_path)
         self.file_manager.read_all()
-        self.paths = deque()
         self.views = list()
-        for p in paths:
-            self.paths.append(p)
         self.next()
 
     def next(self):
-        if not self.paths:
-            return
-        path = self.paths.popleft()
-        self.image_path = path
-        self.highlighter = Highlighter(path)
-        self.json_path = path.replace('.tif', '.json')
+        page_no = self.file_manager.page_number
+        image = self.file_manager.get_page_image()
+        self.highlighter = Highlighter.from_np_array(image)
+        j, _ = self.template_manager.get_template(page_no)
+        self.json_path = j
         self.load_from_json()
 
     def unscale(self, x1, y1, x2=0, y2=0):
