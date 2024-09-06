@@ -10,7 +10,7 @@ from src.models.rectangle import Rectangle
 from src.models.designer.form_page import FormPage
 from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup
 from src.views.designer.base_design_view import BaseDesignView
-from src.views.designer.view_factory import ViewFactory
+from src.views.designer.design_view_factory import DesignViewFactory
 
 
 class EditMode(Enum):
@@ -144,7 +144,7 @@ class DesignController:
     def build_views(self, page):
         self.views.clear()
         for a in page.answers:
-            factory = ViewFactory()
+            factory = DesignViewFactory()
             v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
             self.views.append(v)
 
@@ -162,7 +162,7 @@ class DesignController:
         new_model = model.cast(return_value)
         i = self.page.answers.index(model)
         self.page.answers[i] = new_model
-        new_view = ViewFactory().create_view(new_model, self.scale, editor_callback=self.save_and_reload)
+        new_view = DesignViewFactory().create_view(new_model, self.scale, editor_callback=self.save_and_reload)
         i = self.views.index(view)
         self.views[i] = new_view
         self.save_and_reload()

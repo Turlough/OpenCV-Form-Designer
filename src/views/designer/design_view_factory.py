@@ -5,7 +5,7 @@ from src.views.designer.text_design_view import TextDesignView
 from src.views.designer.tick_box_design_view import TickBoxDesignView
 
 
-class ViewFactory:
+class DesignViewFactory:
     def __init__(self):
         # Map model classes to their corresponding view classes
         self._mapping = {
