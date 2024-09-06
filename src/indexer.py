@@ -14,7 +14,7 @@ index_path = r"C:\_PV\IFAC\EXPORT\24151 1111101\EXPORT.TXT"
 
 def launch(folder, index_path):
     app = QApplication(sys.argv)
-    controller = IndexController(template_folder, scale, index_path)
+    controller = IndexController(folder, scale, index_path)
     viewer = PageIndexView(controller)
     viewer.init_ui()
     viewer.showMaximized()
