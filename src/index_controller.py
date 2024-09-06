@@ -1,11 +1,13 @@
 from tabulate import tabulate
 
+from src.models.designer.answer_box import RadioGroup
 from src.tools.index_file_manager import IndexFileManager
 from src.tools.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
 from src.models.designer.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
 from src.views.indexer.base_index_view import BaseIndexView
+from src.views.indexer.radio_group_index_view import RadioGroupIndexView
 
 
 class IndexController:
@@ -49,7 +51,7 @@ class IndexController:
     def locate_surrounding_box(self, x, y) -> BaseIndexView | None:
         x, y, _, _ = self.unscale(x, y)
         for resp in self.views:
-            r = resp.model.question.rectangle
+            r = resp.model.rectangle
             if r.x1 <= x <= r.x2 and r.y1 <= y <= r.y2:
                 return resp
         return None
@@ -69,18 +71,21 @@ class IndexController:
         for i, a in enumerate(page.answers):
             index = self.file_manager.load_index_value(i)
             factory = IndexViewFactory(self.scale, on_index_completed=self.save_index_value)
-            v: BaseIndexView = factory.create_view(a, index)
+            if isinstance(a, RadioGroup):
+                v: BaseIndexView = RadioGroupIndexView(a, index, self.scale, self.save_index_value)
+            else:
+                v: BaseIndexView = factory.create_view(a, index)
             self.views.append(v)
 
     def save_index_value(self):
-        values = [view.model.text for view in self.views]
+        values = [view.text for view in self.views]
         self.file_manager.save_page_indexes(values)
 
     def list_index_values(self):
         response = list()
         headers = '#', 'Field', 'Index Value'
-        for i, r in enumerate(self.views):
-            name = r.model.question.name
-            text = r.model.text
+        for i, view in enumerate(self.views):
+            name = view.model.name
+            text = view.text
             response.append((i + 1, name, text))
         return tabulate(response, headers=headers, tablefmt="fancy_grid")
