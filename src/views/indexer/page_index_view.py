@@ -123,6 +123,9 @@ class PageIndexView(QWidget):
         self.index_text.setTextCursor(cursor)
 
     def reload(self):
+        image = self.controller.get_image()
+        self.picture.page = self.controller.page
+        self.display(image)
         view = self.controller.current_view
         self.small_display(view)
         self.update_text_area()
