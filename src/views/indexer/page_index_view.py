@@ -67,6 +67,8 @@ class PageIndexView(QWidget):
         right_layout.addWidget(self.small_picture)
 
         self.index_text = QTextEdit()
+        self.index_text.setFont(QFont('Arial', 20))
+        self.index_text.setMaximumHeight(150)
         right_layout.addWidget(self.index_text)
 
         right_layout.addWidget(self.summary_area)

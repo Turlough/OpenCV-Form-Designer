@@ -40,7 +40,7 @@ class IndexController:
         self.load_from_json()
 
     def crop_to_field(self, model: AnswerBase):
-        return self.highlighter.crop(model.rectangle, 1)
+        return self.highlighter.crop(model.rectangle, self.scale * 2)
 
     def next(self):
         self.file_manager.next_page()

@@ -44,8 +44,9 @@ class Highlighter:
         return rectangles
 
     def crop(self, r: Rectangle, scale: float):
-        img = cv2.resize(self.image, None, fx=scale, fy=scale)
-        return img[r.y1:r.y2, r.x1:r.x2]
+        b = 50  # border
+        cropped = self.image[r.y1 - b:r.y2 + b, r.x1 - b:r.x2 + b]
+        return cv2.resize(cropped, None, fx=scale, fy=scale)
 
     def scaled_and_highlighted(self, scale: float = 1.0):
         blurred = cv2.GaussianBlur(self.image, (3, 3), 0)
