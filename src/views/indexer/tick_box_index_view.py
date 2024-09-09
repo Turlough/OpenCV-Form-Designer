@@ -13,6 +13,18 @@ class TickBoxIndexView(BaseIndexView):
     scale: float
     pen = QPen(Qt.GlobalColor.blue, 2)
 
+    def __init__(self, model, text, scale, on_item_indexed, widget):
+        super().__init__(model, text, scale, on_item_indexed, widget)
+        if text.lower() == 'yes':
+            self.ticked = True
+
+    def draw_rectangle(self, painter):
+        if self.ticked:
+            painter.setBrush(colors.active_button)
+        else:
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawRect(self.rectangle)
+
     def draw_text(self, painter):
         self.pen = QPen(colors.index, 2)
         painter.setFont(QFont("Arial", 8))
@@ -20,11 +32,11 @@ class TickBoxIndexView(BaseIndexView):
         text_height = m.height()
         x, y = center_right(self.rectangle, text_height)
         desc = self.model.name
-        # desc = desc[:3] if len(desc) > 3 else desc
-        tick_mark = '\u2714 ' + desc if self.ticked else ''
+        tick_mark = '\u2714 Yes' if self.ticked else ''
+        self.text = 'Yes' if self.ticked else ''
 
         painter.drawText(x, y, tick_mark)
 
     def on_click(self, painter, location):
-        # self.model.tick()
+        self.ticked = not self.ticked
         self.draw(painter)
