@@ -26,7 +26,6 @@ class PageIndexView(QWidget):
         self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.on_index_submitted)
         super().__init__()
 
-
     def init_ui(self):
         """
         Layout UI elements
@@ -37,7 +36,6 @@ class PageIndexView(QWidget):
 
         self.controller.image_widget = self
         self.controller.load_page()
-        self.picture.page = self.controller.page
 
         main_layout = QHBoxLayout()
         image_button_layout = QHBoxLayout()

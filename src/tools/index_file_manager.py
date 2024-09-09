@@ -10,7 +10,7 @@ class IndexFileManager:
     row_number: int = 0
     page_number: int = 0
     page_start_indexes: list[int]
-    # extractor: PdfExtractor
+    extractor: PdfExtractor
 
     def __init__(self, input_csv):
         self.input_csv = input_csv
@@ -46,7 +46,7 @@ class IndexFileManager:
         return self.rows[self.row_number][col]
 
     def get_page_image(self):
-        return r"C:\_PV\forms\SKM_C250i2408161348002.tif"
+        return self.extractor.get_page(self.page_number)
 
     def next_row(self):
         self.row_number += 1
@@ -57,7 +57,7 @@ class IndexFileManager:
         row = self.rows[self.row_number]
         pdf = row[0]
         path = os.path.join(self.export_folder, pdf)
-        # self.extractor = PdfExtractor(path)
+        self.extractor = PdfExtractor(path)
 
     def next_page(self):
         self.page_number += 1

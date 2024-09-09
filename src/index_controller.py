@@ -29,12 +29,11 @@ class IndexController:
         self.file_manager = IndexFileManager(index_path)
         self.file_manager.read_all()
         self.views = list()
-        # self.load_page()
 
     def load_page(self):
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
-        self.highlighter = Highlighter.from_path(image)
+        self.highlighter = Highlighter.from_np_array(image)
         j, _ = self.template_manager.get_template(page_no)
         self.json_path = j
         self.load_from_json()
