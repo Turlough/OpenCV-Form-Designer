@@ -43,6 +43,10 @@ class Highlighter:
         rectangles.sort(key=lambda r: r.y1)
         return rectangles
 
+    def crop(self, r: Rectangle, scale: float):
+        img = cv2.resize(self.image, None, fx=scale, fy=scale)
+        return img[r.y1:r.y2, r.x1:r.x2]
+
     def scaled_and_highlighted(self, scale: float = 1.0):
         blurred = cv2.GaussianBlur(self.image, (3, 3), 0)
         return cv2.resize(blurred, None, fx=scale, fy=scale)

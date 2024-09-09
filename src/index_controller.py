@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget
 from tabulate import tabulate
 
+from src.models.designer.answer_base import AnswerBase
 from src.models.designer.answer_box import RadioGroup
 from src.tools.index_file_manager import IndexFileManager
 from src.tools.template_manager import TemplateManager
@@ -33,10 +34,13 @@ class IndexController:
     def load_page(self):
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
-        self.highlighter = Highlighter.from_np_array(image)
+        self.highlighter = Highlighter.from_path(image)
         j, _ = self.template_manager.get_template(page_no)
         self.json_path = j
         self.load_from_json()
+
+    def crop_to_field(self, model: AnswerBase):
+        return self.highlighter.crop(model.rectangle, 1)
 
     def next(self):
         self.file_manager.next_page()
