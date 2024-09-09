@@ -59,10 +59,15 @@ class PageIndexView(QWidget):
         # Image area bottom left
         self.add_scroll_area_for_image(left_layout)
 
-        next_button = QPushButton()
-        next_button.setText('Next')
-        next_button.clicked.connect(self.next_page)
-        image_button_layout.addWidget(next_button)
+        next_page_button = QPushButton()
+        next_page_button.setText('Next Page')
+        next_page_button.clicked.connect(self.next_page)
+        image_button_layout.addWidget(next_page_button)
+
+        next_field_button = QPushButton()
+        next_field_button.setText('Next Field')
+        next_field_button.clicked.connect(self.next_field)
+        image_button_layout.addWidget(next_field_button)
 
         right_layout.addWidget(self.small_picture)
 
@@ -79,7 +84,7 @@ class PageIndexView(QWidget):
         self.picture.page = self.controller.page
         image = self.controller.get_image()
         self.display(image)
-        view = self.controller.views[0]
+        view = self.controller.current_view
         self.small_display(view)
         self.update_text_area()
 
@@ -114,17 +119,21 @@ class PageIndexView(QWidget):
         self.index_text.setText(view.text)
 
     def reload(self):
+        view = self.controller.current_view
+        self.small_display(view)
         self.update_text_area()
         self.picture.draw_answers()
 
     def next_page(self):
-        self.controller.next()
+        self.controller.next_page()
         image = self.controller.get_image()
         self.picture.page = self.controller.page
         self.display(image)
         self.update_text_area()
 
-    def on_index_submitted(self, model: AnswerBase):
-        img = self.controller.crop_to_field(model)
-        self.small_display(img)
+    def next_field(self):
+        self.controller.next_field()
+        self.reload()
+
+    def on_index_submitted(self, model):
         self.reload()

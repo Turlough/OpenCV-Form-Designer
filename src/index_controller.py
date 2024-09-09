@@ -23,6 +23,7 @@ class IndexController:
     file_manager: IndexFileManager
     template_manager: TemplateManager
     image_widget: QWidget
+    current_view: BaseIndexView
 
     def __init__(self, template_folder, scale, index_path):
         self.scale = scale
@@ -38,13 +39,21 @@ class IndexController:
         j, _ = self.template_manager.get_template(page_no)
         self.json_path = j
         self.load_from_json()
+        self.current_view = self.views[0]
 
     def crop_to_field(self, model: AnswerBase):
         return self.highlighter.crop(model.rectangle, self.scale * 2)
 
-    def next(self):
+    def next_page(self):
         self.file_manager.next_page()
         self.load_page()
+
+    def next_field(self):
+        idx = self.views.index(self.current_view)
+        if idx + 1 >= len(self.views):
+            self.next_page()
+        else:
+            self.current_view = self.views[idx + 1]
 
     def unscale(self, x1, y1, x2=0, y2=0):
         x1 /= self.scale
