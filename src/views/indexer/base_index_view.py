@@ -1,10 +1,11 @@
 from typing import Any, Callable
 
 from PyQt6.QtCore import QPoint, QRect, Qt
-from PyQt6.QtGui import QPen
+from PyQt6.QtGui import QColor, QPen
 from PyQt6.QtWidgets import QWidget
 
 from src.models.designer.answer_base import AnswerBase
+from src.tools import colors
 
 
 class BaseIndexView:
@@ -29,6 +30,10 @@ class BaseIndexView:
     def draw(self, painter):
         self.draw_rectangle(painter)
         self.draw_text(painter)
+
+    def highlight(self, painter):
+        painter.setBrush(colors.selected)
+        painter.drawRect(self.rectangle)
 
     def draw_rectangle(self, painter):
         painter.setPen(self.pen)

@@ -30,18 +30,22 @@ class PageIndexPainter(QLabel):
 
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.pos()
-            answer: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
-            if not answer:
+            view: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
+            if not view:
                 return
-            answer.on_click(QPainter(self), pos)
-            self.on_item_indexed(answer)
+            self.controller.current_view = view
+            view.on_click(QPainter(self), pos)
+
+            self.on_item_indexed(view)
 
     def paintEvent(self, event):
         super().paintEvent(event)
         self.draw_answers()
 
     def draw_answers(self):
-        for a in self.controller.views:
-            a.draw(QPainter(self))
+        for view in self.controller.views:
+            view.draw(QPainter(self))
+            if view == self.controller.current_view:
+                view.highlight(QPainter(self))
         self.update()
 
