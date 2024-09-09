@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QLineEdit, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
-from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtGui import QPixmap, QImage, QTextCursor
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
@@ -74,6 +74,7 @@ class PageIndexView(QWidget):
         self.index_text = QTextEdit()
         self.index_text.setFont(QFont('Arial', 20))
         self.index_text.setMaximumHeight(150)
+        self.index_text.textChanged.connect(self.on_index_submitted)
         right_layout.addWidget(self.index_text)
 
         right_layout.addWidget(self.summary_area)
@@ -117,6 +118,9 @@ class PageIndexView(QWidget):
         pixmap = QPixmap(qt_image)
         self.small_picture.setPixmap(pixmap)
         self.index_text.setText(view.text)
+        cursor = self.index_text.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        self.index_text.setTextCursor(cursor)
 
     def reload(self):
         view = self.controller.current_view
@@ -135,5 +139,11 @@ class PageIndexView(QWidget):
         self.controller.next_field()
         self.reload()
 
-    def on_index_submitted(self, model):
-        self.reload()
+    def on_index_submitted(self):
+        text = self.index_text.toPlainText()
+        if not text.endswith('\n'):
+            return
+        text = text.replace('\n', '').strip()
+        self.controller.current_view.text = text
+        self.controller.save_index_values()
+        self.next_field()

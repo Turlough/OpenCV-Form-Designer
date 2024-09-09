@@ -84,14 +84,14 @@ class IndexController:
         self.views.clear()
         for i, a in enumerate(page.answers):
             index = self.file_manager.load_index_value(i)
-            factory = IndexViewFactory(self.scale, on_index_completed=self.save_index_value)
+            factory = IndexViewFactory(self.scale, on_index_completed=self.save_index_values)
             if isinstance(a, RadioGroup):
-                v: BaseIndexView = RadioGroupIndexView(a, index, self.scale, self.save_index_value)
+                v: BaseIndexView = RadioGroupIndexView(a, index, self.scale, self.save_index_values)
             else:
                 v: BaseIndexView = factory.create_view(a, index, self.image_widget)
             self.views.append(v)
 
-    def save_index_value(self):
+    def save_index_values(self):
         values = [view.text for view in self.views]
         self.file_manager.save_page_indexes(values)
 
