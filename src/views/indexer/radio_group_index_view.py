@@ -13,7 +13,7 @@ class RadioGroupIndexView(BaseIndexView):
     button_views = list()
 
     def __init__(self, model, text, scale, on_item_indexed):
-        super().__init__(model, text, scale, on_item_indexed)
+        super().__init__(model, text, scale, on_item_indexed, None)
         self.button_views = list()
         factory = IndexViewFactory(scale, self.on_item_indexed)
         for b in self.model.buttons:

@@ -1,3 +1,4 @@
+from PyQt6.QtWidgets import QWidget
 from tabulate import tabulate
 
 from src.models.designer.answer_box import RadioGroup
@@ -20,6 +21,7 @@ class IndexController:
     views: list[BaseIndexView]
     file_manager: IndexFileManager
     template_manager: TemplateManager
+    image_widget: QWidget
 
     def __init__(self, template_folder, scale, index_path):
         self.scale = scale
@@ -27,12 +29,12 @@ class IndexController:
         self.file_manager = IndexFileManager(index_path)
         self.file_manager.read_all()
         self.views = list()
-        self.load_page()
+        # self.load_page()
 
     def load_page(self):
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
-        self.highlighter = Highlighter.from_np_array(image)
+        self.highlighter = Highlighter.from_path(image)
         j, _ = self.template_manager.get_template(page_no)
         self.json_path = j
         self.load_from_json()
@@ -74,7 +76,7 @@ class IndexController:
             if isinstance(a, RadioGroup):
                 v: BaseIndexView = RadioGroupIndexView(a, index, self.scale, self.save_index_value)
             else:
-                v: BaseIndexView = factory.create_view(a, index)
+                v: BaseIndexView = factory.create_view(a, index, self.image_widget)
             self.views.append(v)
 
     def save_index_value(self):

@@ -1,10 +1,10 @@
-from PyQt6.QtCore import QRect, Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QPen
 from PyQt6.QtWidgets import QDialog
 
 from src.models.designer.answer_box import TextBox
 from src.views.designer.global_functions import center_right
-from src.views.indexer.index_value_dialog import IndexDialog
+from src.views.dialogs.index_value_dialog import IndexDialog
 from src.views.indexer.base_index_view import BaseIndexView
 
 
@@ -13,15 +13,17 @@ class TextIndexView(BaseIndexView):
     pen = QPen(Qt.GlobalColor.darkGreen, 2)
 
     def on_click(self, painter, location):
+        dialog = IndexDialog(self.text, self.rectangle, parent=self.parent_widget)
+        tr = self.rectangle.topRight()
+        tr.setY(tr.y() + dialog.height())
+        tr = self.parent_widget.mapToGlobal(tr)
 
-        dialog = IndexDialog(self.text)
-        x, y = self.rectangle.right() + 100, self.rectangle.bottom() + 30
-        dialog.move(x, y)
+        dialog.lineEdit.setGeometry(self.rectangle)
+        dialog.move(tr)
+
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.text = dialog.lineEdit.text()
             self.on_item_indexed()
-        # self.on_item_indexed(self.model)
-        self.draw(painter)
 
     def draw_text(self, painter):
         painter.setFont(QFont("Arial", 10))

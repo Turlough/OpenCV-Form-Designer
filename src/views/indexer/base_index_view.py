@@ -2,6 +2,7 @@ from typing import Any, Callable
 
 from PyQt6.QtCore import QPoint, QRect, Qt
 from PyQt6.QtGui import QPen
+from PyQt6.QtWidgets import QWidget
 
 from src.models.designer.answer_base import AnswerBase
 
@@ -13,12 +14,14 @@ class BaseIndexView:
     pen: QPen = QPen(Qt.GlobalColor.darkGreen, 2)
     rectangle: QRect
     on_item_indexed: Callable[['AnswerBase'], None]
+    parent_widget: QWidget
 
-    def __init__(self, model, text, scale, on_item_indexed: Callable):
+    def __init__(self, model, text, scale, on_item_indexed: Callable, widget):
         self.model = model
         self.text = text
         self.scale = scale
         self.on_item_indexed = on_item_indexed
+        self.parent_widget = widget
 
         ((x1, y1), (x2, y2)) = model.rectangle.coordinates(scale=scale)
         self.rectangle = QRect(x1, y1, x2 - x1, y2 - y1)

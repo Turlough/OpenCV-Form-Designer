@@ -25,7 +25,7 @@ class PageIndexView(QWidget):
         self.edit = QTextEdit()
         self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.on_index_submitted)
         super().__init__()
-        self.picture.page = controller.page
+
 
     def init_ui(self):
         """
@@ -34,6 +34,10 @@ class PageIndexView(QWidget):
         window = QMainWindow()
         right_layout = QVBoxLayout()
         left_layout = QVBoxLayout()
+
+        self.controller.image_widget = self
+        self.controller.load_page()
+        self.picture.page = self.controller.page
 
         main_layout = QHBoxLayout()
         image_button_layout = QHBoxLayout()
@@ -63,7 +67,7 @@ class PageIndexView(QWidget):
         self.edit.setFont(font)
 
         self.setLayout(main_layout)
-
+        self.picture.page = self.controller.page
         image = self.controller.get_image()
         self.display(image)
         self.update_text_area()

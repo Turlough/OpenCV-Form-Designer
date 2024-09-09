@@ -1,19 +1,20 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDialog, QLineEdit, QPushButton, QVBoxLayout
+from PyQt6.QtCore import QRect, Qt
+from PyQt6.QtWidgets import QDialog, QLineEdit, QPushButton, QTextEdit, QVBoxLayout
 
 
 class IndexDialog(QDialog):
-    def __init__(self, text: str, parent=None, callback=None):
+    def __init__(self, text: str, rect: QRect, parent=None, callback=None):
         super().__init__(parent)
         self.callback = callback
         # Remove the title bar
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
 
         # Layout and widgets
-        self.setLayout(QVBoxLayout())
+        layout = QVBoxLayout(self)
+        self.setLayout(layout)
         self.lineEdit = QLineEdit(self)
         self.lineEdit.setText(text)
-        self.layout().addWidget(self.lineEdit)
+        layout.addWidget(self.lineEdit)
 
         # Connect the Enter key press to accept the dialog
         self.lineEdit.returnPressed.connect(self.accept)

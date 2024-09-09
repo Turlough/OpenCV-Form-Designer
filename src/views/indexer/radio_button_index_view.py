@@ -11,7 +11,7 @@ class RadioButtonIndexView(TickBoxIndexView):
     pen = QPen(Qt.GlobalColor.darkYellow, 2)
 
     def __init__(self, model, text, scale, on_item_indexed, group):
-        super().__init__(model, text, scale, on_item_indexed)
+        super().__init__(model, text, scale, on_item_indexed, None)
         self.group = group
 
     def draw_rectangle(self, painter):

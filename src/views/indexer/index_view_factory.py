@@ -18,9 +18,9 @@ class IndexViewFactory:
             TickBox    : TickBoxIndexView,
         }
 
-    def create_view(self, model, text):
+    def create_view(self, model, text, widget):
         view_class = self._get_view_for_model(model)
-        return view_class(model, text, self.scale, self.on_index_completed)
+        return view_class(model, text, self.scale, self.on_index_completed, widget)
 
     def create_button_for_group(self, model: RadioButton, text, group):
         return RadioButtonIndexView(model, text, self.scale, self.on_index_completed, group)
