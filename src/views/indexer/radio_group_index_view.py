@@ -1,5 +1,4 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QPen
+from PyQt6.QtGui import QPen
 
 from src.models.designer.answer_box import RadioGroup
 from src.tools import colors
@@ -34,15 +33,25 @@ class RadioGroupIndexView(BaseIndexView):
             bv.draw(painter)
 
     def on_click(self, painter, location):
+        button = self.identify_button(location)
+        if not button:
+            return
+        for b in self.button_views:
+            if b == button:
+                button.ticked = not button.ticked
+            else:
+                b.ticked = False
+        self.text = button.model.name if button.ticked else ''
+        # self.on_item_indexed()
+        button.draw(painter)
+
+    def identify_button(self, location):
         x, y = location.x(), location.y()
         for b in self.button_views:
-            b.ticked = False
             r = b.rectangle
             if r.left() < x < r.right() and r.top() < y < r.bottom():
-                b.ticked = True
-                self.text = b.model.name
-                # self.on_item_indexed()
-            b.draw(painter)
+                return b
+        return None
 
     def highlight(self, painter):
         painter.setBrush(colors.selected)
