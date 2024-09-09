@@ -36,7 +36,7 @@ class PageIndexPainter(QLabel):
             self.controller.current_view = view
             view.on_click(QPainter(self), pos)
 
-            self.on_item_indexed(view)
+            self.on_item_indexed()
 
     def paintEvent(self, event):
         super().paintEvent(event)

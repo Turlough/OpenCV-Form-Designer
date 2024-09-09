@@ -42,7 +42,7 @@ class RadioGroupIndexView(BaseIndexView):
             else:
                 b.ticked = False
         self.text = button.model.name if button.ticked else ''
-        # self.on_item_indexed()
+        self.on_item_indexed()
         button.draw(painter)
 
     def identify_button(self, location):

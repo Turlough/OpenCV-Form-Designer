@@ -12,7 +12,7 @@ class BaseIndexView:
     model: AnswerBase
     text: str
     scale: float
-    pen: QPen = QPen(Qt.GlobalColor.darkGreen, 2)
+    pen: QPen = QPen(colors.base_color, 2)
     rectangle: QRect
     on_item_indexed: Callable[['AnswerBase'], None]
     parent_widget: QWidget
@@ -43,4 +43,4 @@ class BaseIndexView:
         pass
 
     def on_click(self, painter, location: QPoint):
-        pass
+        self.on_item_indexed()

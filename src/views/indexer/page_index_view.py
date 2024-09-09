@@ -28,8 +28,8 @@ class PageIndexView(QWidget):
         self.controller = controller
         self.scroll_area = QScrollArea()
         self.summary_area = QTextEdit()
-        self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.on_index_submitted)
-        self.small_picture = SmallIndexPainter(controller=controller, on_item_indexed=self.on_index_submitted)
+        self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.reload)
+        self.small_picture = SmallIndexPainter(controller=controller, on_item_indexed=self.on_enter_key_used)
         super().__init__()
 
     def init_ui(self):
@@ -74,7 +74,7 @@ class PageIndexView(QWidget):
         self.index_text = QTextEdit()
         self.index_text.setFont(QFont('Arial', 20))
         self.index_text.setMaximumHeight(150)
-        self.index_text.textChanged.connect(self.on_index_submitted)
+        self.index_text.textChanged.connect(self.on_enter_key_used)
         right_layout.addWidget(self.index_text)
 
         right_layout.addWidget(self.summary_area)
@@ -142,7 +142,7 @@ class PageIndexView(QWidget):
         self.controller.next_field()
         self.reload()
 
-    def on_index_submitted(self):
+    def on_enter_key_used(self):
         text = self.index_text.toPlainText()
         if not text.endswith('\n'):
             return
