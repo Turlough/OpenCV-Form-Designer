@@ -16,7 +16,7 @@ class IndexFileManager:
         self.input_csv = input_csv
         self.export_folder = os.path.dirname(input_csv)
         self.rows = list()
-        self.page_start_indexes = [0, 13]  # TODO
+        self.page_start_indexes = [0, 13, 36]  # TODO
 
     def read_all(self):
         self.rows.clear()
