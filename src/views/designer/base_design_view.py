@@ -1,12 +1,12 @@
 from typing import Callable
 
+import pyperclip
 from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QCursor, QFont, QPen
-
 from src.models.base_field import BaseField
 from src.tools import colors
-from src.views.dialogs.generic_model_editor import ModelEditor
 from src.tools.global_functions import center_right
+from src.views.dialogs.index_value_dialog import TextDialog
 
 
 class BaseDesignView:
@@ -40,7 +40,12 @@ class BaseDesignView:
         painter.drawText(x, y, self.model.name)
 
     def on_click(self):
-        mouse_pos = QCursor.pos()
-        editor = ModelEditor(self.model, callback=self.editor_callback)
-        editor.move(mouse_pos)
-        editor.exec()
+        s = pyperclip.paste()
+        if s:
+            self.model.name = s
+            self.editor_callback()
+        else:
+            mouse_pos = QCursor.pos()
+            editor = TextDialog(self.model, callback=self.editor_callback)
+            editor.move(mouse_pos)
+            editor.exec()

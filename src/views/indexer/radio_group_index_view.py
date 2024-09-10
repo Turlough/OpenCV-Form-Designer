@@ -22,10 +22,10 @@ class RadioGroupIndexView(BaseIndexView):
 
         for view in self.button_views:
             view.ticked = False
-            view.text = ''
+            view.text_box = ''
             if view.model.name == self.text:
                 view.ticked = True
-                view.text = view.model.name
+                view.text_box = view.model.name
 
     def draw(self, painter):
         super().draw(painter)
