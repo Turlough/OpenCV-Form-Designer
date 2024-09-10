@@ -1,20 +1,20 @@
-from typing import Any, Callable
+from typing import Callable
 
-from PyQt6.QtCore import QPoint, QRect, Qt
-from PyQt6.QtGui import QColor, QPen
+from PyQt6.QtCore import QPoint, QRect
+from PyQt6.QtGui import QPen
 from PyQt6.QtWidgets import QWidget
 
-from src.models.designer.answer_base import AnswerBase
+from src.models.base_field import BaseField
 from src.tools import colors
 
 
 class BaseIndexView:
-    model: AnswerBase
+    model: BaseField
     text: str
     scale: float
     pen: QPen = QPen(colors.base_color, 2)
     rectangle: QRect
-    on_item_indexed: Callable[['AnswerBase'], None]
+    on_item_indexed: Callable[['BaseField'], None]
     parent_widget: QWidget
 
     def __init__(self, model, text, scale, on_item_indexed: Callable, widget):

@@ -3,15 +3,16 @@ from typing import Callable
 from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QCursor, QFont, QPen
 
-from src.models.designer.answer_base import AnswerBase
-from src.views.designer.generic_model_editor import ModelEditor
-from src.views.designer.global_functions import center_right
+from src.models.base_field import BaseField
+from src.tools import colors
+from src.views.dialogs.generic_model_editor import ModelEditor
+from src.tools.global_functions import center_right
 
 
 class BaseDesignView:
-    model: AnswerBase
+    model: BaseField
     scale: float
-    pen: QPen = QPen(Qt.GlobalColor.yellow, 2)
+    pen: QPen = QPen(colors.text, 2)
     rectangle: QRect
     editor_callback: Callable
 

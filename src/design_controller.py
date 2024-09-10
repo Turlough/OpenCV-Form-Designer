@@ -4,11 +4,11 @@ from enum import Enum, auto
 
 from tabulate import tabulate
 
-from src.models.designer.group_of_answers import GroupOfAnswers
+from src.models.multi_choice_field import MultiChoice
 from src.tools.highlighter import Highlighter
 from src.models.rectangle import Rectangle
-from src.models.designer.form_page import FormPage
-from src.models.designer.answer_box import AnswerBox, RadioButton, RadioGroup
+from src.models.form_page import FormPage
+from src.models.other_fields import BaseField, RadioButton, RadioGroup
 from src.views.designer.base_design_view import BaseDesignView
 from src.views.designer.design_view_factory import DesignViewFactory
 
@@ -63,7 +63,7 @@ class DesignController:
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rect = Rectangle().from_corners(x1, y1, x2, y2)
         sequence = len(self.page.answers) + 1
-        answer = AnswerBox(sequence, sequence, f'A{sequence:0>2}', rect)
+        answer = BaseField(sequence, sequence, f'A{sequence:0>2}', rect)
         self.page.answers.append(answer)
         self.build_views(self.page)
 
@@ -85,7 +85,7 @@ class DesignController:
         sequence = len(self.page.groups) + 1
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
-        group = GroupOfAnswers(sequence, sequence, name, rectangle)
+        group = MultiChoice(sequence, sequence, name, rectangle)
 
         group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
@@ -137,7 +137,7 @@ class DesignController:
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
             name = f'A{i + 1:0>2d}'
-            a = AnswerBox(i + 1, i + 1, name, r)
+            a = BaseField(i + 1, i + 1, name, r)
             self.page.answers.append(a)
         self.build_views(self.page)
 

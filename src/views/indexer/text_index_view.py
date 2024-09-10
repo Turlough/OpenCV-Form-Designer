@@ -1,11 +1,8 @@
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QPen
-from PyQt6.QtWidgets import QDialog
 
-from src.models.designer.answer_box import TextBox
+from src.models.other_fields import TextBox
 from src.tools import colors
-from src.views.designer.global_functions import center_right
-from src.views.dialogs.index_value_dialog import IndexDialog
+from src.tools.global_functions import center_right
 from src.views.indexer.base_index_view import BaseIndexView
 
 

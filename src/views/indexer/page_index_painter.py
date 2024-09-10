@@ -1,11 +1,11 @@
-from typing import Any, Callable
+from typing import Callable
 
-from PyQt6.QtWidgets import QDialog, QLabel
+from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter
 from PyQt6.QtCore import Qt
 
 from src.index_controller import IndexController
-from src.models.designer.form_page import FormPage
+from src.models.form_page import FormPage
 from src.views.indexer.base_index_view import BaseIndexView
 
 

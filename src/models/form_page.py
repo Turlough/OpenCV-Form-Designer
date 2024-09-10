@@ -1,17 +1,17 @@
 import os.path
 
-from src.models.designer.group_of_answers import GroupOfAnswers
+from src.models.multi_choice_field import MultiChoice
 from src.models.rectangle import Rectangle
-from src.models.designer.answer_box import AnswerBase, AnswerBox
+from src.models.other_fields import BaseField
 
 
-class FormPage(AnswerBase):
+class FormPage(BaseField):
     image = None
     image_path: str
     json_path: str
     csv_path: str
-    answers: list[AnswerBox]
-    groups: list[GroupOfAnswers]
+    answers: list[BaseField]
+    groups: list[MultiChoice]
 
     def __init__(self, path: str):
         self.name = 'Form Page'

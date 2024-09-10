@@ -1,15 +1,15 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QDialog, QLineEdit, QPushButton, QVBoxLayout
+from PyQt6.QtWidgets import QDialog, QPushButton, QVBoxLayout
 
-from src.models.designer.answer_base import AnswerBase
-from src.models.designer.answer_box import NumberBox, RadioButton, TextBox, TickBox
+from src.models.base_field import BaseField
+from src.models.other_fields import NumberBox, RadioButton, TextBox, TickBox
 
 
 class TypeChangeDialog(QDialog):
     def __init__(self, parent=None, callback=None):
         super().__init__(parent)
         self.callback = callback
-        self.return_value = AnswerBase.__class__
+        self.return_value = BaseField.__class__
         # Remove the title bar
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
 

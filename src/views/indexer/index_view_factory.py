@@ -1,6 +1,6 @@
 from typing import Callable
 
-from src.models.designer.answer_box import AnswerBox, NumberBox, RadioButton, TextBox, TickBox
+from src.models.other_fields import BaseField, NumberBox, RadioButton, TextBox, TickBox
 from src.views.indexer.radio_button_index_view import RadioButtonIndexView
 from src.views.indexer.text_index_view import TextIndexView
 from src.views.indexer.tick_box_index_view import TickBoxIndexView
@@ -12,7 +12,7 @@ class IndexViewFactory:
         self.on_index_completed = on_index_completed
         # Map model classes to their corresponding view classes
         self._mapping = {
-            AnswerBox  : TextIndexView,
+            BaseField  : TextIndexView,
             TextBox    : TextIndexView,
             NumberBox  : TextIndexView,
             TickBox    : TickBoxIndexView,

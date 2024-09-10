@@ -1,16 +1,15 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QFont, QPen
+from PyQt6.QtGui import QFont, QPen
 
-from src.models.designer.answer_box import RadioButton
+from src.models.other_fields import RadioButton
 from src.tools import colors
-from src.views.designer.global_functions import center_right
+from src.tools.global_functions import center_right
 from src.views.indexer.tick_box_index_view import TickBoxIndexView
 
 
 class RadioButtonIndexView(TickBoxIndexView):
     model: RadioButton
     scale: float
-    pen = QPen(colors.radio_group, 2)
+    pen = QPen(colors.radio, 2)
 
     def __init__(self, model, text, scale, on_item_indexed, group):
         super().__init__(model, text, scale, on_item_indexed, None)

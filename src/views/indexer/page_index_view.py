@@ -1,6 +1,6 @@
 import logging
 
-from PyQt6.QtWidgets import QHBoxLayout, QLineEdit, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
@@ -8,7 +8,6 @@ from PyQt6.QtGui import QPixmap, QImage, QTextCursor
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
-from src.models.designer.answer_base import AnswerBase
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.page_index_painter import PageIndexPainter
 from src.views.indexer.small_index_painter import SmallIndexPainter

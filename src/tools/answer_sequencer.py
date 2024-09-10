@@ -1,4 +1,4 @@
-from src.models.designer.form_page import FormPage
+from src.models.form_page import FormPage
 
 json_file = r"C:\_PV\forms\SKM_C250i2408161348002.json"
 

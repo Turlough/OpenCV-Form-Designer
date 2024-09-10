@@ -5,12 +5,11 @@ from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QMainWindow, QPushButton,
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
-from PyQt6.QtGui import QCursor, QPixmap, QImage
+from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from src.design_controller import DesignController, EditMode
 
-from src.views.designer.generic_model_editor import ModelEditor
 from src.views.designer.page_design_painter import PageDesignPainter
 
 logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)

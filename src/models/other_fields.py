@@ -1,15 +1,9 @@
 from dataclasses import dataclass
 
-from src.models.designer.answer_base import AnswerBase
-
-
-@dataclass
-class AnswerBox(AnswerBase):
-    pass
-
+from src.models.base_field import BaseField
 
 @dataclass
-class TextBox(AnswerBase):
+class TextBox(BaseField):
     pass
 
 
@@ -19,7 +13,7 @@ class NumberBox(TextBox):
 
 
 @dataclass
-class TickBox(AnswerBox):
+class TickBox(BaseField):
     pass
 
 
@@ -33,7 +27,7 @@ class RadioButton(TickBox):
 
 
 @dataclass
-class RadioGroup(AnswerBox):
+class RadioGroup(BaseField):
     def __init__(self, in_seq, out_seq, name, rectangle):
         super().__init__(in_seq, out_seq, name, rectangle)
         self.buttons: list[RadioButton] = list()

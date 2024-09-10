@@ -1,6 +1,6 @@
 from PyQt6.QtGui import QPen
 
-from src.models.designer.answer_box import RadioGroup
+from src.models.other_fields import RadioGroup
 from src.tools import colors
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.index_view_factory import IndexViewFactory
@@ -9,7 +9,7 @@ from src.views.indexer.index_view_factory import IndexViewFactory
 class RadioGroupIndexView(BaseIndexView):
     model: RadioGroup
     scale: float
-    pen = QPen(colors.radio_group, 2)
+    pen = QPen(colors.radio, 2)
     button_views = list()
 
     def __init__(self, model, text, scale, on_item_indexed):

@@ -3,8 +3,7 @@ from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
 from src.design_controller import DesignController, EditMode
-from src.views.designer.global_functions import draw_group
-from src.views.designer.type_change_dialog import TypeChangeDialog
+from src.views.dialogs.type_change_dialog import TypeChangeDialog
 
 
 class PageDesignPainter(QLabel):

@@ -4,7 +4,7 @@ from src.models.rectangle import Rectangle
 
 
 @dataclass
-class AnswerBase:
+class BaseField:
     in_seq: int
     out_seq: int
     name: str
@@ -18,5 +18,5 @@ class AnswerBase:
         return jsonpickle.decode(json_str)
 
     def cast(self, new_class):
-        """Cast the current object as another AnswerBase subclass"""
+        """Cast the current object as another BaseField subclass"""
         return new_class(self.in_seq, self.out_seq, self.name, self.rectangle)

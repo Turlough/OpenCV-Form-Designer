@@ -1,12 +1,12 @@
 from PyQt6.QtWidgets import QWidget
 from tabulate import tabulate
 
-from src.models.designer.answer_base import AnswerBase
-from src.models.designer.answer_box import RadioGroup
+from src.models.base_field import BaseField
+from src.models.other_fields import RadioGroup
 from src.tools.index_file_manager import IndexFileManager
 from src.tools.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
-from src.models.designer.form_page import FormPage
+from src.models.form_page import FormPage
 from src.views.indexer.index_view_factory import IndexViewFactory
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.radio_group_index_view import RadioGroupIndexView
@@ -41,7 +41,7 @@ class IndexController:
         self.load_from_json()
         self.current_view = self.views[0]
 
-    def crop_to_field(self, model: AnswerBase):
+    def crop_to_field(self, model: BaseField):
         return self.highlighter.crop(model.rectangle, self.scale * 2)
 
     def next_page(self):

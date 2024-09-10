@@ -1,9 +1,9 @@
-from PyQt6.QtCore import QRect, Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QPen
 
-from src.models.designer.answer_box import TickBox
+from src.models.other_fields import TickBox
 from src.tools import colors
-from src.views.designer.global_functions import center_right
+from src.tools.global_functions import center_right
 from src.views.indexer.base_index_view import BaseIndexView
 
 
