@@ -62,22 +62,22 @@ class DesignController:
         x1, y1, x2, y2 = rect.topLeft().x(), rect.topLeft().y(), rect.bottomRight().x(), rect.bottomRight().y()
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rect = Rectangle().from_corners(x1, y1, x2, y2)
-        sequence = len(self.page.answers) + 1
+        sequence = len(self.page.fields) + 1
         answer = BaseField(sequence, sequence, f'A{sequence:0>2}', rect)
-        self.page.answers.append(answer)
+        self.page.fields.append(answer)
         self.build_views(self.page)
 
     def on_radio_group_drawn(self, name, x1, y1, x2, y2):
-        sequence = len(self.page.answers) + 1
+        sequence = len(self.page.fields) + 1
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = RadioGroup(sequence, sequence, name, rectangle)
-        contents = [view for view in self.page.answers if view.rectangle.is_in(group.rectangle)]
+        contents = [f for f in self.page.fields if f.rectangle.is_in(group.rectangle)]
         for c in contents:
             b = RadioButton(c.in_seq, c.out_seq, c.name, c.rectangle, group)
             group.buttons.append(b)
-            self.page.answers.remove(c)
-        self.page.answers.append(group)
+            self.page.fields.remove(c)
+        self.page.fields.append(group)
         self.build_views(self.page)
         self.save_and_reload()
 
@@ -87,7 +87,7 @@ class DesignController:
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = MultiChoice(sequence, sequence, name, rectangle)
 
-        group.contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
+        group.contents = [f for f in self.page.fields if f.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
         self.build_views(self.page)
 
@@ -131,34 +131,34 @@ class DesignController:
             content = file.read()
             self.page = FormPage.from_json(content)
             self.page.sort_by_csv()
-        self.page.answers.sort(key=lambda a: a.in_seq)
+        self.page.fields.sort(key=lambda a: a.in_seq)
         self.page.groups.sort(key=lambda g: g.in_seq)
         self.build_views(self.page)
 
     def save_to_json(self):
-        self.page.answers.sort(key=lambda a: a.in_seq)
+        self.page.fields.sort(key=lambda a: a.in_seq)
         self.page.groups.sort(key=lambda g: g.in_seq)
         with open(self.json_path, 'w') as file:
             file.write(self.page.to_json())
         with open(self.sequence_path, 'w') as file:
-            for a in self.page.answers:
-                row = f'{a.name},{a.in_seq},{a.out_seq}'
+            for f in self.page.fields:
+                row = f'{f.name},{f.in_seq},{f.out_seq}'
                 file.write(row + '\n')
 
     def detect_rectangles(self):
-        self.page.answers.clear()
+        self.page.fields.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
             name = f'A{i + 1:0>2d}'
-            a = BaseField(i + 1, i + 1, name, r)
-            self.page.answers.append(a)
+            f = BaseField(i + 1, i + 1, name, r)
+            self.page.fields.append(f)
         self.build_views(self.page)
 
     def build_views(self, page):
         self.views.clear()
-        for a in page.answers:
+        for f in page.fields:
             factory = DesignViewFactory()
-            v = factory.create_view(a, self.scale, editor_callback=self.save_and_reload)
+            v = factory.create_view(f, self.scale, editor_callback=self.save_and_reload)
             self.views.append(v)
 
     def tabulate_view_models(self):
@@ -173,8 +173,8 @@ class DesignController:
     def change_type(self, view: BaseDesignView, return_value):
         model = view.model
         new_model = model.cast(return_value)
-        i = self.page.answers.index(model)
-        self.page.answers[i] = new_model
+        i = self.page.fields.index(model)
+        self.page.fields[i] = new_model
         new_view = DesignViewFactory().create_view(new_model, self.scale, editor_callback=self.save_and_reload)
         i = self.views.index(view)
         self.views[i] = new_view

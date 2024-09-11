@@ -7,8 +7,8 @@ def load_json(path):
     with open(path, 'r') as file:
         content = file.read()
         page: FormPage = FormPage.from_json(content)
-        for a in page.answers:
-            print(a.name)
+        for f in page.fields:
+            print(f.name)
 
 
 if __name__ == '__main__':
