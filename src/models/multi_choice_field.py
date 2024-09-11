@@ -1,6 +1,4 @@
 from dataclasses import dataclass
-
-from src.models.base_field import BaseField
 from src.models.other_fields import BaseField, TickBox
 
 
@@ -8,6 +6,6 @@ from src.models.other_fields import BaseField, TickBox
 class MultiChoice(BaseField):
     contents: list[TickBox]
 
-    def __init__(self, in_sequence, out_sequence, name, rectangle):
-        super().__init__(in_sequence, out_sequence, name, rectangle)
+    def __init__(self, name, rectangle):
+        super().__init__(name, rectangle)
         self.contents = list()

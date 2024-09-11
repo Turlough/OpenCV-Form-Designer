@@ -68,13 +68,12 @@ class DesignController:
         self.build_views(self.page)
 
     def on_radio_group_drawn(self, name, x1, y1, x2, y2):
-        sequence = len(self.page.fields) + 1
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
-        group = RadioGroup(sequence, sequence, name, rectangle)
+        group = RadioGroup(name, rectangle)
         contents = [f for f in self.page.fields if f.rectangle.is_in(group.rectangle)]
         for c in contents:
-            b = RadioButton(c.in_seq, c.out_seq, c.name, c.rectangle, group)
+            b = RadioButton(c.name, c.rectangle, group)
             group.buttons.append(b)
             self.page.fields.remove(c)
         self.page.fields.append(group)
@@ -85,7 +84,7 @@ class DesignController:
         sequence = len(self.page.groups) + 1
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
-        group = MultiChoice(sequence, sequence, name, rectangle)
+        group = MultiChoice(name, rectangle)
 
         group.contents = [f for f in self.page.fields if f.rectangle.is_in(group.rectangle)]
         self.page.groups.append(group)
@@ -131,26 +130,21 @@ class DesignController:
             content = file.read()
             self.page = FormPage.from_json(content)
             self.page.sort_by_csv()
-        self.page.fields.sort(key=lambda a: a.in_seq)
-        self.page.groups.sort(key=lambda g: g.in_seq)
         self.build_views(self.page)
 
     def save_to_json(self):
-        self.page.fields.sort(key=lambda a: a.in_seq)
-        self.page.groups.sort(key=lambda g: g.in_seq)
         with open(self.json_path, 'w') as file:
             file.write(self.page.to_json())
         with open(self.sequence_path, 'w') as file:
             for f in self.page.fields:
-                row = f'{f.name},{f.in_seq},{f.out_seq}'
-                file.write(row + '\n')
+                file.write(f.name + '\n')
 
     def detect_rectangles(self):
         self.page.fields.clear()
         rectangles = self.highlighter.detect_boxes()
         for i, r in enumerate(rectangles):
             name = f'A{i + 1:0>2d}'
-            f = BaseField(i + 1, i + 1, name, r)
+            f = BaseField(name, r)
             self.page.fields.append(f)
         self.build_views(self.page)
 

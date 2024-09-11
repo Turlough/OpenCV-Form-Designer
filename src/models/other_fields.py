@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from src.models.base_field import BaseField
 
+
 @dataclass
 class TextBox(BaseField):
     pass
@@ -20,14 +21,14 @@ class TickBox(BaseField):
 @dataclass
 class RadioButton(TickBox):
 
-    def __init__(self, in_seq, out_seq, name, rectangle, group):
-        super().__init__(in_seq, out_seq, name, rectangle)
+    def __init__(self, name, rectangle, group):
+        super().__init__(name, rectangle)
         self.group = group
         self.buttons: list[RadioButton] = list()
 
 
 @dataclass
 class RadioGroup(BaseField):
-    def __init__(self, in_seq, out_seq, name, rectangle):
-        super().__init__(in_seq, out_seq, name, rectangle)
+    def __init__(self, name, rectangle):
+        super().__init__(name, rectangle)
         self.buttons: list[RadioButton] = list()

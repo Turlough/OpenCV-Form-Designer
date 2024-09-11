@@ -5,8 +5,6 @@ from src.models.rectangle import Rectangle
 
 @dataclass
 class BaseField:
-    in_seq: int
-    out_seq: int
     name: str
     rectangle: Rectangle
 
@@ -19,4 +17,4 @@ class BaseField:
 
     def cast(self, new_class):
         """Cast the current object as another BaseField subclass"""
-        return new_class(self.in_seq, self.out_seq, self.name, self.rectangle)
+        return new_class(self.name, self.rectangle)
