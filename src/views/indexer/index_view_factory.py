@@ -1,6 +1,7 @@
 from typing import Callable
 
 from src.models.other_fields import BaseField, NumberBox, RadioButton, TextBox, TickBox
+from src.views.indexer.number_index_view import NumberIndexView
 from src.views.indexer.radio_button_index_view import RadioButtonIndexView
 from src.views.indexer.text_index_view import TextIndexView
 from src.views.indexer.tick_box_index_view import TickBoxIndexView
@@ -14,7 +15,7 @@ class IndexViewFactory:
         self._mapping = {
             BaseField  : TextIndexView,
             TextBox    : TextIndexView,
-            NumberBox  : TextIndexView,
+            NumberBox  : NumberIndexView,
             TickBox    : TickBoxIndexView,
         }
 
