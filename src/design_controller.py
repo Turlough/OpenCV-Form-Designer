@@ -72,7 +72,7 @@ class DesignController:
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rectangle = Rectangle().from_corners(x1, y1, x2, y2)
         group = RadioGroup(sequence, sequence, name, rectangle)
-        contents = [answer for answer in self.page.answers if answer.rectangle.is_in(group.rectangle)]
+        contents = [view for view in self.page.answers if view.rectangle.is_in(group.rectangle)]
         for c in contents:
             b = RadioButton(c.in_seq, c.out_seq, c.name, c.rectangle, group)
             group.buttons.append(b)
@@ -99,11 +99,24 @@ class DesignController:
         return int(x1), int(y1), int(x2), int(y2)
 
     def locate_surrounding_box(self, x, y) -> BaseDesignView | None:
-        # x, y, _, _ = self.unscale(x, y)
-        for v in self.views:
-            r = v.rectangle
+        # Deal with radio groups separately
+        non_groups = filter(lambda v: not isinstance(v.model, RadioGroup), self.views)
+        for view in non_groups:
+            r = view.rectangle
             if r.left() <= x <= r.right() and r.top() <= y <= r.bottom():
-                return v
+                return view
+        groups = filter(lambda v: isinstance(v.model, RadioGroup), self.views)
+        for group in groups:
+            # First check if a button was the target
+            for view in group.button_views:
+                r = view.rectangle
+                if r.left() <= x <= r.right() and r.top() <= y <= r.bottom():
+                    return view
+            # Then check if the group is the target
+            r = group.rectangle
+            if r.left() <= x <= r.right() and r.top() <= y <= r.bottom():
+                return group
+
         return None
 
     def get_image(self):
