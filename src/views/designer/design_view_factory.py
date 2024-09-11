@@ -1,7 +1,7 @@
 from src.models.other_fields import BaseField, NumberBox, RadioButton, RadioGroup, TextBox, TickBox
 from src.views.designer.radio_button_design_view import RadioButtonDesignView
 from src.views.designer.radio_group_design_view import RadioGroupDesignView
-from src.views.designer.text_design_view import TextDesignView
+from src.views.designer.text_design_view import NumberDesignView, TextDesignView
 from src.views.designer.tick_box_design_view import TickBoxDesignView
 
 
@@ -12,7 +12,7 @@ class DesignViewFactory:
             BaseField: TextDesignView,
             TickBox: TickBoxDesignView,
             TextBox: TextDesignView,
-            NumberBox: TextDesignView,
+            NumberBox: NumberDesignView,
             RadioButton: RadioButtonDesignView,
             RadioGroup: RadioGroupDesignView
         }

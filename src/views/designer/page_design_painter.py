@@ -47,6 +47,7 @@ class PageDesignPainter(QLabel):
             dialog.move(x, y)
             if dialog.exec() == QDialog.DialogCode.Accepted:
                 self.controller.change_type(view, dialog.return_value)
+                self.on_release(self.rect)
 
         if self.mode == EditMode.NONE:
             return

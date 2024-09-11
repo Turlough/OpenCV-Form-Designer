@@ -98,9 +98,9 @@ class PageDesignView(QWidget):
 
         image = self.controller.get_image()
         self.display(image)
-        self.show_json()
+        self.update_large_text_area()
 
-    def show_json(self):
+    def update_large_text_area(self):
         self.edit.setText(self.controller.tabulate_view_models())
 
     def add_scroll_area_for_image(self, layout):
@@ -131,6 +131,7 @@ class PageDesignView(QWidget):
                 self.create_answer(rect)
             case EditMode.RADIO_GROUP:
                 self.new_radio_group(rect)
+        self.reload()
 
     def new_radio_group(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
@@ -141,7 +142,7 @@ class PageDesignView(QWidget):
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
         self.controller.on_radio_group_drawn(name, x1, y1, x2, y2)
-        self.show_json()
+        self.update_large_text_area()
 
     def new_group_box(self, rect: QRect):
         name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
@@ -152,7 +153,7 @@ class PageDesignView(QWidget):
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()
 
         self.controller.on_group_box_drawn(name, x1, y1, x2, y2)
-        self.show_json()
+        self.update_large_text_area()
 
     def edit_answer(self, rect: QRect):
         x, y = rect.topLeft().x(), rect.topLeft().y()
@@ -178,7 +179,7 @@ class PageDesignView(QWidget):
         self.reload()
 
     def reload(self):
-        self.show_json()
+        self.update_large_text_area()
         self.picture.page = self.controller.page
         self.picture.draw_answers()
         # self.picture.draw_groups()
