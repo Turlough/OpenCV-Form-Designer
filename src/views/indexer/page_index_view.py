@@ -132,10 +132,7 @@ class PageIndexView(QWidget):
 
     def next_page(self):
         self.controller.next_page()
-        image = self.controller.get_image()
-        self.picture.page = self.controller.page
-        self.display(image)
-        self.update_text_area()
+        self.reload()
 
     def next_field(self):
         self.controller.next_field()
