@@ -12,11 +12,11 @@ class IndexFileManager:
     page_start_indexes: list[int]
     extractor: PdfExtractor
 
-    def __init__(self, input_csv):
+    def __init__(self, input_csv, start_indexes):
         self.input_csv = input_csv
         self.export_folder = os.path.dirname(input_csv)
         self.rows = list()
-        self.page_start_indexes = [0, 13, 36]  # TODO
+        self.page_start_indexes = start_indexes
 
     def read_all(self):
         self.rows.clear()
@@ -61,4 +61,7 @@ class IndexFileManager:
 
     def next_page(self):
         self.page_number += 1
+
+    def get_start_indexes(self, template_folder):
+        pass
 

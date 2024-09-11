@@ -28,7 +28,8 @@ class IndexController:
     def __init__(self, template_folder, scale, index_path):
         self.scale = scale
         self.template_manager = TemplateManager(template_folder)
-        self.file_manager = IndexFileManager(index_path)
+        counts = self.template_manager.get_field_counts()
+        self.file_manager = IndexFileManager(index_path, counts)
         self.file_manager.read_all()
         self.views = list()
 
