@@ -8,4 +8,4 @@ from src.views.designer.base_design_view import BaseDesignView
 
 class RadioButtonDesignView(BaseDesignView):
     model: RadioButton
-    pen = QPen(colors.radio, 2)
+    pen = QPen(colors.radio, 1, Qt.PenStyle.DotLine)
