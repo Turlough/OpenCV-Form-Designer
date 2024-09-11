@@ -11,7 +11,7 @@ class TextIndexView(BaseIndexView):
     pen = QPen(colors.text, 2)
 
     def draw_text(self, painter):
-        self.pen = colors.index
+        painter.setPen(QPen(colors.index, 2))
         painter.setFont(QFont("Arial", 10))
         # Calculate the height of the text
         m = painter.fontMetrics()
