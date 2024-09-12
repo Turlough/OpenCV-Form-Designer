@@ -59,6 +59,9 @@ class IndexFileManager:
         path = os.path.join(self.export_folder, pdf)
         self.extractor = PdfExtractor(path)
 
+    def prev_page(self):
+        self.page_number -= 1
+
     def next_page(self):
         self.page_number += 1
 

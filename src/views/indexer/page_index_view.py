@@ -58,15 +58,15 @@ class PageIndexView(QWidget):
         # Image area bottom left
         self.add_scroll_area_for_image(left_layout)
 
+        prev_page_button = QPushButton()
+        prev_page_button.setText('Prev Page')
+        prev_page_button.clicked.connect(self.prev_page)
+        image_button_layout.addWidget(prev_page_button)
+
         next_page_button = QPushButton()
         next_page_button.setText('Next Page')
         next_page_button.clicked.connect(self.next_page)
         image_button_layout.addWidget(next_page_button)
-
-        next_field_button = QPushButton()
-        next_field_button.setText('Next Field')
-        next_field_button.clicked.connect(self.next_field)
-        image_button_layout.addWidget(next_field_button)
 
         right_layout.addWidget(self.small_picture)
 
@@ -75,6 +75,11 @@ class PageIndexView(QWidget):
         self.index_text.setMaximumHeight(150)
         self.index_text.textChanged.connect(self.on_enter_key_used)
         right_layout.addWidget(self.index_text)
+
+        next_field_button = QPushButton()
+        next_field_button.setText('Next Field')
+        next_field_button.clicked.connect(self.next_field)
+        right_layout.addWidget(next_field_button)
 
         right_layout.addWidget(self.summary_area)
         font = QFont('Courier', 10)
@@ -129,6 +134,10 @@ class PageIndexView(QWidget):
         self.small_display(view)
         self.update_text_area()
         self.picture.draw_answers()
+
+    def prev_page(self):
+        self.controller.prev_page()
+        self.reload()
 
     def next_page(self):
         self.controller.next_page()

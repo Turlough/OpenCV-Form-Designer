@@ -45,6 +45,10 @@ class IndexController:
     def crop_to_field(self, model: BaseField):
         return self.highlighter.crop(model.rectangle, self.scale * 2)
 
+    def prev_page(self):
+        self.file_manager.prev_page()
+        self.load_page()
+
     def next_page(self):
         self.file_manager.next_page()
         self.load_page()
