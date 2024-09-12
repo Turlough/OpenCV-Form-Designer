@@ -147,7 +147,7 @@ class PageDesignView(QWidget):
     def create_field(self, rect):
         self.controller.create_field(rect)
         self.save_and_reload()
-        self.edit_field(rect)
+        # self.edit_field(rect)
 
     def save_and_reload(self):
         self.controller.save_to_json()

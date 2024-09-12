@@ -63,19 +63,14 @@ class PageDesignPainter(QLabel):
 
     def paintEvent(self, event):
         super().paintEvent(event)
-        if self.mode == EditMode.RADIO_GROUP and not self.rect.isNull():
-            painter = QPainter(self)
-            pen = QPen(Qt.GlobalColor.darkYellow, 2)
-            painter.setPen(pen)
-            painter.drawRect(self.rect)
-        if self.mode == EditMode.CREATE_FIELD and not self.rect.isNull():
-            painter = QPainter(self)
-            pen = QPen(colors.create_field, 2)
-            painter.setPen(pen)
-            painter.drawRect(self.rect)
-        # self.draw_fields()
+        painter = QPainter(self)
+        pen = QPen(colors.create_field, 1, Qt.PenStyle.DotLine)
+        painter.setPen(pen)
+        painter.drawRect(self.rect)
+        self.draw_fields()
+        self.update()
 
     def draw_fields(self):
         for v in self.controller.views:
             v.draw(QPainter(self))
-        self.update()
+        # self.update()
