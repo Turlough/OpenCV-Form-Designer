@@ -10,4 +10,5 @@ text = Qt.GlobalColor.darkGreen
 number = Qt.GlobalColor.darkGreen
 index = Qt.GlobalColor.black
 tick = Qt.GlobalColor.darkYellow
+create_field = Qt.GlobalColor.red
 

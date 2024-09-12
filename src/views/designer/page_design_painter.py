@@ -3,6 +3,7 @@ from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QRect
 
 from src.design_controller import DesignController, EditMode
+from src.tools import colors
 from src.views.dialogs.type_change_dialog import TypeChangeDialog
 
 
@@ -67,19 +68,14 @@ class PageDesignPainter(QLabel):
             pen = QPen(Qt.GlobalColor.darkYellow, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-        if self.mode == EditMode.BOX_GROUP and not self.rect.isNull():
+        if self.mode == EditMode.CREATE_FIELD and not self.rect.isNull():
             painter = QPainter(self)
-            pen = QPen(Qt.GlobalColor.red, 2)
+            pen = QPen(colors.create_field, 2)
             painter.setPen(pen)
             painter.drawRect(self.rect)
-        if self.mode == EditMode.CREATE_BOX and not self.rect.isNull():
-            painter = QPainter(self)
-            pen = QPen(Qt.GlobalColor.blue, 2)
-            painter.setPen(pen)
-            painter.drawRect(self.rect)
-        self.draw_answers()
+        # self.draw_fields()
 
-    def draw_answers(self):
-        for a in self.controller.views:
-            a.draw(QPainter(self))
+    def draw_fields(self):
+        for v in self.controller.views:
+            v.draw(QPainter(self))
         self.update()

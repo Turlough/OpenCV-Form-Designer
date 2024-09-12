@@ -14,9 +14,8 @@ from src.views.designer.design_view_factory import DesignViewFactory
 
 
 class EditMode(Enum):
-    CREATE_BOX = auto()
-    BOX_GROUP = auto()
-    BOX_EDIT = auto()
+    CREATE_FIELD = auto()
+    EDIT_FIELD = auto()
     RADIO_GROUP = auto()
     NONE = auto()
 
@@ -58,13 +57,13 @@ class DesignController:
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
 
-    def create_answer(self, rect):
+    def create_field(self, rect):
         x1, y1, x2, y2 = rect.topLeft().x(), rect.topLeft().y(), rect.bottomRight().x(), rect.bottomRight().y()
         x1, y1, x2, y2 = self.unscale(x1, y1, x2, y2)
         rect = Rectangle().from_corners(x1, y1, x2, y2)
-        sequence = len(self.page.fields) + 1
-        answer = BaseField(sequence, sequence, f'A{sequence:0>2}', rect)
-        self.page.fields.append(answer)
+        seq = len(self.views) + 1
+        field = BaseField(f'A{seq:0>2}', rect)
+        self.page.fields.append(field)
         self.build_views(self.page)
 
     def on_radio_group_drawn(self, name, x1, y1, x2, y2):
