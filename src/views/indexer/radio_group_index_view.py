@@ -38,7 +38,7 @@ class RadioGroupIndexView(BaseIndexView):
             return
         for b in self.button_views:
             if b == button:
-                button.ticked = not button.ticked
+                button.on_click(painter, location)
             else:
                 b.ticked = False
         self.text = button.model.name if button.ticked else ''

@@ -31,8 +31,8 @@ class SmallIndexPainter(QLabel):
 
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.pos()
-            answer: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
-            if not answer:
+            view: BaseIndexView = self.controller.locate_surrounding_box(pos.x(), pos.y())
+            if not view:
                 return
-            answer.on_click(QPainter(self), pos)
-            self.on_item_indexed(answer)
+            view.on_click(QPainter(self), pos)
+            self.on_item_indexed(view)

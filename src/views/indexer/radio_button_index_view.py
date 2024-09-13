@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QPen
+from PyQt6.QtGui import QBrush, QFont, QPen
 
 from src.models.other_fields import RadioButton
 from src.tools import colors
@@ -17,18 +17,11 @@ class RadioButtonIndexView(TickBoxIndexView):
         self.group = group
 
     def draw_text(self, painter):
-        painter.setPen(QPen(colors.index, 2))
-        painter.setFont(QFont("Arial", 8))
-        m = painter.fontMetrics()
-        text_height = m.height()
-        x, y = center_right(self.rectangle, text_height)
-        desc = self.model.name
-        # desc = desc[:3] if len(desc) > 3 else desc
-        tick_mark = '\u2714 ' + desc if self.ticked else ''
+        self.text = '\u2714' if self.ticked else ''
+        if self.ticked:
+            super().draw_text(painter)
 
-        painter.drawText(x, y, tick_mark)
-
-
-
-
-
+    def on_click(self, painter, location):
+        self.ticked = not self.ticked
+        self.text = '\u2714' if self.ticked else ''
+        self.draw(painter)
