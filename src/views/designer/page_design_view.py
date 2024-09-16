@@ -62,7 +62,7 @@ class PageDesignView(QWidget):
         new_box_button.clicked.connect(lambda: self.set_mode(EditMode.CREATE_FIELD))
 
         relabel_button = QPushButton()
-        relabel_button.setText('Edit Fields')
+        relabel_button.setText('Paste Fieldnames')
         relabel_button.clicked.connect(lambda: self.set_mode(EditMode.EDIT_FIELD))
 
         save_button = QPushButton()
