@@ -84,7 +84,7 @@ class IndexController:
         return None
 
     def get_image(self):
-        return self.highlighter.scaled_and_highlighted(scale=self.scale)
+        return self.highlighter.scaled_and_translated(0.316, -20, 62)
 
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
