@@ -5,11 +5,14 @@ class TemplateManager:
 
     def __init__(self, template_folder):
         self.images = glob(f'{template_folder}\\*.tif')
+        self.images = glob(f'{template_folder}\\*.jpg')
+        self.images.sort()
         self.csvs = glob(f'{template_folder}\\*.csv')
 
     def get_template(self, page_no: int):
         image = self.images[page_no]
         json = image.replace('.tif', '.json')
+        json = image.replace('.jpg', '.json')
         return json, image
 
     def get_field_counts(self):

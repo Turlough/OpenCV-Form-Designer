@@ -7,8 +7,8 @@ from index_controller import IndexController
 from src.views.indexer.page_index_view import PageIndexView
 
 
-template_folder = r"C:\_PV\forms"
-scale = 0.29
+template_folder = r"C:\_PV\forms2"
+scale = 0.3
 index_path = r"C:\_PV\IFAC\EXPORT\24151 1111101\EXPORT.TXT"
 
 
