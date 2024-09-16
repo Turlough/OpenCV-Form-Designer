@@ -2,8 +2,7 @@ import logging
 
 from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QPushButton, \
     QWidget, \
-    QVBoxLayout, QTextEdit, \
-    QScrollArea
+    QVBoxLayout, QTextEdit
 from PyQt6.QtGui import QPixmap, QImage, QTextCursor
 from PyQt6.QtGui import QFont
 
@@ -19,13 +18,11 @@ class PageIndexView(QWidget):
     controller: IndexController
     summary_area: QTextEdit
     index_text: QTextEdit
-    scroll_area: QScrollArea
     picture: PageIndexPainter
     small_picture: SmallIndexPainter
 
     def __init__(self, controller: IndexController):
         self.controller = controller
-        self.scroll_area = QScrollArea()
         self.summary_area = QTextEdit()
         self.picture = PageIndexPainter(controller=controller, on_item_indexed=self.reload)
         self.small_picture = SmallIndexPainter(controller=controller, on_item_indexed=self.on_enter_key_used)
@@ -54,9 +51,8 @@ class PageIndexView(QWidget):
         main_layout.addLayout(right_layout)
         # Image buttons top left
         left_layout.addLayout(image_button_layout)
-
-        # Image area bottom left
-        self.add_scroll_area_for_image(left_layout)
+        # Main image display area is 'picture'
+        left_layout.addWidget(self.picture)
 
         prev_page_button = QPushButton()
         prev_page_button.setText('Prev Page')
@@ -97,11 +93,6 @@ class PageIndexView(QWidget):
         indexes = self.controller.list_index_values()
         self.summary_area.setText(indexes)
 
-    def add_scroll_area_for_image(self, layout):
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFixedWidth(800)
-        layout.addWidget(self.scroll_area)
-
     def display(self, image):
         # Set the Pixmap
         h, w, ch = image.shape
@@ -109,9 +100,6 @@ class PageIndexView(QWidget):
         qt_image = QImage(image.data, w, h, bytes_per_line, QImage.Format.Format_BGR888)
         pixmap = QPixmap(qt_image)
         self.picture.setPixmap(pixmap)
-
-        self.scroll_area.resize(pixmap.width(), pixmap.height())
-        self.scroll_area.setWidget(self.picture)
 
     def small_display(self, view: BaseIndexView):
         img = self.controller.crop_to_field(view.model)
