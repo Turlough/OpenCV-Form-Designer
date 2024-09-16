@@ -28,10 +28,14 @@ class IndexController:
     def __init__(self, template_folder, scale, index_path):
         self.scale = scale
         self.template_manager = TemplateManager(template_folder)
+        self.views = list()
+
+    def load_index_file(self, path):
         counts = self.template_manager.get_field_counts()
-        self.file_manager = IndexFileManager(index_path, counts)
+        self.file_manager = IndexFileManager(path, counts)
         self.file_manager.read_all()
         self.views = list()
+        self.load_page()
 
     def load_page(self):
         page_no = self.file_manager.page_number
@@ -51,6 +55,10 @@ class IndexController:
 
     def next_page(self):
         self.file_manager.next_page()
+        self.load_page()
+
+    def next_document(self):
+        self.file_manager.next_row()
         self.load_page()
 
     def next_field(self):

@@ -1,6 +1,6 @@
 import logging
 
-from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit
 from PyQt6.QtGui import QPixmap, QImage, QTextCursor
@@ -37,7 +37,7 @@ class PageIndexView(QWidget):
         left_layout = QVBoxLayout()
 
         self.controller.image_widget = self
-        self.controller.load_page()
+        # self.controller.load_page()
 
         main_layout = QHBoxLayout()
         image_button_layout = QHBoxLayout()
@@ -53,6 +53,16 @@ class PageIndexView(QWidget):
         left_layout.addLayout(image_button_layout)
         # Main image display area is 'picture'
         left_layout.addWidget(self.picture)
+
+        load_index_button = QPushButton()
+        load_index_button.setText('Load Indexes')
+        load_index_button.clicked.connect(self.open_file_dialog)
+        image_button_layout.addWidget(load_index_button)
+
+        next_doc_button = QPushButton()
+        next_doc_button.setText('Next Questionnaire')
+        next_doc_button.clicked.connect(self.next_document)
+        image_button_layout.addWidget(next_doc_button)
 
         prev_page_button = QPushButton()
         prev_page_button.setText('Prev Page')
@@ -82,12 +92,12 @@ class PageIndexView(QWidget):
         self.summary_area.setFont(font)
 
         self.setLayout(main_layout)
-        self.picture.page = self.controller.page
-        image = self.controller.get_image()
-        self.display(image)
-        view = self.controller.current_view
-        self.small_display(view)
-        self.update_text_area()
+        # self.picture.page = self.controller.page
+        # image = self.controller.get_image()
+        # self.display(image)
+        # view = self.controller.current_view
+        # self.small_display(view)
+        # self.update_text_area()
 
     def update_text_area(self):
         indexes = self.controller.list_index_values()
@@ -131,6 +141,10 @@ class PageIndexView(QWidget):
         self.controller.next_page()
         self.reload()
 
+    def next_document(self):
+        self.controller.next_document()
+        self.reload()
+
     def next_field(self):
         self.controller.next_field()
         self.reload()
@@ -143,3 +157,17 @@ class PageIndexView(QWidget):
         self.controller.current_view.text = text
         self.controller.save_index_values()
         self.next_field()
+
+    def open_file_dialog(self):
+        default_folder = r"C:\_PV\IFAC\EXPORT"  # Replace with your default folder path
+        # options = QFileDialog.Option(QFileDialog.options['ExistingFile'] )
+        file_name, _ = QFileDialog.getOpenFileName(
+                self,
+                'Open File',
+                default_folder,
+                'All Files (*);;Text Files (*.txt, *.csv)',
+                # options=options
+        )
+        if file_name:
+            self.controller.load_index_file(file_name)
+            self.reload()
