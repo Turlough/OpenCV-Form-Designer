@@ -7,12 +7,12 @@ from design_controller import DesignController
 from src.views.designer.page_design_view import PageDesignView
 
 
-path = r"C:\_PV\forms"
+path = r"C:\_PV\forms2"
 scale = 0.29
 
 
 def launch(folder):
-    files = glob(f'{folder}\\*.tif')
+    files = glob(f'{folder}\\*.jpg')
 
     app = QApplication(sys.argv)
     controller = DesignController(files, scale)

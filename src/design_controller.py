@@ -45,8 +45,8 @@ class DesignController:
         path = self.paths.popleft()
         self.image_path = path
         self.highlighter = Highlighter.from_path(path)
-        self.json_path = path.replace('.tif', '.json')
-        self.sequence_path = path.replace('.tif', '.csv')
+        self.json_path = path.replace('.jpg', '.json')
+        self.sequence_path = path.replace('.jpg', '.csv')
 
         if os.path.exists(self.json_path):
             self.load_from_json()

@@ -17,8 +17,8 @@ class FormPage(BaseField):
         self.name = 'Form Page'
         self.rectangle = Rectangle().from_corners(0, 0, 0, 0)
         self.image_path = path
-        self.json_path = path.replace('.tif', '.json')
-        self.csv_path = path.replace('.tif', '.csv')
+        self.json_path = path.replace('.jpg', '.json')
+        self.csv_path = path.replace('.jpg', '.csv')
         self.groups = list()
         self.fields = list()
 
