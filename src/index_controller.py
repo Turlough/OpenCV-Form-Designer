@@ -25,7 +25,7 @@ class IndexController:
     image_widget: QWidget
     current_view: BaseIndexView
 
-    def __init__(self, template_folder, scale, index_path):
+    def __init__(self, template_folder, scale):
         self.scale = scale
         self.template_manager = TemplateManager(template_folder)
         self.views = list()

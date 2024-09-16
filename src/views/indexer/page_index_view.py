@@ -92,12 +92,7 @@ class PageIndexView(QWidget):
         self.summary_area.setFont(font)
 
         self.setLayout(main_layout)
-        # self.picture.page = self.controller.page
-        # image = self.controller.get_image()
-        # self.display(image)
-        # view = self.controller.current_view
-        # self.small_display(view)
-        # self.update_text_area()
+        self.open_file_dialog()
 
     def update_text_area(self):
         indexes = self.controller.list_index_values()

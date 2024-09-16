@@ -8,13 +8,13 @@ from src.views.indexer.page_index_view import PageIndexView
 
 
 template_folder = r"C:\_PV\forms2"
-scale = 0.3
+scale = 0.3051
 index_path = r"C:\_PV\IFAC\EXPORT\24151 1111101\EXPORT.TXT"
 
 
-def launch(folder, index_path):
+def launch(folder):
     app = QApplication(sys.argv)
-    controller = IndexController(folder, scale, index_path)
+    controller = IndexController(folder, scale)
     viewer = PageIndexView(controller)
     viewer.init_ui()
     viewer.showMaximized()
@@ -23,4 +23,4 @@ def launch(folder, index_path):
 
 
 if __name__ == '__main__':
-    launch(template_folder, index_path)
+    launch(template_folder)
