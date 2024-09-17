@@ -128,7 +128,7 @@ class DesignController:
         with open(self.json_path, 'r') as file:
             content = file.read()
             self.page = FormPage.from_json(content)
-            self.page.sort_by_csv()
+            self.page.sort_by_csv(self.image_path)
         self.build_views(self.page)
 
     def save_to_json(self):

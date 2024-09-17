@@ -15,7 +15,7 @@ from src.views.indexer.radio_group_index_view import RadioGroupIndexView
 class IndexController:
     page: FormPage
     scale: float
-    image_path: str
+    template_path: str
     json_path: str
     csv_path: str
     highlighter: Highlighter
@@ -41,8 +41,9 @@ class IndexController:
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
         self.highlighter = Highlighter.from_np_array(image)
-        j, _ = self.template_manager.get_template(page_no)
+        j, path = self.template_manager.get_template(page_no)
         self.json_path = j
+        self.template_path = path
         self.load_from_json()
         self.current_view = self.views[0]
 
@@ -84,13 +85,14 @@ class IndexController:
         return None
 
     def get_image(self):
-        return self.highlighter.scaled_and_translated(0.316, -20, 62)
+        # return self.highlighter.scaled_and_translated(0.316, -20, 62)
+        return self.highlighter.scaled_and_highlighted(0.316)
 
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
             content = file.read()
             self.page = FormPage.from_json(content)
-            self.page.sort_by_csv()
+            self.page.sort_by_csv(self.template_path)
         self.build_views(self.page)
 
     def build_views(self, page):

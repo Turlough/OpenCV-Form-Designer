@@ -65,11 +65,7 @@ class Highlighter:
         """
         # Scale the image
         scaled_image = cv2.resize(self.image, None, fx=scale, fy=scale, interpolation=cv2.INTER_LINEAR)
-
-        # Get dimensions of the scaled image
         height, width = scaled_image.shape[:2]
-
-        # Initialize variables for cropping and padding
         crop_top = 0
         crop_left = 0
         top_pad = 0
@@ -77,23 +73,17 @@ class Highlighter:
 
         # Handle vertical translation (y-axis)
         if y > 0:
-            # Pad 'y' pixels to the top
             top_pad = int(y)
         elif y < 0:
-            # Crop 'abs(y)' pixels from the top
             crop_top = min(int(abs(y)), height)
 
         # Handle horizontal translation (x-axis)
         if x > 0:
-            # Pad 'x' pixels to the left
             left_pad = int(x)
         elif x < 0:
-            # Crop 'abs(x)' pixels from the left
             crop_left = min(int(abs(x)), width)
 
-        # Crop the image if needed
         if crop_top > 0 or crop_left > 0:
-            # Ensure cropping indices are within bounds
             cropped_image = scaled_image[crop_top:height, crop_left:width]
         else:
             cropped_image = scaled_image
@@ -113,23 +103,4 @@ class Highlighter:
         else:
             padded_image = cropped_image
 
-        # Update the image
         return padded_image
-
-
-def show_with_cv2(image):
-    cv2.imshow('image', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-    folder = r'C:\_PV\forms'
-    files = glob(folder + r'\**\*.tif', recursive=True)
-    for f in files:
-        h = Highlighter(f)
-        h.detect_boxes()
-        scaled = h.scaled_and_highlighted(0.3)
-        for tb in h.boxes:
-            print(tb.name, tb.rectangle.coordinates())
-        show_with_cv2(scaled)

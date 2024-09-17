@@ -16,15 +16,19 @@ class FormPage(BaseField):
     def __init__(self, path: str):
         self.name = 'Form Page'
         self.rectangle = Rectangle().from_corners(0, 0, 0, 0)
-        self.image_path = path
-        self.json_path = path.replace('.jpg', '.json')
-        self.json_path = path.replace('.tif', '.json')
-        self.csv_path = path.replace('.jpg', '.csv')
-        self.csv_path = path.replace('.tif', '.csv')
+        self._calculate_paths(path)
         self.groups = list()
         self.fields = list()
 
-    def sort_by_csv(self):
+    def _calculate_paths(self, path):
+        self.image_path = path
+        self.json_path = path.replace('.jpg', '.json')
+        self.json_path = self.json_path.replace('.tif', '.json')
+        self.csv_path = path.replace('.jpg', '.csv')
+        self.csv_path = self.csv_path.replace('.tif', '.csv')
+
+    def sort_by_csv(self, image_path):
+        self._calculate_paths(image_path)
         if not os.path.exists(self.csv_path):
             return
         # build a dictionary of names
@@ -35,7 +39,7 @@ class FormPage(BaseField):
         # load the list of names sequentially, and for each name, append the corresponding answer to the ordered list
         with open(self.csv_path, 'r') as file:
             while line := file.readline():
-                f = field_dict[line.strip()]
+                f = field_dict[str(line).strip()]
                 ordered_list.append(f)
 
         self.fields = ordered_list
