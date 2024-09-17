@@ -24,8 +24,8 @@ class Highlighter:
     def detect_boxes(self):
 
         gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (1, 1), 5)
-        _, binary = cv2.threshold(blurred, 100, 255, cv2.THRESH_BINARY_INV)
+        blurred = cv2.GaussianBlur(gray, (3, 3), 150)
+        _, binary = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY_INV)
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         # Remove very small boxes. These are just noise.
