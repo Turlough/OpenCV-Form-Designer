@@ -15,9 +15,19 @@ class RadioGroupDesignView(BaseDesignView):
     def __init__(self, model, scale, callback):
         super().__init__(model, scale, callback)
         self.button_views = list()
+        rg = self.model.rectangle
+        rg.x1, rg.y1 = rg.x2, rg.y2
+        rg.x2 = rg.y2 = 0
+
         for b in self.model.buttons:
+            rb = b.rectangle
+            rg.x1 = min(rg.x1, rb.x1 - 2)
+            rg.y1 = min(rg.y1, rb.y1 - 2)
+            rg.x2 = max(rg.x2, rb.x2 + 4)
+            rg.y2 = max(rg.y2, rb.y2 + 4)
             view = RadioButtonDesignView(b, self.scale, callback)
             self.button_views.append(view)
+        super().__init__(model, scale, callback)
 
     def draw(self, painter):
         self.draw_rectangle(painter)
