@@ -32,6 +32,10 @@ class RadioGroupIndexView(BaseIndexView):
         for bv in self.button_views:
             bv.draw(painter)
 
+    def draw_text(self, painter):
+        # Nothing
+        pass
+
     def on_click(self, painter, location):
         button = self.identify_button(location)
         if not button:

@@ -17,11 +17,10 @@ class RadioButtonIndexView(TickBoxIndexView):
         self.group = group
 
     def draw_text(self, painter):
-        self.text = '\u2714' if self.ticked else ''
+        self.text = self.model.name if self.ticked else ''
         if self.ticked:
             super().draw_text(painter)
 
     def on_click(self, painter, location):
         self.ticked = not self.ticked
-        self.text = '\u2714' if self.ticked else ''
         self.draw(painter)
