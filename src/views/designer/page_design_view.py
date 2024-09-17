@@ -99,7 +99,6 @@ class PageDesignView(QWidget):
 
     def add_scroll_area_for_image(self, layout):
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFixedWidth(800)
         layout.addWidget(self.scroll_area)
 
     def display(self, image):
@@ -110,6 +109,7 @@ class PageDesignView(QWidget):
         pixmap = QPixmap(qt_image)
         self.picture.setPixmap(pixmap)
 
+        self.picture.resize(pixmap.width(), pixmap.height())
         self.scroll_area.resize(pixmap.width(), pixmap.height())
         self.scroll_area.setWidget(self.picture)
 

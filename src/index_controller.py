@@ -3,6 +3,7 @@ from tabulate import tabulate
 
 from src.models.base_field import BaseField
 from src.models.other_fields import RadioGroup
+from src.tools import common
 from src.tools.index_file_manager import IndexFileManager
 from src.tools.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
@@ -48,7 +49,7 @@ class IndexController:
         self.current_view = self.views[0]
 
     def crop_to_field(self, model: BaseField):
-        return self.highlighter.crop(model.rectangle, self.scale * 2)
+        return self.highlighter.crop(model.rectangle, common.little_widget_scale)
 
     def prev_page(self):
         self.file_manager.prev_page()
@@ -70,10 +71,10 @@ class IndexController:
             self.current_view = self.views[idx + 1]
 
     def unscale(self, x1, y1, x2=0, y2=0):
-        x1 /= self.scale
-        y1 /= self.scale
-        x2 /= self.scale
-        y2 /= self.scale
+        x1 /= common.widget_scale
+        y1 /= common.widget_scale
+        x2 /= common.widget_scale
+        y2 /= common.widget_scale
         return int(x1), int(y1), int(x2), int(y2)
 
     def locate_surrounding_box(self, x, y) -> BaseIndexView | None:
@@ -86,7 +87,7 @@ class IndexController:
 
     def get_image(self):
         # return self.highlighter.scaled_and_translated(0.316, -20, 62)
-        return self.highlighter.scaled_and_highlighted(0.316)
+        return self.highlighter.scaled_and_highlighted(self.scale)
 
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
@@ -99,9 +100,9 @@ class IndexController:
         self.views.clear()
         for i, f in enumerate(page.fields):
             index = self.file_manager.load_index_value(i)
-            factory = IndexViewFactory(self.scale, on_index_completed=self.save_index_values)
+            factory = IndexViewFactory(common.widget_scale, on_index_completed=self.save_index_values)
             if isinstance(f, RadioGroup):
-                v = RadioGroupIndexView(f, index, self.scale, self.save_index_values)
+                v = RadioGroupIndexView(f, index, common.widget_scale, self.save_index_values)
             else:
                 v = factory.create_view(f, index, self.image_widget)
             self.views.append(v)

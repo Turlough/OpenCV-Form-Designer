@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 
 from src.models.rectangle import Rectangle
+from src.tools import common
 
 
 class Highlighter:
@@ -45,9 +46,13 @@ class Highlighter:
         return rectangles
 
     def crop(self, r: Rectangle, scale: float):
-        b = 50  # border
-        cropped = self.image[r.y1 - b:r.y2 + b, r.x1 - b:r.x2 + b]
+        b = common.little_crop_border
+        base_scale = common.design_resolution / common.index_resolution
+        scaled = cv2.resize(self.image, None, fx=base_scale, fy=base_scale)
+        cropped = scaled[r.y1 - b:r.y2 + b, r.x1 - b:r.x2 + b]
+        scale *= common.design_scale
         return cv2.resize(cropped, None, fx=scale, fy=scale)
+        # return cropped
 
     def scaled_and_highlighted(self, scale: float = 1.0):
         blurred = cv2.GaussianBlur(self.image, (3, 3), 0)

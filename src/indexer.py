@@ -4,12 +4,12 @@ from glob import glob
 from PyQt6.QtWidgets import QApplication
 
 from index_controller import IndexController
+from src.tools import common
 from src.views.indexer.page_index_view import PageIndexView
 
 
-template_folder = r"C:\_PV\forms2"
-scale = 0.3051
-index_path = r"C:\_PV\IFAC\EXPORT\24151 1111101\EXPORT.TXT"
+template_folder = r"C:\_PV\forms3"
+scale = common.index_scale
 
 
 def launch(folder):

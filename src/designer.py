@@ -4,11 +4,12 @@ from glob import glob
 from PyQt6.QtWidgets import QApplication
 
 from design_controller import DesignController
+from src.tools import common
 from src.views.designer.page_design_view import PageDesignView
 
 
-path = r"C:\_PV\forms2"
-scale = 0.29
+path = r"C:\_PV\forms3"
+scale = common.design_scale
 
 
 def launch(folder):
