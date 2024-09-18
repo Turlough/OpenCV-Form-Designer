@@ -39,8 +39,10 @@ class FormPage(BaseField):
         # load the list of names sequentially, and for each name, append the corresponding answer to the ordered list
         with open(self.csv_path, 'r') as file:
             while line := file.readline():
-                f = field_dict[str(line).strip()]
-                ordered_list.append(f)
+                line = str(line).strip()
+                if line:
+                    f = field_dict[line]
+                    ordered_list.append(f)
 
         self.fields = ordered_list
 
