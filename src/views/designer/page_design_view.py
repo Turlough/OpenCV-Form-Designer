@@ -70,8 +70,12 @@ class PageDesignView(QWidget):
         save_button.setText('Save and Reload')
         save_button.clicked.connect(self.save_and_reload)
 
+        prev_button = QPushButton()
+        prev_button.setText('<- Previous page')
+        prev_button.clicked.connect(self.previous_page)
+
         next_button = QPushButton()
-        next_button.setText('Next page')
+        next_button.setText('Next page ->')
         next_button.clicked.connect(self.next_page)
 
         image_button_layout.addWidget(detect_button)
@@ -79,6 +83,7 @@ class PageDesignView(QWidget):
         image_button_layout.addWidget(radio_group_button)
         image_button_layout.addWidget(relabel_button)
         image_button_layout.addWidget(save_button)
+        image_button_layout.addWidget(prev_button)
         image_button_layout.addWidget(next_button)
 
         # Image area bottom left
@@ -173,6 +178,12 @@ class PageDesignView(QWidget):
     def set_mode(self, mode: EditMode):
         self.controller.set_mode(mode)
         self.picture.mode = mode
+
+    def previous_page(self):
+        self.controller.back()
+        image = self.controller.get_image()
+        self.picture.page = self.controller.page
+        self.display(image)
 
     def next_page(self):
         self.controller.next()

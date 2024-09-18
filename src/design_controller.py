@@ -24,7 +24,7 @@ class DesignController:
     page: FormPage
     scale: float
     edit_mode: EditMode = EditMode.NONE
-    paths: deque[str]
+    paths: list[str]
     image_path: str
     json_path: str
     sequence_path: str
@@ -33,26 +33,41 @@ class DesignController:
 
     def __init__(self, paths, scale):
         self.scale = scale
-        self.paths = deque()
+        self.paths = list()
         self.views = list()
         for p in paths:
             self.paths.append(p)
+        self.image_path = self.paths[0]
         self.next()
+
+    def back(self):
+        if not self.paths:
+            return
+        idx = self.paths.index(self.image_path)
+        if idx == 0:
+            return
+        self.image_path = self.paths[idx - 1]
+        self.load_form_page()
+        self.build_views(self.page)
 
     def next(self):
         if not self.paths:
             return
-        path = self.paths.popleft()
-        self.image_path = path
-        self.highlighter = Highlighter.from_path(path)
-        self.json_path = path.replace('.jpg', '.json')
-        self.sequence_path = path.replace('.jpg', '.csv')
+        idx = self.paths.index(self.image_path)
+        if idx >= len(self.paths):
+            return
+        self.image_path = self.paths[idx + 1]
+        self.load_form_page()
+        self.build_views(self.page)
 
+    def load_form_page(self):
+        self.highlighter = Highlighter.from_path(self.image_path)
+        self.json_path = self.image_path.replace('.jpg', '.json')
+        self.sequence_path = self.image_path.replace('.jpg', '.csv')
         if os.path.exists(self.json_path):
             self.load_from_json()
         else:
-            self.page = FormPage(path)
-        self.build_views(self.page)
+            self.page = FormPage(self.image_path)
 
     def set_mode(self, mode: EditMode):
         self.edit_mode = mode
