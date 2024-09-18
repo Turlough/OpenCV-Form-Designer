@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPen
+from PyQt6.QtGui import QFont, QPen
 
 from src.models.other_fields import RadioGroup
 from src.tools import colors
@@ -36,5 +36,13 @@ class RadioGroupDesignView(BaseDesignView):
             b.draw(painter)
 
     def draw_text(self, painter):
-        x, y = self.rectangle.x(), self.rectangle.y()
+        text_pen = QPen(colors.index)
+        font = QFont()
+        font.setBold(True)
+        font.setItalic(True)
+        font.setPointSize(6)
+        painter.setFont(font)
+        painter.setPen(text_pen)
+        x, y = self.rectangle.x(), self.rectangle.y() - 3
         painter.drawText(x, y, self.model.name)
+        painter.setPen(self.pen)

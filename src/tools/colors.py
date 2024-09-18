@@ -12,4 +12,4 @@ number = Qt.GlobalColor.darkGreen
 index = Qt.GlobalColor.red
 tick = Qt.GlobalColor.darkYellow
 create_field = Qt.GlobalColor.red
-
+deep_red = Qt.GlobalColor.darkRed
