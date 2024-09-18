@@ -8,7 +8,7 @@ from src.tools import common
 from src.views.indexer.page_index_view import PageIndexView
 
 
-template_folder = r"C:\_PV\forms3"
+template_folder = common.template_folder
 scale = common.index_scale
 
 

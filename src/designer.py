@@ -8,7 +8,7 @@ from src.tools import common
 from src.views.designer.page_design_view import PageDesignView
 
 
-path = r"C:\_PV\forms3"
+path = common.template_folder
 scale = common.design_scale
 
 
