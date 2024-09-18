@@ -35,7 +35,11 @@ class BaseDesignView:
     def on_click(self):
         s = pyperclip.paste()
         if isinstance(s, str):
-            self.model.name = s.strip(r'\r\n')
+            self.model.name = (s.replace('\r', ' ')
+                               .replace('\n', ' ')
+                               .replace('\t', ' ')
+                                .replace('  ', ' ')
+                               .strip())
             self.editor_callback()
         else:
             mouse_pos = QCursor.pos()
