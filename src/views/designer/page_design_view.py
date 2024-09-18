@@ -1,4 +1,5 @@
 import logging
+import os.path
 
 from PyQt6.QtCore import QRect
 from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
@@ -163,7 +164,11 @@ class PageDesignView(QWidget):
         self.update_large_text_area()
         self.picture.page = self.controller.page
         self.picture.draw_fields()
-        # self.picture.draw_groups()
+        title = self.controller.image_path
+        title = os.path.basename(title)
+        title = os.path.splitext(title)[0]
+        title = "Form Design- page " + title
+        self.setWindowTitle(title)
 
     def set_mode(self, mode: EditMode):
         self.controller.set_mode(mode)
