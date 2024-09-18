@@ -7,4 +7,4 @@ widget_scale = design_scale
 little_crop_border = 10
 little_widget_scale = 1.5
 
-template_folder = r"C:\_PV\forms_filled\00000001"
+template_folder = r"C:\_PV\forms3"
