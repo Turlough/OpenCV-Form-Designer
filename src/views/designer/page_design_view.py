@@ -2,11 +2,11 @@ import logging
 import os.path
 
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QInputDialog, QMainWindow, QPushButton, \
     QWidget, \
     QVBoxLayout, QTextEdit, \
     QScrollArea
-from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtGui import QCursor, QPixmap, QImage
 from PyQt6.QtGui import QFont
 
 from src.design_controller import DesignController, EditMode
@@ -132,9 +132,13 @@ class PageDesignView(QWidget):
         self.reload()
 
     def new_radio_group(self, rect: QRect):
-        name, ok = QInputDialog.getText(self, 'Group Name', 'Type a name for this group')
-        if not ok or not name:
+        dialog = QInputDialog()
+
+        dialog.setWindowTitle('Group Name')
+        dialog.move(QCursor.pos())
+        if dialog.exec() != QDialog.DialogCode.Accepted:
             return
+        name = dialog.textValue()
 
         x1, y1 = rect.topLeft().x(), rect.topLeft().y()
         x2, y2 = rect.bottomRight().x(), rect.bottomRight().y()

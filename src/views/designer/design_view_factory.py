@@ -1,4 +1,5 @@
 from src.models.other_fields import BaseField, NumberBox, RadioButton, RadioGroup, TextBox, TickBox
+from src.views.designer.base_design_view import BaseDesignView
 from src.views.designer.radio_button_design_view import RadioButtonDesignView
 from src.views.designer.radio_group_design_view import RadioGroupDesignView
 from src.views.designer.text_design_view import NumberDesignView, TextDesignView
@@ -9,7 +10,7 @@ class DesignViewFactory:
     def __init__(self):
         # Map model classes to their corresponding view classes
         self._mapping = {
-            BaseField: TextDesignView,
+            BaseField: BaseDesignView,
             TickBox: TickBoxDesignView,
             TextBox: TextDesignView,
             NumberBox: NumberDesignView,

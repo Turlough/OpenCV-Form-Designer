@@ -13,4 +13,4 @@ class TextDesignView(BaseDesignView):
 
 class NumberDesignView(TextDesignView):
     model: NumberBox
-    pen = QPen(colors.number, 3, Qt.PenStyle.DotLine)
+    pen = QPen(colors.number, 2, Qt.PenStyle.DotLine)
