@@ -35,3 +35,4 @@ class TickBoxIndexView(BaseIndexView):
         self.ticked = not self.ticked
         self.text = 'Yes' if self.ticked else ''
         self.draw(painter)
+        self.on_item_indexed()
