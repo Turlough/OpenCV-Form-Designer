@@ -14,3 +14,7 @@ little_crop_border = 10
 little_widget_scale = 1.5
 # The folder containing template images, json, and csv descriptors
 template_folder = r"C:\_PV\forms3"
+# FIXME This should be a calculated value
+num_pages = 15
+# FIXME. Why the slight scale difference?
+magic_number = 1.012

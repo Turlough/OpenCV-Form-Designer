@@ -1,5 +1,7 @@
 import csv
 import os.path
+
+from src.tools import common
 from src.tools.pdf_page_extractor import PdfExtractor
 
 
@@ -64,7 +66,5 @@ class IndexFileManager:
 
     def next_page(self):
         self.page_number += 1
-
-    def get_start_indexes(self, template_folder):
-        pass
-
+        if self.page_number >= common.num_pages:
+            self.next_row()

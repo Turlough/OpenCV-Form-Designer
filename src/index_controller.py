@@ -86,8 +86,8 @@ class IndexController:
         return None
 
     def get_image(self):
-        # return self.highlighter.scaled_and_translated(0.316, -20, 62)
-        return self.highlighter.scaled_and_highlighted(self.scale)
+        # FIXME: fix the magic number
+        return self.highlighter.scaled_and_highlighted(self.scale * common.magic_number)
 
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
