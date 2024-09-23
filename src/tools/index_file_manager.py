@@ -68,3 +68,6 @@ class IndexFileManager:
         self.page_number += 1
         if self.page_number >= common.num_pages:
             self.next_row()
+
+    def has_more_documents(self):
+        return self.row_number + 1 < len(self.rows)

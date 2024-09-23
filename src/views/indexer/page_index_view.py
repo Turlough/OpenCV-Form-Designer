@@ -148,8 +148,11 @@ class PageIndexView(QWidget):
         self.reload()
 
     def next_document(self):
-        self.controller.next_document()
-        self.reload()
+        if self.controller.has_more_documents():
+            self.controller.next_document()
+            self.reload()
+        else:
+            self.open_file_dialog()
 
     def next_field(self):
         self.controller.next_field()
@@ -157,9 +160,11 @@ class PageIndexView(QWidget):
 
     def on_enter_key_used(self):
         text = self.index_text.toPlainText()
-        if not text.endswith('\n'):
+        if '\n' not in text and '\t' not in text:
             return
-        text = text.replace('\n', '').strip()
+        text = (text.replace('\n', '')
+                .replace('\t', '')
+                .strip())
         self.controller.current_view.text = text
         self.controller.save_index_values()
         self.next_field()
