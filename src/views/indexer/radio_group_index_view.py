@@ -33,7 +33,7 @@ class RadioGroupIndexView(BaseIndexView):
             bv.draw(painter)
 
     def draw_text(self, painter):
-        # Nothing
+        # Don't draw text
         pass
 
     def on_click(self, painter, location):

@@ -14,6 +14,7 @@ class BaseIndexView:
     text: str
     scale: float
     pen: QPen = QPen(colors.base_color, 2)
+    font = QFont("Arial", 11)
     rectangle: QRect
     on_item_indexed: Callable[['BaseField'], None]
     parent_widget: QWidget
@@ -24,7 +25,7 @@ class BaseIndexView:
         self.scale = scale
         self.on_item_indexed = on_item_indexed
         self.parent_widget = widget
-
+        # The view rectangle is scaled up/down from the model rectangle. Also, it is a QRect.
         ((x1, y1), (x2, y2)) = model.rectangle.coordinates(scale=scale)
         self.rectangle = QRect(x1, y1, x2 - x1, y2 - y1)
 
@@ -73,9 +74,7 @@ class BaseIndexView:
         painter.setPen(self.pen)
 
     def get_text_rectangle(self, painter, text, margin):
-        font = QFont("Arial", 11)
-        # font.setBold(True)
-        painter.setFont(font)
+        painter.setFont(self.font)
         m = painter.fontMetrics()
         w, h = m.horizontalAdvance(text), m.height()
         x, y = center_right(self.rectangle, h)
