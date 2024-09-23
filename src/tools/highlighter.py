@@ -52,5 +52,5 @@ class Highlighter:
         # return cropped
 
     def scaled_and_highlighted(self, scale: float = 1.0):
-        blurred = cv2.GaussianBlur(self.image, (3, 3), 0)
-        return cv2.resize(blurred, None, fx=scale, fy=scale)
+        # blurred = cv2.GaussianBlur(self.image, (3, 3), 0)
+        return cv2.resize(self.image, None, fx=scale, fy=scale)
