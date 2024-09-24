@@ -154,7 +154,7 @@ class PageIndexView(QWidget):
             self.controller.next_page()
             self.reload()
         else:
-            self.open_file_dialog()
+            self.next_document()
 
     def next_document(self):
         if self.controller.has_more_documents():
