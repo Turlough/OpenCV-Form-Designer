@@ -7,6 +7,7 @@ from PyQt6.QtGui import QPixmap, QImage, QTextCursor
 from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
+from src.tools import common
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.page_index_painter import PageIndexPainter
 from src.views.indexer.small_index_painter import SmallIndexPainter
@@ -144,8 +145,11 @@ class PageIndexView(QWidget):
         self.reload()
 
     def next_page(self):
-        self.controller.next_page()
-        self.reload()
+        if self.controller.has_more_pages():
+            self.controller.next_page()
+            self.reload()
+        else:
+            self.open_file_dialog()
 
     def next_document(self):
         if self.controller.has_more_documents():
@@ -170,14 +174,11 @@ class PageIndexView(QWidget):
         self.next_field()
 
     def open_file_dialog(self):
-        default_folder = r"C:\_PV\IFAC\EXPORT"  # Replace with your default folder path
-        # options = QFileDialog.Option(QFileDialog.options['ExistingFile'] )
         file_name, _ = QFileDialog.getOpenFileName(
                 self,
-                'Open File',
-                default_folder,
-                'All Files (*);;Text Files (*.txt, *.csv)',
-                # options=options
+                'Open EXPORT.TXT',
+                common.pv_export_folder,
+                'Text Files (*.txt)',
         )
         if file_name:
             self.controller.load_index_file(file_name)

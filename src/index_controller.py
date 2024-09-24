@@ -62,6 +62,9 @@ class IndexController:
     def has_more_documents(self):
         return self.file_manager.has_more_documents()
 
+    def has_more_pages(self):
+        return self.file_manager.has_more_pages()
+
     def next_document(self):
         self.file_manager.next_row()
         self.load_page()

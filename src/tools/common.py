@@ -20,3 +20,5 @@ num_pages = 15
 magic_number = 1.012
 # pdf in-mem page extractor. For Windows, point to the "bin" folder
 poppler_path = r"\\dddata\output\RESOURCE\ifac_dairygold\poppler-24.07.0\Library\bin"
+# Default path for the file picker
+pv_export_folder = r"O:\IFAC-DairygoldMilkSupplierCensus\EXPORT"
