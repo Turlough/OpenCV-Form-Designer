@@ -9,8 +9,9 @@ def log_use(func):
     """Decorator that logs the method name when it's called."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        # logger = logging.getLogger(func.__module__)  # Get logger for the module
-        logger.info(f"Calling method: {func.__name__}")
+        clz = args[0].__class__.__name__
+        method = func.__name__
+        logger.info(f"{clz}.{method}{args[1:]} {kwargs=}")
         return func(*args, **kwargs)
 
     return wrapper
