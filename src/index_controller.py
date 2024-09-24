@@ -5,6 +5,7 @@ from src.models.base_field import BaseField
 from src.models.other_fields import RadioGroup
 from src.tools import common
 from src.tools.index_file_manager import IndexFileManager
+from src.tools.logging_annotation import log_use
 from src.tools.template_manager import TemplateManager
 from src.tools.highlighter import Highlighter
 from src.models.form_page import FormPage
@@ -26,11 +27,13 @@ class IndexController:
     image_widget: QWidget
     current_view: BaseIndexView
 
+    @log_use
     def __init__(self, template_folder, scale):
         self.scale = scale
         self.template_manager = TemplateManager(template_folder)
         self.views = list()
 
+    @log_use
     def load_index_file(self, path):
         counts = self.template_manager.get_field_counts()
         self.file_manager = IndexFileManager(path, counts)
@@ -38,6 +41,7 @@ class IndexController:
         self.views = list()
         self.load_page()
 
+    @log_use
     def load_page(self):
         page_no = self.file_manager.page_number
         image = self.file_manager.get_page_image()
@@ -91,10 +95,12 @@ class IndexController:
                 return resp
         return None
 
+    @log_use
     def get_image(self):
         # FIXME: fix the magic number
         return self.highlighter.scaled_and_highlighted(self.scale * common.magic_number)
 
+    @log_use
     def load_from_json(self):
         with open(self.json_path, 'r') as file:
             content = file.read()
@@ -102,6 +108,7 @@ class IndexController:
             self.page.sort_by_csv(self.template_path)
         self.build_views(self.page)
 
+    @log_use
     def build_views(self, page):
         self.views.clear()
         for i, f in enumerate(page.fields):
@@ -117,6 +124,7 @@ class IndexController:
         values = [view.text for view in self.views]
         self.file_manager.save_page_indexes(values)
 
+    @log_use
     def list_index_values(self):
         response = list()
         headers = '#', 'Field', 'Index Value'

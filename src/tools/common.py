@@ -13,7 +13,7 @@ little_crop_border = 10
 # The scale at which to display the indexing thumbnail.
 little_widget_scale = 1.5
 # The folder containing template images, json, and csv descriptors
-template_folder = r"C:\_PV\forms3"
+template_folder = r"O:\RESOURCE\ifac_dairygold\forms"
 # FIXME This should be a calculated value
 num_pages = 15
 # FIXME. Why the slight scale difference? Rounding errors?

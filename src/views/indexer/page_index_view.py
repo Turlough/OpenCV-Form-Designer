@@ -8,11 +8,12 @@ from PyQt6.QtGui import QFont
 
 from src.index_controller import IndexController
 from src.tools import common
+from src.tools.logging_annotation import log_use
 from src.views.indexer.base_index_view import BaseIndexView
 from src.views.indexer.page_index_painter import PageIndexPainter
 from src.views.indexer.small_index_painter import SmallIndexPainter
 
-logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.ERROR)
+logging.basicConfig(format='%(levelname)s:  %(message)s', level=logging.INFO)
 
 
 class PageIndexView(QWidget):
@@ -23,6 +24,7 @@ class PageIndexView(QWidget):
     picture: PageIndexPainter
     small_picture: SmallIndexPainter
 
+    @log_use
     def __init__(self, controller: IndexController):
         self.controller = controller
         self.scroll_area = QScrollArea()
@@ -31,6 +33,7 @@ class PageIndexView(QWidget):
         self.small_picture = SmallIndexPainter(controller=controller, on_item_indexed=self.on_enter_key_used)
         super().__init__()
 
+    @log_use
     def init_ui(self):
         """
         Layout UI elements
@@ -106,6 +109,7 @@ class PageIndexView(QWidget):
 
         layout.addWidget(self.scroll_area)
 
+    @log_use
     def display(self, image):
         # Set the Pixmap
         h, w, ch = image.shape
@@ -131,6 +135,7 @@ class PageIndexView(QWidget):
         cursor.movePosition(QTextCursor.MoveOperation.End)
         self.index_text.setTextCursor(cursor)
 
+    @log_use
     def reload(self):
         image = self.controller.get_image()
         self.picture.page = self.controller.page
@@ -173,6 +178,7 @@ class PageIndexView(QWidget):
         self.controller.save_index_values()
         self.next_field()
 
+    @log_use
     def open_file_dialog(self):
         file_name, _ = QFileDialog.getOpenFileName(
                 self,

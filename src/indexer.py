@@ -23,4 +23,7 @@ def launch(folder):
 
 
 if __name__ == '__main__':
-    launch(template_folder)
+    try:
+        launch(template_folder)
+    except Exception as ex:
+        print(ex)
