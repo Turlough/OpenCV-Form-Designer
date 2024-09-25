@@ -33,8 +33,9 @@ class RadioGroupIndexView(BaseIndexView):
             bv.draw(painter)
 
     def draw_text(self, painter):
-        # Don't draw text
-        pass
+        # Only show text if INVALID
+        if self.text.upper() == 'INVALID':
+            super().draw_text(painter)
 
     def on_click(self, painter, location):
         button = self.identify_button(location)
