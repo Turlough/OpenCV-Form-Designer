@@ -11,7 +11,7 @@ def log_use(func):
     def wrapper(*args, **kwargs):
         clz = args[0].__class__.__name__
         method = func.__name__
-        logger.info(f"{clz}.{method}{args[1:]} {kwargs=}")
+        logger.debug(f"{clz}.{method}{args[1:]} {kwargs=}")
         return func(*args, **kwargs)
 
     return wrapper
