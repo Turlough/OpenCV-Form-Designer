@@ -1,5 +1,6 @@
 import logging
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QMainWindow, QPushButton, \
     QScrollArea, QWidget, \
     QVBoxLayout, QTextEdit
@@ -117,6 +118,7 @@ class PageIndexView(QWidget):
         qt_image = QImage(image.data, w, h, bytes_per_line, QImage.Format.Format_BGR888)
         pixmap = QPixmap(qt_image)
 
+        self.picture.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
         self.picture.setPixmap(pixmap)
 
         self.picture.resize(pixmap.width(), pixmap.height())
