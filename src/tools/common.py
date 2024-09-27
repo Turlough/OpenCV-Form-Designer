@@ -11,7 +11,7 @@ widget_scale = design_scale
 # Border around the indexing thumbnail
 little_crop_border = 30
 # The scale at which to display the indexing thumbnail.
-little_widget_scale = 2
+little_widget_scale = 1.5
 # The folder containing template images, json, and csv descriptors
 template_folder = r"O:\RESOURCE\ifac_dairygold\forms"
 # FIXME This should be a calculated value
