@@ -9,6 +9,11 @@ class TextBox(BaseField):
 
 
 @dataclass
+class LongTextBox(TextBox):
+    pass
+
+
+@dataclass
 class NumberBox(TextBox):
     pass
 

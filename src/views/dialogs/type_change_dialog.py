@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QDialog, QPushButton, QVBoxLayout
 
 from src.models.base_field import BaseField
-from src.models.other_fields import NumberBox, RadioButton, TextBox, TickBox
+from src.models.other_fields import LongTextBox, NumberBox, RadioButton, TextBox, TickBox
 
 
 class TypeChangeDialog(QDialog):
@@ -19,6 +19,7 @@ class TypeChangeDialog(QDialog):
         self.add_button('TextBox', TextBox)
         self.add_button('NumberBox', NumberBox)
         self.add_button('RadioButton', RadioButton)
+        self.add_button('LongText', LongTextBox)
 
     def add_button(self, name, new_model):
         btn = QPushButton(self)
