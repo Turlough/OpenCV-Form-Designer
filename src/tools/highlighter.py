@@ -42,11 +42,10 @@ class Highlighter:
         rectangles.sort(key=lambda r: r.y1)
         return rectangles
 
-    def crop(self, r: Rectangle, scale: float):
-        b = common.little_crop_border
+    def crop(self, r: Rectangle, scale: float, border: int):
         base_scale = common.design_resolution / common.index_resolution
         scaled = cv2.resize(self.image, None, fx=base_scale, fy=base_scale)
-        cropped = scaled[r.y1 - b:r.y2 + b, r.x1 - b:r.x2 + b]
+        cropped = scaled[r.y1 - border:r.y2 + border, r.x1 - border:r.x2 + border]
         scale *= common.design_scale
         return cv2.resize(cropped, None, fx=scale, fy=scale)
         # return cropped

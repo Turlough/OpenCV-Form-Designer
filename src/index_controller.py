@@ -53,7 +53,7 @@ class IndexController:
         self.current_view = self.views[0]
 
     def crop_to_field(self, model: BaseField):
-        return self.highlighter.crop(model.rectangle, common.little_widget_scale)
+        return self.highlighter.crop(model.rectangle, common.little_widget_scale, common.little_crop_border)
 
     def prev_page(self):
         self.file_manager.prev_page()

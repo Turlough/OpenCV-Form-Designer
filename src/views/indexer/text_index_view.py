@@ -1,3 +1,4 @@
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QPen
 
 from src.models.other_fields import TextBox
@@ -9,3 +10,8 @@ from src.views.indexer.base_index_view import BaseIndexView
 class TextIndexView(BaseIndexView):
     model: TextBox
     pen = QPen(colors.text, 2)
+
+
+class LongTextIndexView(BaseIndexView):
+    model: TextBox
+    pen = QPen(colors.text, 2, Qt.PenStyle.DotLine)

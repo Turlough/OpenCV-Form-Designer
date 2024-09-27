@@ -1,9 +1,9 @@
 from typing import Callable
 
-from src.models.other_fields import BaseField, NumberBox, RadioButton, TextBox, TickBox
+from src.models.other_fields import BaseField, LongTextBox, NumberBox, RadioButton, TextBox, TickBox
 from src.views.indexer.number_index_view import NumberIndexView
 from src.views.indexer.radio_button_index_view import RadioButtonIndexView
-from src.views.indexer.text_index_view import TextIndexView
+from src.views.indexer.text_index_view import LongTextIndexView, TextIndexView
 from src.views.indexer.tick_box_index_view import TickBoxIndexView
 
 
@@ -17,6 +17,7 @@ class IndexViewFactory:
             TextBox    : TextIndexView,
             NumberBox  : NumberIndexView,
             TickBox    : TickBoxIndexView,
+            LongTextBox: LongTextIndexView
         }
 
     def create_view(self, model, text, widget):
