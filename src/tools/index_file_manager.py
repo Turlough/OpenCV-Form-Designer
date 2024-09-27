@@ -13,6 +13,7 @@ class IndexFileManager:
     page_number: int = 0
     page_start_indexes: list[int]
     extractor: PdfExtractor
+    current_document: str
 
     def __init__(self, input_csv, start_indexes):
         self.input_csv = input_csv
@@ -55,10 +56,16 @@ class IndexFileManager:
         self.page_number = 0
         self.new_pdf()
 
+    def goto_document(self, doc_no: int):
+        self.row_number = doc_no - 1
+        self.page_number = 0
+        self.new_pdf()
+
     def new_pdf(self):
         row = self.rows[self.row_number]
         pdf = row[0]
         path = os.path.join(self.export_folder, pdf)
+        self.current_document = path
         self.extractor = PdfExtractor(path)
 
     def prev_page(self):
