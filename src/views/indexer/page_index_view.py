@@ -146,6 +146,10 @@ class PageIndexView(QWidget):
         self.small_display(view)
         self.update_text_area()
         self.picture.draw_answers()
+        title = self.controller.file_manager.current_document
+        page = self.controller.file_manager.page_number + 1
+        title = f'{title}  Page {page}'
+        self.setWindowTitle(title)
 
     def prev_page(self):
         self.controller.prev_page()
