@@ -164,13 +164,12 @@ class PageIndexView(QWidget):
         self.controller.save_index_values()
         self.next_field()
 
-    @log_use
     def open_file_dialog(self):
         file_name, _ = QFileDialog.getOpenFileName(
                 self,
-                'Open EXPORT.TXT',
+                'Open EXPORT.TXT or select a PDF',
                 common.pv_export_folder,
-                'Text Files (*.txt)',
+                'EXPORT.TXT (*.txt);; Single PDF (*.pdf)',
         )
         if file_name:
             self.controller.load_index_file(file_name)

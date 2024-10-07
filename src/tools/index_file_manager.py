@@ -15,11 +15,27 @@ class IndexFileManager:
     extractor: PdfExtractor
     current_document: str
 
-    def __init__(self, input_csv, start_indexes):
-        self.input_csv = input_csv
-        self.export_folder = os.path.dirname(input_csv)
+    def __init__(self, input_csv: str, start_indexes):
         self.rows = list()
         self.page_start_indexes = start_indexes
+        if input_csv.lower().endswith('.txt'):
+            self.input_csv = input_csv
+            self.export_folder = os.path.dirname(input_csv)
+        elif input_csv.lower().endswith('.pdf'):
+            self.current_document = input_csv
+            sep = '/'
+            parts = input_csv.split(sep)
+            self.export_folder = sep.join(parts[:-2])
+            self.input_csv = os.path.join(self.export_folder, 'EXPORT.TXT')
+            rel_path = '\\'.join(parts[-2:])
+            with open(self.input_csv, 'r') as file:
+                reader = csv.reader(file)
+                for i, row in enumerate(reader):
+                    if row[0].lower() == rel_path.lower():
+                        self.row_number = i
+                        self.page_number = 0
+                        self.extractor = PdfExtractor(self.current_document)
+                        return
 
     def read_all(self):
         self.rows.clear()
